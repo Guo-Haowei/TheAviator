@@ -1,0 +1,43 @@
+#Game
+game_speed: 0.003
+fps: 60.0
+display_fps: 0
+
+#Sea
+radius: 240.0f
+height: 320.0f
+radial_segments: 40
+height_segments: 10
+min_amplitude: 2.0f
+max_amplitude: 8.0f
+min_speed: 0.01f
+max_speed: 0.03f
+
+#Camera
+x: 0.0f
+y: 40.0f
+z: 80.0f
+fov: 50.0f
+zoom_sensitivity: 45.0;
+
+#Light
+x: 90.0f
+y: 210.0f
+z: 210.0f
+
+#Shadow
+near: 150.0f
+far: 500.0f
+width: 2048
+height: 2048
+
+#Airplane
+x: 0.0f
+y: 40.0f
+z: 0.0f
+move_sensitivity: 0.06f
+rotate_sensitivity: 0.02f
+amp_width: 30.f
+amp_height: 32.0f
+
+# 170, 190
