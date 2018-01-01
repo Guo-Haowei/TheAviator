@@ -8,10 +8,10 @@ using std::vector;
 vector<unsigned int> Loader::vaos;
 vector<unsigned int> Loader::vbos;
 
-RawModel* Loader::loadToVAO(vector<float> vertices, vector<float> normals, vector<float> colors) {
+RawModel* Loader::loadToVAO(vector<float> vertices, vector<float> normalsOrColors) {
   unsigned int vaoID = createVAO();
   storeDataInAttributeList(0, 3, vertices);
-  storeDataInAttributeList(1, 3, colors.size() == 0 ? normals : colors);
+  storeDataInAttributeList(1, 3, normalsOrColors);
   return new RawModel(vaoID, vertices.size());
 }
 
@@ -40,8 +40,6 @@ void Loader::storeDataInAttributeList(unsigned int attrubuteNumber, int coordina
   glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), &data.front(), GL_STATIC_DRAW);
   glVertexAttribPointer(attrubuteNumber, coordinateSize, GL_FLOAT, GL_FALSE, 0, (void*) 0);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
-  for (int i = 0 ; i < data.size(); ++i)
-    std::cout << data[i] << std::endl;
 }
 
 void Loader::bindIndicesBuffer(vector<unsigned int> indices) {

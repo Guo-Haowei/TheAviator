@@ -16,6 +16,6 @@ private:
 public:
   static void clean();
 
-  static RawModel* loadToVAO(vector<float> vertices, vector<float> normals, vector<float> colors);
+  static RawModel* loadToVAO(vector<float> vertices, vector<float> normalsOrColors);
 };
 
