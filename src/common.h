@@ -1,15 +1,15 @@
 // common.h
 #pragma once
 // the color palette
-const float RED[] = { 242/255, 83/255, 70/255 };
-const float WHITE[] = { 216/255, 208/255, 209/255 };
-const float BROWN[] = { 89/255, 51/255, 46/255 };
-const float PINK[] = { 245/255, 152/255, 110/255 };
-const float BROWNDARK[] = { 35/255, 25/255, 15/255 };
-const float BLUE[] = { 104/255, 195/255, 192/255 };
+const float RED[] = { 242.0f/255.0f, 83.0f/255.0f, 70.0f/255.0f };
+const float WHITE[] = { 216.0f/255.0f, 208.0f/255.0f, 209.0f/255.0f };
+const float BROWN[] = { 89.0f/255.0f, 51.0f/255.0f, 46.0f/255.0f };
+const float PINK[] = { 245.0f/255.0f, 152.0f/255.0f, 110.0f/255.0f };
+const float BROWNDARK[] = { 35.0f/255.0f, 25.0f/255.0f, 15.0f/255.0f };
+const float BLUE[] = { 104.0f/255.0f, 195.0f/255.0f, 192.0f/255.0f };
 
-const float BACKGROUND_COLOR1[] = { 228/255, 224/255, 186/255 };
-const float BACKGROUND_COLOR2[] = { 247/255, 217/255, 170/255 };
+const float BACKGROUND_COLOR1[] = { 228.0f/255.0f, 224.0f/255.0f, 186.0f/255.0f };
+const float BACKGROUND_COLOR2[] = { 247.0f/255.0f, 217.0f/255.0f, 170.0f/255.0f };
 
 extern const int WIDTH, HEIGHT;
 extern int ACTUAL_WIDTH, ACTUAL_HEIGHT;

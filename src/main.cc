@@ -1,8 +1,8 @@
 // main.cc
 #include "renderEngine/DisplayManager.h"
 #include "renderEngine/Renderer.h"
-#include <string>
 #include <iostream>
+using std::cout;
 
 bool shouldUpdate(double& currentTime, double& delta, double& lastTime, const int fps) {
   currentTime = DisplayManager::getTime();
@@ -22,7 +22,7 @@ void updateFPSCount(double& previousSecond, int& updates) {
   }
 
   ++previousSecond;
-  DisplayManager::setTitle(("The Aviator -- FPS: " + std::to_string(updates)).c_str());
+  cout << "FPS: " << updates << "\n";
   updates = 0;
 }
 
