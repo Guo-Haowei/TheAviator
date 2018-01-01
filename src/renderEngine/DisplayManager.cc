@@ -5,10 +5,7 @@
 
 using std::cout;
 
-const int WIDTH = 800;
-const int HEIGHT = 600;
-int ACTUAL_WIDTH = 0;
-int ACTUAL_HEIGHT = 0;
+int WIDTH, HEIGHT, ACTUAL_WIDTH, ACTUAL_HEIGHT;
 
 GLFWwindow* DisplayManager::window;
 
@@ -22,8 +19,11 @@ void DisplayManager::createDisplay() {
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-  // window = glfwCreateWindow(WIDTH, HEIGHT, "The Aviator", glfwGetPrimaryMonitor(), NULL);
-  window = glfwCreateWindow(WIDTH, HEIGHT, "The Aviator", NULL, NULL);
+  const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+  WIDTH = mode->width;
+  HEIGHT = mode->height;
+
+  window = glfwCreateWindow(WIDTH, HEIGHT, "The Aviator", glfwGetPrimaryMonitor(), NULL);
 
   if (window == nullptr) {
     cout << "====================================\n";

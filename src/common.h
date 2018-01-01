@@ -11,7 +11,6 @@ const float BLUE[] = { 104.0f/255.0f, 195.0f/255.0f, 192.0f/255.0f };
 const float BACKGROUND_COLOR1[] = { 228.0f/255.0f, 224.0f/255.0f, 186.0f/255.0f };
 const float BACKGROUND_COLOR2[] = { 247.0f/255.0f, 217.0f/255.0f, 170.0f/255.0f };
 
-extern const int WIDTH, HEIGHT;
-extern int ACTUAL_WIDTH, ACTUAL_HEIGHT;
+extern int WIDTH, HEIGHT, ACTUAL_WIDTH, ACTUAL_HEIGHT;
 
 const float NEAR_PLANE = 0.1f, FAR_PLANE = 1000.0f, ZOOM = 45.0f;
