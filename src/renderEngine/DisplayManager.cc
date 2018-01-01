@@ -12,6 +12,8 @@ int ACTUAL_HEIGHT = 0;
 
 GLFWwindow* DisplayManager::window;
 
+void keyCallback(GLFWwindow* window, int key, int scancodem, int action, int mode);
+
 void DisplayManager::createDisplay() {
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -21,6 +23,7 @@ void DisplayManager::createDisplay() {
   glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
   window = glfwCreateWindow(WIDTH, HEIGHT, "The Aviator", glfwGetPrimaryMonitor(), NULL);
+  // window = glfwCreateWindow(WIDTH, HEIGHT, "The Aviator", NULL, NULL);
 
   if (window == nullptr) {
     cout << "====================================\n";
@@ -32,6 +35,7 @@ void DisplayManager::createDisplay() {
   glfwMakeContextCurrent(window);
 
   // callbacks
+  glfwSetKeyCallback(window, keyCallback);
 
   glewExperimental = GL_TRUE;
   if (glewInit() != GLEW_OK) {
@@ -40,6 +44,7 @@ void DisplayManager::createDisplay() {
     cout << "======================================\n";
   }
 
+  // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glViewport(0, 0, ACTUAL_WIDTH, ACTUAL_HEIGHT);
   glEnable(GL_DEPTH_TEST);
 }
@@ -70,4 +75,10 @@ void DisplayManager::getCursorPos(double* x, double* y) {
 
 void DisplayManager::setTitle(const char* title) {
   glfwSetWindowTitle(window, title);
+}
+
+void keyCallback(GLFWwindow* window, int key, int scancodem, int action, int mode) {
+  if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+    glfwSetWindowShouldClose(window, GL_TRUE);
+  }
 }

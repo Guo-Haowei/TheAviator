@@ -1,3 +1,4 @@
+// common.h
 #pragma once
 // the color palette
 const float RED[] = { 242/255, 83/255, 70/255 };
