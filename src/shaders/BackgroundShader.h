@@ -10,7 +10,7 @@ public:
   BackgroundShader();
   ~BackgroundShader();
 
-  RawModel* getModel();
   void bindAttributes();
   void getAllUniformLocations();
+  void render();
 };

@@ -3,6 +3,7 @@
 #include "ShaderProgram.h"
 #include "../common.h"
 #include "../models/Loader.h"
+#include <GL/glew.h>
 #include <vector>
 using std::vector;
 
@@ -60,13 +61,17 @@ BackgroundShader::~BackgroundShader() {
   delete background;
 }
 
-RawModel* BackgroundShader::getModel() {
-  return background;
-}
-
 void BackgroundShader::bindAttributes() {
   bindAttribute(0, "position");
   bindAttribute(1, "color");
 }
 
 void BackgroundShader::getAllUniformLocations() { }
+
+void BackgroundShader::render() {
+  start();
+  background->bind();
+  glDrawArrays(GL_TRIANGLES, 0, background->getVertexCount());
+  RawModel::unbind();
+  stop();
+}
