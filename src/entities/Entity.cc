@@ -1,8 +1,19 @@
 // Entity.cc
 #include "Entity.h"
 #include "../utils/Maths.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 Entity::Entity(RawModel* model, glm::vec3 position, glm::vec3 rotation, glm::vec3 color, glm::vec3 scale): model(model), position(position), rotation(rotation), color(color), scale(scale) { }
+
+glm::mat4 Entity::getTransformationMatrix() {
+  glm::mat4 matrix = glm::mat4(1);
+  matrix = glm::translate(matrix, position);
+  matrix = glm::rotate(matrix, rotation.x, glm::vec3(1, 0, 0));
+  matrix = glm::rotate(matrix, rotation.y, glm::vec3(0, 1, 0));
+  matrix = glm::rotate(matrix, rotation.z, glm::vec3(0, 0, 1));
+  matrix = glm::scale(matrix, scale);
+  return matrix;
+}
 
 void Entity::changePosition(float dx, float dy, float dz) {
   position.x += dx;

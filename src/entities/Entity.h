@@ -8,8 +8,9 @@ private:
   RawModel* model;
   glm::vec3 position, rotation, color, scale;
 public:
-  Entity(RawModel* model, glm::vec3 position, glm::vec3 rotation = glm::vec3(0.0f), glm::vec3 color = glm::vec3(1.0f), glm::vec3 scale = glm::vec3(1.0f));
+  Entity(RawModel* model, glm::vec3 position = glm::vec3(0.0f), glm::vec3 rotation = glm::vec3(0.0f), glm::vec3 color = glm::vec3(1.0f), glm::vec3 scale = glm::vec3(1.0f));
 
+  glm::mat4 getTransformationMatrix();
   void changePosition(float dx, float dy, float dz);
   void changeRotation(float dx, float dy, float dz);
 
