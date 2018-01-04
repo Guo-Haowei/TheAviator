@@ -2,7 +2,7 @@
 #include "Entity.h"
 #include "../utils/Maths.h"
 
-Entity::Entity(RawModel* model, glm::vec3 position, glm::vec3 rotation, glm::vec3 color, float scale): model(model), position(position), rotation(rotation), color(color), scale(scale) { }
+Entity::Entity(RawModel* model, glm::vec3 position, glm::vec3 rotation, glm::vec3 color, glm::vec3 scale): model(model), position(position), rotation(rotation), color(color), scale(scale) { }
 
 void Entity::changePosition(float dx, float dy, float dz) {
   position.x += dx;
@@ -28,7 +28,7 @@ glm::vec3 Entity::getColor() const {
   return color;
 }
 
-float Entity::getScale() const {
+glm::vec3 Entity::getScale() const {
   return scale;
 }
 
