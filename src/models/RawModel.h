@@ -10,4 +10,7 @@ public:
 
   unsigned int getVaoID() const;
   unsigned int getVertexCount() const;
+
+  void bind();
+  static void unbind();
 };
