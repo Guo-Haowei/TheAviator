@@ -1,3 +1,4 @@
+// background.vert
 #version 330 core
 in vec2 position;
 in vec3 color;
