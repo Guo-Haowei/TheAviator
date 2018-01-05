@@ -13,19 +13,16 @@ BackgroundShader::BackgroundShader() {
   // first triangle
   vertices.push_back(-1.0f);
   vertices.push_back(1.0f);
-  vertices.push_back(0.0f);
   colors.push_back(BACKGROUND_COLOR1[0]);
   colors.push_back(BACKGROUND_COLOR1[1]);
   colors.push_back(BACKGROUND_COLOR1[2]);
   vertices.push_back(1.0f);
   vertices.push_back(1.0f);
-  vertices.push_back(0.0f);
   colors.push_back(BACKGROUND_COLOR1[0]);
   colors.push_back(BACKGROUND_COLOR1[1]);
   colors.push_back(BACKGROUND_COLOR1[2]);
   vertices.push_back(1.0f);
   vertices.push_back(-1.0f);
-  vertices.push_back(0.0f);
   colors.push_back(BACKGROUND_COLOR2[0]);
   colors.push_back(BACKGROUND_COLOR2[1]);
   colors.push_back(BACKGROUND_COLOR2[2]);
@@ -33,24 +30,21 @@ BackgroundShader::BackgroundShader() {
   // second triangle
   vertices.push_back(1.0f);
   vertices.push_back(-1.0f);
-  vertices.push_back(0.0f);
   colors.push_back(BACKGROUND_COLOR2[0]);
   colors.push_back(BACKGROUND_COLOR2[1]);
   colors.push_back(BACKGROUND_COLOR2[2]);
   vertices.push_back(-1.0f);
   vertices.push_back(-1.0f);
-  vertices.push_back(0.0f);
   colors.push_back(BACKGROUND_COLOR2[0]);
   colors.push_back(BACKGROUND_COLOR2[1]);
   colors.push_back(BACKGROUND_COLOR2[2]);
   vertices.push_back(-1.0f);
   vertices.push_back(1.0f);
-  vertices.push_back(0.0f);
   colors.push_back(BACKGROUND_COLOR1[0]);
   colors.push_back(BACKGROUND_COLOR1[1]);
   colors.push_back(BACKGROUND_COLOR1[2]);
 
-  background = Loader::loadToVAO(vertices, colors);
+  background = Loader::loadToVAO(vertices, colors, 2);
 
   const char* vertexFile = "../shaders/background.vert";
   const char* fragFile = "../shaders/background.frag";

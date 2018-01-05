@@ -8,11 +8,11 @@ using std::vector;
 vector<unsigned int> Loader::vaos;
 vector<unsigned int> Loader::vbos;
 
-RawModel* Loader::loadToVAO(vector<float> vertices, vector<float> normalsOrColors) {
+RawModel* Loader::loadToVAO(vector<float> data1, vector<float> data2, int data1Dimension, int data2Dimension) {
   unsigned int vaoID = createVAO();
-  storeDataInAttributeList(0, 3, vertices);
-  storeDataInAttributeList(1, 3, normalsOrColors);
-  return new RawModel(vaoID, vertices.size());
+  storeDataInAttributeList(0, data1Dimension, data1);
+  storeDataInAttributeList(1, data2Dimension, data2);
+  return new RawModel(vaoID, data1.size());
 }
 
 void Loader::clean() {
