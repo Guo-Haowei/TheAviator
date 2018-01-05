@@ -78,5 +78,10 @@ RawModel* createCube() {
     }
   }
 
-  return Loader::loadToVAO(vertices, normals);
+  return Loader::loadToVAO(vertices, 3, normals, 3);
+}
+
+RawModel* createCylinder(int radius, int height, int radialSegments, int heightSegments) {
+  vector<float> vertices, normals;
+  return nullptr;
 }

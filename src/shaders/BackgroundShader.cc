@@ -44,7 +44,7 @@ BackgroundShader::BackgroundShader() {
   colors.push_back(BACKGROUND_COLOR1[1]);
   colors.push_back(BACKGROUND_COLOR1[2]);
 
-  background = Loader::loadToVAO(vertices, colors, 2);
+  background = Loader::loadToVAO(vertices, 2, colors, 3);
 
   const char* vertexFile = "../shaders/background.vert";
   const char* fragFile = "../shaders/background.frag";
