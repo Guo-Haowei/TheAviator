@@ -8,12 +8,16 @@
 #include <sstream>
 #include <string>
 
-void ShaderProgram::init(const char*vertexFileName, const char* fragmentFileName) {
+void ShaderProgram::init(const char*vertexFileName, const char* fragmentFileName, const char* geometryFileName) {
+  programID = glCreateProgram();
   vertexShaderID = loadShader(vertexFileName, GL_VERTEX_SHADER);
   fragmentShaderID = loadShader(fragmentFileName, GL_FRAGMENT_SHADER);
-  programID = glCreateProgram();
   glAttachShader(programID, vertexShaderID);
   glAttachShader(programID, fragmentShaderID);
+  if (geometryFileName != nullptr) {
+    geometryShaderID = loadShader(geometryFileName, GL_GEOMETRY_SHADER);
+    glAttachShader(programID, geometryShaderID);
+  }
   bindAttributes();
   glLinkProgram(programID);
 

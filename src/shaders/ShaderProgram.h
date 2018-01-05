@@ -7,6 +7,7 @@ private:
   unsigned int programID;
   unsigned int vertexShaderID;
   unsigned int fragmentShaderID;
+  unsigned int geometryShaderID;
 
   static unsigned int loadShader(const char* file, unsigned int type);
 protected:
@@ -18,7 +19,7 @@ protected:
   void loadVector3f(int location, glm::vec3 vec);
   void loadMatrix4f(int location, glm::mat4 mat);
 public:
-  void init(const char* vertexFileName, const char* fragmentFileName);
+  void init(const char* vertexFileName, const char* fragmentFileName, const char* geometryFileName = nullptr);
   void start();
   void stop();
   void clean();
