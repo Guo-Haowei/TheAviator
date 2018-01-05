@@ -24,6 +24,7 @@ RawModel* createCube() {
     0.0f, -1.0f, 0.0f,
     0.0f, 1.0f, 0.0f
   };
+
   float verticesData[]  = {
     -0.5f, -0.5f, -0.5f,
     0.5f, -0.5f, -0.5f,
@@ -67,6 +68,7 @@ RawModel* createCube() {
     -0.5f,  0.5f,  0.5f,
     -0.5f,  0.5f, -0.5f
   };
+
   vector<float> vertices(verticesData, verticesData + sizeof(verticesData) / sizeof(float)), normals;
   for (int i = 0; i < 6; i++) {
     for (int j = 0; j < 6; j++) {
