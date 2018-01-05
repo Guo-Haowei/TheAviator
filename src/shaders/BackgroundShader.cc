@@ -69,9 +69,12 @@ void BackgroundShader::bindAttributes() {
 void BackgroundShader::getAllUniformLocations() { }
 
 void BackgroundShader::render() {
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   start();
   background->bind();
+  glDisable(GL_DEPTH_TEST);
   glDrawArrays(GL_TRIANGLES, 0, background->getVertexCount());
+  glEnable(GL_DEPTH_TEST);
   RawModel::unbind();
   stop();
 }
