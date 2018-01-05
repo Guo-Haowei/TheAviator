@@ -10,10 +10,6 @@ class EntityShader: public ShaderProgram {
 private:
   Camera* camera;
   vector<Entity*>* entities;
-  void loadTransformationMatrx(glm::mat4 mat);
-  void loadProjectionMatrix(glm::mat4 mat);
-  void loadViewMatrix();
-  void loadColor(glm::vec3 color);
 protected:
   // uniform locations
   int location_transformationMatrix;
