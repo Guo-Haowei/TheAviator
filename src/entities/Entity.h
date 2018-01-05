@@ -2,6 +2,8 @@
 #pragma once
 #include "../models/RawModel.h"
 #include <glm/glm.hpp>
+#include <vector>
+using std::vector;
 
 class Entity {
 private:
@@ -20,3 +22,5 @@ public:
   glm::vec3 getScale() const;
   RawModel* getModel() const;
 };
+
+extern vector<Entity*> allEntities;

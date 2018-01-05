@@ -3,6 +3,8 @@
 #include "../utils/Maths.h"
 #include <glm/gtc/matrix_transform.hpp>
 
+vector<Entity*> allEntities;
+
 Entity::Entity(RawModel* model, glm::vec3 position, glm::vec3 rotation, glm::vec3 color, glm::vec3 scale): model(model), position(position), rotation(rotation), color(color), scale(scale) { }
 
 glm::mat4 Entity::getTransformationMatrix() {

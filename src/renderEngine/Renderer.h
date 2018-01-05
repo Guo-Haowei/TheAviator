@@ -1,7 +1,5 @@
 // Renderer.h
 #pragma once
-#include "../entities/Camera.h"
-#include "../entities/Entity.h"
 #include "../shaders/BackgroundShader.h"
 #include "../shaders/EntityShader.h"
 #include <vector>
@@ -12,7 +10,7 @@ private:
   BackgroundShader backgroundShader;
   EntityShader entityShader;
 public:
-  Renderer(Camera* camera, vector<Entity*>* entities);
+  Renderer();
   ~Renderer();
 
   void render();

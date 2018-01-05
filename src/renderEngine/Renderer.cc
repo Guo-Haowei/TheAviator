@@ -1,9 +1,11 @@
 // Renderer.cc
 #include "Renderer.h"
+#include "../entities/Entity.h"
+#include "../entities/Camera.h"
 #include <iostream>
 
-Renderer::Renderer(Camera* camera, vector<Entity*>* entities) {
-  entityShader.setCamera(camera)->setEntities(entities);
+Renderer::Renderer() {
+  entityShader.setCamera(&primaryCamera)->setEntities(&allEntities);
 }
 
 Renderer::~Renderer() {

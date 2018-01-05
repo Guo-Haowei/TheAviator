@@ -25,3 +25,5 @@ public:
   glm::mat4 getViewMatrix();
   float getZoom() const;
 };
+
+extern Camera primaryCamera;
