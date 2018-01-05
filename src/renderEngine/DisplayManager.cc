@@ -44,7 +44,6 @@ void DisplayManager::createDisplay() {
     cout << "======================================\n";
   }
 
-  // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glViewport(0, 0, ACTUAL_WIDTH, ACTUAL_HEIGHT);
   glEnable(GL_DEPTH_TEST);
 }
