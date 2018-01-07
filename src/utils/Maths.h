@@ -1,11 +1,8 @@
 // Maths.h
 #pragma once
+#define PI 3.14159265358979323846
 
 namespace Maths {
-  extern float PI;
   float toRadians(float degree);
-  float sin(float degree);
-  float cos(float degree);
-  float rand();
   float rand(float min, float max);
 };
