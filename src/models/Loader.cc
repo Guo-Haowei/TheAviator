@@ -8,10 +8,11 @@ using std::vector;
 vector<unsigned int> Loader::vaos;
 vector<unsigned int> Loader::vbos;
 
-RawModel* Loader::loadToVAO(vector<float> data1, int data1Dimension, vector<unsigned int> indices) {
+RawModel* Loader::loadToVAO(vector<float> data1, int data1Dimension, vector<float> data2, int data2Dimension, vector<unsigned int> indices) {
   unsigned int vaoID = createVAO();
   bindIndicesBuffer(indices);
   storeDataInAttributeList(0, data1Dimension, data1);
+  storeDataInAttributeList(1, data2Dimension, data2);
   return new RawModel(vaoID, data1.size());
 }
 
