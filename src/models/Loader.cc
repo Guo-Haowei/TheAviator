@@ -13,7 +13,7 @@ RawModel* Loader::loadToVAO(vector<float> data1, int data1Dimension, vector<floa
   bindIndicesBuffer(indices);
   storeDataInAttributeList(0, data1Dimension, data1);
   storeDataInAttributeList(1, data2Dimension, data2);
-  return new RawModel(vaoID, data1.size());
+  return new RawModel(vaoID, indices.size());
 }
 
 RawModel* Loader::loadToVAO(vector<float> data1, int data1Dimension, vector<float> data2, int data2Dimension) {

@@ -14,7 +14,7 @@ RawModel* Geometry::sea;
 
 void Geometry::initGeometry() {
   cube = createCube();
-  sea = createSea(60, 80, 40, 10);
+  sea = createSea(200, 300, 60, 10);
 }
 
 void Geometry::cleanGeometry() {
@@ -102,8 +102,8 @@ RawModel* createSea(float radius, float height, int radialSegments, int heightSe
       vertices.push_back(cos(angle * PI / 180.0f) * radius);
 
       waves.push_back(Maths::rand(0.0f, 2 * PI)); // angle
-      waves.push_back(Maths::rand(5.0f, 20.0f)); // amplitude
-      waves.push_back(Maths::rand(0.016f, 0.048f)); // amplitude
+      waves.push_back(Maths::rand(3.0f, 7.0f)); // amplitude
+      waves.push_back(Maths::rand(0.016f, 0.048f)); // speed
     }
   }
 

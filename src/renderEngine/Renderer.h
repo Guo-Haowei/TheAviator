@@ -2,6 +2,7 @@
 #pragma once
 #include "../shaders/BackgroundShader.h"
 #include "../shaders/EntityShader.h"
+#include "../shaders/SeaShader.h"
 #include <vector>
 using std::vector;
 
@@ -9,6 +10,7 @@ class Renderer {
 private:
   BackgroundShader backgroundShader;
   EntityShader entityShader;
+  SeaShader seaShader;
 public:
   Renderer();
   ~Renderer();
