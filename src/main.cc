@@ -44,7 +44,7 @@ int main() {
   Geometry::initGeometry();
   Renderer renderer;
   primaryCamera.initPrimaryCamera();
-  Entity entity1(Geometry::cube, glm::vec3(0.0f, 0.0f, -5.0f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::vec3(10.0f));
+  Entity entity1(Geometry::cube, glm::vec3(0.0f, 100.0f, 165.0f), glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(10.0f));
   allEntities.push_back(&entity1);
 
   int fps = 60;

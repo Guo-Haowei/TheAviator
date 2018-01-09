@@ -13,14 +13,19 @@ SeaShader::SeaShader() {
 
   const char* VERTEX_FILE = "../shaders/sea.vert";
   const char* FRAGMENT_FILE = "../shaders/sea.frag";
-  init(VERTEX_FILE, FRAGMENT_FILE);
+  const char* GEOMETRY_FILE = "../shaders/sea.geom";
+  init(VERTEX_FILE, FRAGMENT_FILE, GEOMETRY_FILE);
 }
 
 void SeaShader::clean() {
   stop();
   glDetachShader(programID, vertexShaderID);
-  glDetachShader(programID, fragmentShaderID);
   glDeleteShader(vertexShaderID);
+  if (geometryShaderID != 0) {
+    glDetachShader(programID, geometryShaderID);
+    glDeleteShader(geometryShaderID);
+  }
+  glDetachShader(programID, fragmentShaderID);
   glDeleteShader(fragmentShaderID);
   glDeleteProgram(programID);
   delete sea;
@@ -39,8 +44,6 @@ void SeaShader::getAllUniformLocations() {
 }
 
 void SeaShader::render() {
-  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
   start();
   loadFloat(location_time, TIMER);
   loadMatrix4f(location_viewMatrix, camera->getViewMatrix());
@@ -49,11 +52,18 @@ void SeaShader::render() {
   RawModel* model = sea->getModel();
   loadMatrix4f(location_transformationMatrix, sea->getTransformationMatrix());
   model->bind();
+
+  glEnable(GL_BLEND);
+  glEnable(GL_CULL_FACE);
   glDrawElements(GL_TRIANGLES, model->getVertexCount(), GL_UNSIGNED_INT, (void*) 0);
+  glDisable(GL_BLEND);
+  glDisable(GL_CULL_FACE);
+
   RawModel::unbind();
   stop();
 
-  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  // update sea
+  sea->changeRotation(0.0f, 0.1f, 0.0f);
 }
 
 SeaShader* SeaShader::setCamera(Camera* camera) {

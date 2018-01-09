@@ -2,11 +2,11 @@
 radius: 800.0
 height: 600.0
 radial_segments: 40
-height_segments: 10
+height_segments: 20
 min_amplitude: 5.0
 max_amplitude: 20.0
-min_speed: 0.016
-max_speed: 0.048
+min_speed: 0.01
+max_speed: 0.03
 
 #Camera
 x: 0.0

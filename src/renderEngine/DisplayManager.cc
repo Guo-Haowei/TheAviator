@@ -46,6 +46,9 @@ void DisplayManager::createDisplay() {
 
   glViewport(0, 0, ACTUAL_WIDTH, ACTUAL_HEIGHT);
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_SRC_COLOR);
+  glCullFace(GL_BACK);
 }
 
 void DisplayManager::prepareDisplay() {

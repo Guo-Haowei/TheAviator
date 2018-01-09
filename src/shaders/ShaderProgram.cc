@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+using std::cout;
 
 void ShaderProgram::init(const char*vertexFileName, const char* fragmentFileName, const char* geometryFileName) {
   programID = glCreateProgram();
@@ -45,8 +46,12 @@ void ShaderProgram::stop() {
 void ShaderProgram::clean() {
   stop();
   glDetachShader(programID, vertexShaderID);
-  glDetachShader(programID, fragmentShaderID);
   glDeleteShader(vertexShaderID);
+  if (geometryShaderID != 0) {
+    glDetachShader(programID, geometryShaderID);
+    glDeleteShader(geometryShaderID);
+  }
+  glDetachShader(programID, fragmentShaderID);
   glDeleteShader(fragmentShaderID);
   glDeleteProgram(programID);
 }

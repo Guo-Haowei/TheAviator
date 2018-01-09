@@ -32,11 +32,11 @@ glm::mat4 Camera::getViewMatrix() {
 
 void Camera::updateCameraVectors() {
   // calculate updated front vector
-  glm::vec3 updatedFront;
-  updatedFront.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-  updatedFront.y = sin(glm::radians(pitch));
-  updatedFront.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-  front = glm::normalize(updatedFront);
+  // glm::vec3 updatedFront;
+  // updatedFront.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+  // updatedFront.y = sin(glm::radians(pitch));
+  // updatedFront.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+  // front = glm::normalize(updatedFront);
   // update right and up vector
   right = glm::normalize(glm::cross(front, worldUp));
   up = glm::normalize(glm::cross(right, front));
