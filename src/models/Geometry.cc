@@ -1,6 +1,7 @@
 // Geometry.cc
 #include "Geometry.h"
 #include "Loader.h"
+#include "../common.h"
 #include "../utils/Maths.h"
 #include <glm/glm.hpp>
 #include <math.h>
@@ -14,7 +15,7 @@ RawModel* Geometry::sea;
 
 void Geometry::initGeometry() {
   cube = createCube();
-  sea = createSea(200, 300, 60, 10);
+  sea = createSea(SEA::RADIUS, SEA::HEIGHT, SEA::RADIAL_SEGMENTS, SEA::HEIGHT_SEGMENTS);
 }
 
 void Geometry::cleanGeometry() {
@@ -33,47 +34,47 @@ RawModel* createCube() {
   };
 
   float verticesData[]  = {
-    -0.1f, -0.1f, -0.1f,
-    0.1f, -0.1f, -0.1f,
-    0.1f,  0.1f, -0.1f,
-    0.1f,  0.1f, -0.1f,
-    -0.1f,  0.1f, -0.1f,
-    -0.1f, -0.1f, -0.1f,
+    -1.0f, -1.0f, -1.0f,
+    1.0f, -1.0f, -1.0f,
+    1.0f,  1.0f, -1.0f,
+    1.0f,  1.0f, -1.0f,
+    -1.0f,  1.0f, -1.0f,
+    -1.0f, -1.0f, -1.0f,
 
-    -0.1f, -0.1f,  0.1f,
-    0.1f, -0.1f,  0.1f,
-    0.1f,  0.1f,  0.1f,
-    0.1f,  0.1f,  0.1f,
-    -0.1f,  0.1f,  0.1f,
-    -0.1f, -0.1f,  0.1f,
+    -1.0f, -1.0f,  1.0f,
+    1.0f, -1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,
+    -1.0f, -1.0f,  1.0f,
 
-    -0.1f,  0.1f,  0.1f,
-    -0.1f,  0.1f, -0.1f,
-    -0.1f, -0.1f, -0.1f,
-    -0.1f, -0.1f, -0.1f,
-    -0.1f, -0.1f,  0.1f,
-    -0.1f,  0.1f,  0.1f,
+    -1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f, -1.0f,
+    -1.0f, -1.0f, -1.0f,
+    -1.0f, -1.0f, -1.0f,
+    -1.0f, -1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,
 
-    0.1f,  0.1f,  0.1f,
-    0.1f,  0.1f, -0.1f,
-    0.1f, -0.1f, -0.1f,
-    0.1f, -0.1f, -0.1f,
-    0.1f, -0.1f,  0.1f,
-    0.1f,  0.1f,  0.1f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f, -1.0f,
+    1.0f, -1.0f, -1.0f,
+    1.0f, -1.0f, -1.0f,
+    1.0f, -1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
 
-    -0.1f, -0.1f, -0.1f,
-    0.1f, -0.1f, -0.1f,
-    0.1f, -0.1f,  0.1f,
-    0.1f, -0.1f,  0.1f,
-    -0.1f, -0.1f,  0.1f,
-    -0.1f, -0.1f, -0.1f,
+    -1.0f, -1.0f, -1.0f,
+    1.0f, -1.0f, -1.0f,
+    1.0f, -1.0f,  1.0f,
+    1.0f, -1.0f,  1.0f,
+    -1.0f, -1.0f,  1.0f,
+    -1.0f, -1.0f, -1.0f,
 
-    -0.1f,  0.1f, -0.1f,
-    0.1f,  0.1f, -0.1f,
-    0.1f,  0.1f,  0.1f,
-    0.1f,  0.1f,  0.1f,
-    -0.1f,  0.1f,  0.1f,
-    -0.1f,  0.1f, -0.1f
+    -1.0f,  1.0f, -1.0f,
+    1.0f,  1.0f, -1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f, -1.0f
   };
 
   vector<float> vertices(verticesData, verticesData + sizeof(verticesData) / sizeof(float)), normals;
@@ -102,8 +103,8 @@ RawModel* createSea(float radius, float height, int radialSegments, int heightSe
       vertices.push_back(cos(angle * PI / 180.0f) * radius);
 
       waves.push_back(Maths::rand(0.0f, 2 * PI)); // angle
-      waves.push_back(Maths::rand(3.0f, 7.0f)); // amplitude
-      waves.push_back(Maths::rand(0.016f, 0.048f)); // speed
+      waves.push_back(Maths::rand(SEA::MIN_AMPLITUDE, SEA::MAX_AMPLITUDE)); // amplitude
+      waves.push_back(Maths::rand(SEA::MIN_SPEED, SEA::MAX_SPEED)); // speed
     }
   }
 

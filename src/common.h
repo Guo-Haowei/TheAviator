@@ -14,4 +14,22 @@ const float BACKGROUND_COLOR2[] = { 247.0f/255.0f, 217.0f/255.0f, 170.0f/255.0f 
 extern int WIDTH, HEIGHT, ACTUAL_WIDTH, ACTUAL_HEIGHT;
 extern float TIMER;
 
-const float NEAR_PLANE = 0.1f, FAR_PLANE = 1000.0f;
+const float NEAR_PLANE = 1.0f, FAR_PLANE = 10000.0f;
+
+namespace SEA {
+  extern float RADIUS;
+  extern float HEIGHT;
+  extern int RADIAL_SEGMENTS;
+  extern int HEIGHT_SEGMENTS;
+  extern float MIN_AMPLITUDE;
+  extern float MAX_AMPLITUDE;
+  extern float MIN_SPEED;
+  extern float MAX_SPEED;
+}
+
+namespace CAMERA {
+  extern float X;
+  extern float Y;
+  extern float Z;
+  extern float ZOOM;
+};

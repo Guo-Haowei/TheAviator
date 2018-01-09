@@ -9,7 +9,7 @@
 using std::cout;
 
 SeaShader::SeaShader() {
-  sea = new Entity(Geometry::sea, glm::vec3(0.0f, -150.0f, -280.0f), glm::vec3(90.0f, 0.0f, 0.0f));
+  sea = new Entity(Geometry::sea, glm::vec3(0.0f, -SEA::RADIUS, 0.0f), glm::vec3(90.0f, 0.0f, 0.0f));
 
   const char* VERTEX_FILE = "../shaders/sea.vert";
   const char* FRAGMENT_FILE = "../shaders/sea.frag";

@@ -5,6 +5,7 @@
 #include "models/Geometry.h"
 #include "renderEngine/DisplayManager.h"
 #include "renderEngine/Renderer.h"
+#include "utils/Parser.h"
 #include <glm/glm.hpp>
 #include <vector>
 #include <iostream>
@@ -38,9 +39,11 @@ void updateFPSCount(double& previousSecond, int& updates) {
 
 int main() {
   // initialization
+  Parser::parse();
   DisplayManager::createDisplay();
   Geometry::initGeometry();
   Renderer renderer;
+  primaryCamera.initPrimaryCamera();
   Entity entity1(Geometry::cube, glm::vec3(0.0f, 0.0f, -5.0f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::vec3(10.0f));
   allEntities.push_back(&entity1);
 

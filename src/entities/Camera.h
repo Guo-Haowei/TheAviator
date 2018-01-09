@@ -4,8 +4,6 @@
 
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
-const float SPEED = 1.0f;
-const float ZOOM = 45.0f;
 
 class Camera {
 private:
@@ -21,9 +19,13 @@ private:
 public:
   Camera();
 
+  void initPrimaryCamera();
   void update();
   glm::mat4 getViewMatrix();
+
   float getZoom() const;
+  void setZoom(float zoom);
+  void setPosition(glm::vec3 position);
 };
 
 extern Camera primaryCamera;
