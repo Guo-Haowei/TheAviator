@@ -12,9 +12,8 @@ uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 
 vec3 getNormal() {
-  mat4 projAndView = projectionMatrix * viewMatrix;
-  vec3 a = vec3(projAndView * gl_in[0].gl_Position) - vec3(projAndView * gl_in[1].gl_Position);
-  vec3 b = vec3(projAndView * gl_in[2].gl_Position) - vec3(projAndView * gl_in[1].gl_Position);
+  vec3 a = vec3(gl_in[0].gl_Position) - vec3(gl_in[1].gl_Position);
+  vec3 b = vec3(gl_in[2].gl_Position) - vec3(gl_in[1].gl_Position);
   return normalize(cross(a, b));
 }
 
