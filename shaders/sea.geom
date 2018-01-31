@@ -3,7 +3,7 @@
 layout (triangles) in;
 layout (triangle_strip, max_vertices = 3) out;
 
-out vec3 FragPos;
+out vec4 viewSpace;
 out vec3 Normal;
 
 uniform mat4 transformationMatrix;
@@ -18,20 +18,22 @@ vec3 getNormal() {
 
 void main() {
   vec3 normal = getNormal();
-  mat4 projAndView = projectionMatrix * viewMatrix;
 
   vec4 worldPosition = gl_in[0].gl_Position;
-  gl_Position = projAndView * worldPosition;
+  viewSpace = viewMatrix * worldPosition;
+  gl_Position = projectionMatrix * viewSpace;
   Normal = normal;
   EmitVertex();
 
   worldPosition = gl_in[1].gl_Position;
-  gl_Position = projAndView * worldPosition;
+  viewSpace = viewMatrix * worldPosition;
+  gl_Position = projectionMatrix * viewSpace;
   Normal = normal;
   EmitVertex();
 
   worldPosition = gl_in[2].gl_Position;
-  gl_Position = projAndView * worldPosition;
+  viewSpace = viewMatrix * worldPosition;
+  gl_Position = projectionMatrix * viewSpace;
   Normal = normal;
   EmitVertex();
   EndPrimitive();
