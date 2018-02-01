@@ -30,32 +30,7 @@ sudo apt-get install libglfw-dev
 sudo apt-get install libglew-dev
 sudo apt-get install libglm-dev
 ```
-If you do not have GLFW version 3, download the source distribution and run cmake:
-```
-wget https://github.com/glfw/glfw/releases/download/3.1.2/glfw-3.1.2.zip
-unzip glfw-3.1.2.zip
-cd glfw*
-mkdir build
-cd build
-ccmake ..
-
-make
-sudo make install
-```
-If cmake is not able to find the glm package, do the following:
-```
-wget https://github.com/glfw/glfw/releases/download/3.1.2/glfw-3.1.2.zip
-unzip glfw-3.1.2.zip
-cd glfw*
-mkdir build
-cd build
-ccmake ..
-
-make
-sudo make install
-```
-
-### Compile Code
+### Compile and Run
 
 ```
 mkdir build
@@ -65,4 +40,5 @@ make
 ./TheAviator
 ```
 ## TODO
-* Fog effect
+* Shadow
+* Add cloud
