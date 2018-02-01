@@ -22,6 +22,10 @@ float CAMERA::Y;
 float CAMERA::Z;
 float CAMERA::ZOOM;
 
+float LIGHT::X;
+float LIGHT::Y;
+float LIGHT::Z;
+
 // helper
 void getNextFloat(ifstream& file, float* value) {
   string word;
@@ -59,4 +63,8 @@ void Parser::parse() {
   getNextFloat(configFile, &CAMERA::Y);
   getNextFloat(configFile, &CAMERA::Z);
   getNextFloat(configFile, &CAMERA::ZOOM);
+
+  getNextFloat(configFile, &LIGHT::X);
+  getNextFloat(configFile, &LIGHT::Y);
+  getNextFloat(configFile, &LIGHT::Z);
 }

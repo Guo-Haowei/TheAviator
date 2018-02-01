@@ -72,6 +72,10 @@ void ShaderProgram::loadVector3f(int location, glm::vec3 vec) {
   glUniform3f(location, vec.x ,vec.y, vec.z);
 }
 
+void ShaderProgram::loadVector3f(int location, float x, float y, float z) {
+  glUniform3f(location, x, y, z);
+}
+
 void ShaderProgram::loadMatrix4f(int location, glm::mat4 mat) {
   glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
 }

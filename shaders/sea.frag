@@ -5,12 +5,13 @@ in vec3 Normal;
 
 out vec4 out_Color;
 
+uniform vec3 lightPos;
+
 void main() {
   vec3 seaColor = vec3(104.0f/255.0f, 195.0f/255.0f, 192.0f/255.0f);
   vec3 fogColor = vec3(0.968f, 0.851f, 0.667f);
 
-  // temp light properties
-  vec3 lightPos = vec3(150, 350, 350);
+  // directional light
   vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
   vec3 lightDir = normalize(-lightPos);
 

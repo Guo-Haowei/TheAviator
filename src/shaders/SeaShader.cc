@@ -41,10 +41,12 @@ void SeaShader::getAllUniformLocations() {
   location_projectionMatrix = getUniformLocation("projectionMatrix");
   location_viewMatrix = getUniformLocation("viewMatrix");
   location_time = getUniformLocation("time");
+  location_light = getUniformLocation("lightPos");
 }
 
 void SeaShader::render() {
   start();
+  loadVector3f(location_light, LIGHT::X, LIGHT::Y, LIGHT::Z);
   loadFloat(location_time, TIMER);
   loadMatrix4f(location_viewMatrix, camera->getViewMatrix());
   glm::mat4 projectionMatrix = glm::perspective(camera->getZoom(), (float) ACTUAL_WIDTH / (float) ACTUAL_HEIGHT, NEAR_PLANE, FAR_PLANE);

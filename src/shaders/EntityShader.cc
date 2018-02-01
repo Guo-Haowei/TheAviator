@@ -23,11 +23,13 @@ void EntityShader::getAllUniformLocations() {
   location_projectionMatrix = getUniformLocation("projectionMatrix");
   location_viewMatrix = getUniformLocation("viewMatrix");
   location_color = getUniformLocation("color");
+  location_light = getUniformLocation("lightPos");
 }
 
 void EntityShader::render() {
   start();
   loadMatrix4f(location_viewMatrix, camera->getViewMatrix());
+  loadVector3f(location_light, LIGHT::X, LIGHT::Y, LIGHT::Z);
   glm::mat4 projectionMatrix = glm::perspective(camera->getZoom(), (float) ACTUAL_WIDTH / (float) ACTUAL_HEIGHT, NEAR_PLANE, FAR_PLANE);
   loadMatrix4f(location_projectionMatrix, projectionMatrix);
   for (int i = 0; i < entities->size(); ++i) {

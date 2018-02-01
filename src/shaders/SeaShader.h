@@ -16,6 +16,7 @@ protected:
   int location_projectionMatrix;
   int location_viewMatrix;
   int location_time;
+  int location_light;
   void bindAttributes();
   void getAllUniformLocations();
 public:

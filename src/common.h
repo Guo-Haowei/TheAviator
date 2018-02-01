@@ -33,3 +33,9 @@ namespace CAMERA {
   extern float Z;
   extern float ZOOM;
 };
+
+namespace LIGHT {
+  extern float X;
+  extern float Y;
+  extern float Z;
+}

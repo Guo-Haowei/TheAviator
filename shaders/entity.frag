@@ -7,14 +7,13 @@ in vec3 ToCameraVector;
 out vec4 out_Color;
 
 uniform vec3 color;
+uniform vec3 lightPos;
 
 void main() {
   vec3 unitNormal = normalize(Normal);
   vec3 unitToCameraVector = normalize(ToCameraVector);
 
-  // temp light properties
   // directional light
-  vec3 lightPos = vec3(150, 350, 350);
   vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
   vec3 lightDir = normalize(lightPos);
 
