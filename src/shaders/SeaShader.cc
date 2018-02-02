@@ -8,8 +8,10 @@
 #include <iostream>
 using std::cout;
 
+Entity* SEA_MODEL;
+
 SeaShader::SeaShader() {
-  sea = new Entity(Geometry::sea, glm::vec3(0.0f, -SEA::RADIUS, 0.0f), glm::vec3(90.0f, 0.0f, 0.0f));
+  SEA_MODEL = new Entity(Geometry::sea, glm::vec3(0.0f, -SEA::RADIUS, 0.0f), glm::vec3(90.0f, 0.0f, 0.0f));
 
   const char* VERTEX_FILE = "../shaders/sea.vert";
   const char* FRAGMENT_FILE = "../shaders/sea.frag";
@@ -28,7 +30,7 @@ void SeaShader::clean() {
   glDetachShader(programID, fragmentShaderID);
   glDeleteShader(fragmentShaderID);
   glDeleteProgram(programID);
-  delete sea;
+  delete SEA_MODEL;
 }
 
 void SeaShader::bindAttributes() {
@@ -51,8 +53,8 @@ void SeaShader::render() {
   loadMatrix4f(location_viewMatrix, camera->getViewMatrix());
   glm::mat4 projectionMatrix = glm::perspective(camera->getZoom(), (float) ACTUAL_WIDTH / (float) ACTUAL_HEIGHT, NEAR_PLANE, FAR_PLANE);
   loadMatrix4f(location_projectionMatrix, projectionMatrix);
-  RawModel* model = sea->getModel();
-  loadMatrix4f(location_transformationMatrix, sea->getTransformationMatrix());
+  RawModel* model = SEA_MODEL->getModel();
+  loadMatrix4f(location_transformationMatrix, SEA_MODEL->getTransformationMatrix());
   model->bind();
 
   glEnable(GL_BLEND);
@@ -65,7 +67,7 @@ void SeaShader::render() {
   stop();
 
   // update sea
-  sea->changeRotation(0.0f, 0.1f, 0.0f);
+  SEA_MODEL->changeRotation(0.0f, 0.1f, 0.0f); // move this line to other place later
 }
 
 SeaShader* SeaShader::setCamera(Camera* camera) {

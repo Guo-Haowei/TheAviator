@@ -9,9 +9,7 @@ using std::vector;
 class SeaShader: public ShaderProgram {
 private:
   Camera* camera;
-  Entity* sea;
 protected:
-  // uniform locations
   int location_transformationMatrix;
   int location_projectionMatrix;
   int location_viewMatrix;

@@ -11,7 +11,6 @@ private:
   Camera* camera;
   vector<Entity*>* entities;
 protected:
-  // uniform locations
   int location_transformationMatrix;
   int location_projectionMatrix;
   int location_viewMatrix;
