@@ -6,7 +6,6 @@ layout (triangle_strip, max_vertices = 3) out;
 out vec4 viewSpace;
 out vec3 Normal;
 
-uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 

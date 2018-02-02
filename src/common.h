@@ -25,7 +25,7 @@ namespace SEA {
   extern float MAX_AMPLITUDE;
   extern float MIN_SPEED;
   extern float MAX_SPEED;
-}
+};
 
 namespace CAMERA {
   extern float X;
@@ -38,4 +38,7 @@ namespace LIGHT {
   extern float X;
   extern float Y;
   extern float Z;
-}
+};
+
+class Entity;
+extern Entity* SEA_MODEL;
