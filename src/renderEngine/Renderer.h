@@ -3,6 +3,7 @@
 #include "../shaders/BackgroundShader.h"
 #include "../shaders/EntityShader.h"
 #include "../shaders/SeaShader.h"
+#include "../shaders/ShadowShader.h"
 #include <vector>
 using std::vector;
 
@@ -11,6 +12,7 @@ private:
   BackgroundShader backgroundShader;
   EntityShader entityShader;
   SeaShader seaShader;
+  ShadowShader seaShadowShader;
 public:
   Renderer();
   ~Renderer();

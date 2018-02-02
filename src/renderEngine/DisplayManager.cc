@@ -44,7 +44,6 @@ void DisplayManager::createDisplay() {
     cout << "======================================\n";
   }
 
-  glViewport(0, 0, ACTUAL_WIDTH, ACTUAL_HEIGHT);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_FUNC_ADD);
