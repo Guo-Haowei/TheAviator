@@ -40,5 +40,12 @@ namespace LIGHT {
   extern float Z;
 };
 
+namespace SHADOW {
+  extern float NEAR_PLANE;
+  extern float FAR_PLANE;
+  extern int WIDTH;
+  extern int HEIGHT;
+};
+
 class Entity;
 extern Entity* SEA_MODEL;

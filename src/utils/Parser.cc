@@ -26,6 +26,11 @@ float LIGHT::X;
 float LIGHT::Y;
 float LIGHT::Z;
 
+float SHADOW::NEAR_PLANE;
+float SHADOW::FAR_PLANE;
+int SHADOW::WIDTH;
+int SHADOW::HEIGHT;
+
 // helper
 void getNextFloat(ifstream& file, float* value) {
   string word;
@@ -67,4 +72,9 @@ void Parser::parse() {
   getNextFloat(configFile, &LIGHT::X);
   getNextFloat(configFile, &LIGHT::Y);
   getNextFloat(configFile, &LIGHT::Z);
+
+  getNextFloat(configFile, &SHADOW::NEAR_PLANE);
+  getNextFloat(configFile, &SHADOW::FAR_PLANE);
+  getNextInt(configFile, &SHADOW::WIDTH);
+  getNextInt(configFile, &SHADOW::HEIGHT);
 }
