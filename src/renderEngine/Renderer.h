@@ -4,6 +4,7 @@
 #include "../shaders/EntityShader.h"
 #include "../shaders/SeaShader.h"
 #include "../shaders/ShadowShader.h"
+#include "../shaders/DBDepthMap.h"
 #include <vector>
 using std::vector;
 
@@ -14,6 +15,9 @@ private:
   SeaShader seaShader;
   ShadowShader seaShadowShader;
   ShadowShader entityShadowShader;
+#if DB_DEPTHMAP
+  DBDepthMap dbDepthMapSahder;
+#endif
 public:
   Renderer();
   ~Renderer();

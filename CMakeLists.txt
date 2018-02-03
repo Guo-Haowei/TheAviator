@@ -21,4 +21,5 @@ file(GLOB_RECURSE SOURCE src/*.cc)
 file(GLOB_RECURSE HEADER src/*.h)
 
 add_executable(TheAviator ${HEADER} ${SOURCE})
+target_compile_definitions(TheAviator PRIVATE DB_DEPTHMAP=1)
 target_link_libraries(TheAviator ${OPENGL_LIBRARY} ${GLEW_LIBRARY} ${GLFW_STATIC_LIBRARIES})
