@@ -9,7 +9,6 @@ uniform mat4 projectionMatrix;
 uniform float time;
 
 void main() {
-  // update wave position
   float angle = wave.x;
   float amplitude = wave.y;
   float speed = wave.z;

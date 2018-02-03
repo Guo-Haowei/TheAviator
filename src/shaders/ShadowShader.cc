@@ -17,19 +17,18 @@ ShadowShader::ShadowShader(bool isSeaShadow): isSeaShadow(isSeaShadow) {
     const char* FRAGMENT_FILE = "../shaders/seaShadow.frag";
     ShaderProgram::init(VERTEX_FILE, FRAGMENT_FILE);
   } else {
-    const char* VERTEX_FILE = "../shaders/.vert";
-    const char* FRAGMENT_FILE = "../shaders/.frag";
+    const char* VERTEX_FILE = "../shaders/entityShadow.vert";
+    const char* FRAGMENT_FILE = "../shaders/entityShadow.frag";
     ShaderProgram::init(VERTEX_FILE, FRAGMENT_FILE);
   }
 }
 
-const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 void ShadowShader::init() {
   glGenFramebuffers(1, &fboID);
 
   glGenTextures(1, &depthMap);
   glBindTexture(GL_TEXTURE_2D, depthMap);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW::WIDTH, SHADOW::HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -72,7 +71,14 @@ void ShadowShader::render() {
     glDrawElements(GL_TRIANGLES, model->getVertexCount(), GL_UNSIGNED_INT, (void*) 0);
     RawModel::unbind();
   } else {
-
+    for (int i = 0; i < entities->size(); ++i) {
+      Entity* entity = entities->at(i);
+      RawModel* model = entity->getModel();
+      loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
+      model->bind();
+      glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
+      RawModel::unbind();
+    }
   }
 
   stop();

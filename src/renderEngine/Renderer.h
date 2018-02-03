@@ -13,6 +13,7 @@ private:
   EntityShader entityShader;
   SeaShader seaShader;
   ShadowShader seaShadowShader;
+  ShadowShader entityShadowShader;
 public:
   Renderer();
   ~Renderer();
