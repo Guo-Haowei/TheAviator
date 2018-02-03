@@ -35,6 +35,11 @@ void ShaderProgram::init(const char*vertexFileName, const char* fragmentFileName
   getAllUniformLocations();
 }
 
+void ShaderProgram::getAllUniformLocations() {
+  location_transformationMatrix = getUniformLocation("transformationMatrix");
+  location_lightSpaceMatrix = getUniformLocation("lightSpaceMatrix");
+}
+
 void ShaderProgram::start() {
   glUseProgram(programID);
 }
@@ -64,16 +69,16 @@ int ShaderProgram::getUniformLocation(const char* uniformName) {
   return glGetUniformLocation(programID, uniformName);
 }
 
+void ShaderProgram::loadInt(int location, int value) {
+  glUniform1i(location, value);
+}
+
 void ShaderProgram::loadFloat(int location, float value) {
   glUniform1f(location, value);
 }
 
 void ShaderProgram::loadVector3f(int location, glm::vec3 vec) {
   glUniform3f(location, vec.x ,vec.y, vec.z);
-}
-
-void ShaderProgram::loadVector3f(int location, float x, float y, float z) {
-  glUniform3f(location, x, y, z);
 }
 
 void ShaderProgram::loadMatrix4f(int location, glm::mat4 mat) {

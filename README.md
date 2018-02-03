@@ -40,5 +40,5 @@ make
 ./TheAviator
 ```
 ## TODO
-* Shadow
+* Try to render depth map
 * Add cloud

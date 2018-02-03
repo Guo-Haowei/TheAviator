@@ -1,7 +1,8 @@
 // BackgroundShader.h
 #pragma once
 #include "ShaderProgram.h"
-#include "../models/RawModel.h"
+
+class RawModel;
 
 class BackgroundShader: public ShaderProgram {
 private:

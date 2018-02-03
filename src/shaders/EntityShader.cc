@@ -19,18 +19,24 @@ void EntityShader::bindAttributes() {
 }
 
 void EntityShader::getAllUniformLocations() {
-  location_transformationMatrix = getUniformLocation("transformationMatrix");
+  ShaderProgram::getAllUniformLocations();
   location_projectionMatrix = getUniformLocation("projectionMatrix");
   location_viewMatrix = getUniformLocation("viewMatrix");
   location_color = getUniformLocation("color");
   location_light = getUniformLocation("lightPos");
+  location_shadowMap = getUniformLocation("shadowMap");
 }
 
 void EntityShader::render() {
   start();
+  glm::vec3 lightPos(LIGHT::X, LIGHT::Y, LIGHT::Z);
+  glm::mat4 viewMatrix = glm::lookAt(lightPos, glm::vec3(0.0f, -SEA::RADIUS, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+  glm::mat4 projectionMatrix = glm::perspective(CAMERA::ZOOM, (float) ACTUAL_WIDTH / (float) ACTUAL_HEIGHT, SHADOW::NEAR_PLANE, SHADOW::FAR_PLANE);
+  loadMatrix4f(location_lightSpaceMatrix, projectionMatrix * viewMatrix);
+  loadInt(location_shadowMap, 0);
   loadMatrix4f(location_viewMatrix, camera->getViewMatrix());
-  loadVector3f(location_light, LIGHT::X, LIGHT::Y, LIGHT::Z);
-  glm::mat4 projectionMatrix = glm::perspective(camera->getZoom(), (float) ACTUAL_WIDTH / (float) ACTUAL_HEIGHT, NEAR_PLANE, FAR_PLANE);
+  loadVector3f(location_light, lightPos);
+  projectionMatrix = glm::perspective(camera->getZoom(), (float) ACTUAL_WIDTH / (float) ACTUAL_HEIGHT, NEAR_PLANE, FAR_PLANE);
   loadMatrix4f(location_projectionMatrix, projectionMatrix);
   for (int i = 0; i < entities->size(); ++i) {
     Entity* entity = entities->at(i);

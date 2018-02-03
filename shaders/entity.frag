@@ -8,6 +8,7 @@ out vec4 out_Color;
 
 uniform vec3 color;
 uniform vec3 lightPos;
+uniform sampler2D shadowMap;
 
 void main() {
   vec3 unitNormal = normalize(Normal);

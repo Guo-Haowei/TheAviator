@@ -6,6 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <cassert>
 #include <iostream>
 
 unsigned int ShadowShader::fboID;
@@ -25,8 +26,8 @@ ShadowShader::ShadowShader(bool isSeaShadow): isSeaShadow(isSeaShadow) {
 
 void ShadowShader::init() {
   glGenFramebuffers(1, &fboID);
-
   glGenTextures(1, &depthMap);
+
   glBindTexture(GL_TEXTURE_2D, depthMap);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW::WIDTH, SHADOW::HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -39,6 +40,8 @@ void ShadowShader::init() {
   glDrawBuffer(GL_NONE);
   glReadBuffer(GL_NONE);
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+  assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
 }
 
 void ShadowShader::bindAttributes() {
@@ -48,9 +51,7 @@ void ShadowShader::bindAttributes() {
 }
 
 void ShadowShader::getAllUniformLocations() {
-  location_transformationMatrix = getUniformLocation("transformationMatrix");
-  location_projectionMatrix = getUniformLocation("projectionMatrix");
-  location_viewMatrix = getUniformLocation("viewMatrix");
+  ShaderProgram::getAllUniformLocations();
   if (isSeaShadow)
     location_time = getUniformLocation("time");
 }
@@ -58,10 +59,9 @@ void ShadowShader::getAllUniformLocations() {
 void ShadowShader::render() {
   start();
   glm::vec3 lightPos(LIGHT::X, LIGHT::Y, LIGHT::Z);
-  // hard code for now
-  loadMatrix4f(location_viewMatrix, glm::lookAt(lightPos, glm::vec3(0.0f, -SEA::RADIUS, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
-  glm::mat4 projectionMatrix = glm::perspective(camera->getZoom(), (float) ACTUAL_WIDTH / (float) ACTUAL_HEIGHT, SHADOW::NEAR_PLANE, SHADOW::FAR_PLANE);
-  loadMatrix4f(location_projectionMatrix, projectionMatrix);
+  glm::mat4 viewMatrix = glm::lookAt(lightPos, glm::vec3(0.0f, -SEA::RADIUS, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+  glm::mat4 projectionMatrix = glm::perspective(CAMERA::ZOOM, (float) ACTUAL_WIDTH / (float) ACTUAL_HEIGHT, SHADOW::NEAR_PLANE, SHADOW::FAR_PLANE);
+  loadMatrix4f(location_lightSpaceMatrix, projectionMatrix * viewMatrix);
   if (isSeaShadow) {
     loadFloat(location_time, TIMER);
     RawModel* model = SEA_MODEL->getModel();

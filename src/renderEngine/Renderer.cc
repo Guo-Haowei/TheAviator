@@ -9,6 +9,7 @@
 #include <iostream>
 
 Renderer::Renderer(): seaShadowShader(true) {
+  ShadowShader::init();
   entityShader.setCamera(&primaryCamera)->setEntities(&allEntities);
   seaShader.setCamera(&primaryCamera);
   seaShadowShader.setEntities(&allEntities);
@@ -22,6 +23,7 @@ Renderer::~Renderer() {
 }
 
 void Renderer::render() {
+  glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
   // render to depth map
   glViewport(0, 0, SHADOW::WIDTH, SHADOW::HEIGHT); // temporary
   glBindFramebuffer(GL_FRAMEBUFFER, ShadowShader::getFboID());
@@ -31,7 +33,6 @@ void Renderer::render() {
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
   // render the actual scene
   glViewport(0, 0, ACTUAL_WIDTH, ACTUAL_HEIGHT);
-  glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, ShadowShader::getDepthMap());

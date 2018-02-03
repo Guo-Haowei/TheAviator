@@ -2,6 +2,7 @@
 #include "BackgroundShader.h"
 #include "ShaderProgram.h"
 #include "../common.h"
+#include "../models/RawModel.h"
 #include "../models/Loader.h"
 #include <GL/glew.h>
 #include <vector>
@@ -63,7 +64,6 @@ void BackgroundShader::bindAttributes() {
 void BackgroundShader::getAllUniformLocations() { }
 
 void BackgroundShader::render() {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   start();
   background->bind();
   glDisable(GL_DEPTH_TEST);

@@ -11,11 +11,11 @@ private:
   Camera* camera;
   vector<Entity*>* entities;
 protected:
-  int location_transformationMatrix;
   int location_projectionMatrix;
   int location_viewMatrix;
   int location_color;
   int location_light;
+  int location_shadowMap;
   void bindAttributes();
   void getAllUniformLocations();
 public:

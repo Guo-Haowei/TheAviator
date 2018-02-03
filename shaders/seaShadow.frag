@@ -1,8 +1,7 @@
 // seaShadow.frag
 #version 330 core
 
-out vec4 out_Color;
+layout (location = 0) out float fragmentDepth;
 
 void main() {
-  out_Color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }

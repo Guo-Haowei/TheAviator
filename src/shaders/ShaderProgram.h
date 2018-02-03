@@ -11,13 +11,16 @@ protected:
   unsigned int fragmentShaderID;
   unsigned int geometryShaderID;
 
-  virtual void getAllUniformLocations() = 0;
+  int location_transformationMatrix;
+  int location_lightSpaceMatrix;
+
+  virtual void getAllUniformLocations();
   virtual void bindAttributes() = 0;
   void bindAttribute(unsigned int attribute, const char* variable);
   int getUniformLocation(const char* uniformName);
+  void loadInt(int location, int value);
   void loadFloat(int location, float value);
   void loadVector3f(int location, glm::vec3 vec);
-  void loadVector3f(int location, float x, float y, float z);
   void loadMatrix4f(int location, glm::mat4 mat);
 public:
   void init(const char* vertexFileName, const char* fragmentFileName, const char* geometryFileName = nullptr);

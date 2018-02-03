@@ -14,9 +14,6 @@ private:
   Camera* camera;
   std::vector<Entity*>* entities;
 protected:
-  int location_transformationMatrix;
-  int location_projectionMatrix;
-  int location_viewMatrix;
   int location_time;
   void bindAttributes();
   void getAllUniformLocations();
