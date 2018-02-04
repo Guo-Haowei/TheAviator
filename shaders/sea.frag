@@ -14,13 +14,24 @@ float shadowCalculation(vec4 lightSpaceFragPos) {
   projCoords = projCoords * 0.5 + 0.5;
   float closestDepth = texture(shadowMap, projCoords.xy).r;
   float currentDepth = projCoords.z;
+  if (currentDepth > 1.0)
+    return 0;
+  float shadow = 0.0;
   float bias = max(0.05 * (1.0 - dot(Normal, normalize(-lightPos))), 0.001);
-  return currentDepth - bias > closestDepth ? 1.0 : 0.0;
+  vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
+  int sampleSize = 1;
+  for(int x = -sampleSize; x <= sampleSize; ++x) {
+    for(int y = -sampleSize; y <= sampleSize; ++y) {
+        float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+        shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
+    }
+  }
+  return shadow / ((sampleSize * 2 + 1) * (sampleSize * 2 + 1));
 }
 
 void main() {
-  vec3 seaColor = vec3(104.0f/255.0f, 195.0f/255.0f, 192.0f/255.0f);
-  vec3 fogColor = vec3(0.968f, 0.851f, 0.667f);
+  vec3 seaColor = vec3(0.408, 0.765, 0.753);
+  vec3 fogColor = vec3(0.968, 0.851, 0.667);
 
   // directional light
   vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
@@ -35,16 +46,17 @@ void main() {
   vec3 diffuse = diff * lightColor;
 
   // float visibility
-  float shadow = shadowCalculation(LightSpaceFragPos);
+  float visibility = 0.7;
+  float shadow = visibility * shadowCalculation(LightSpaceFragPos);
   vec3 fragColor = (ambient + (1 - shadow) * diffuse) * seaColor;
 
   // fog
   float dist = abs(ViewSpace.z);
-  float near = 50.0f;
-  float far = 200.0f;
+  float near = 50.0;
+  float far = 400.0;
   float fogFactor = (far - dist)/(far - near);
   fogFactor = clamp(fogFactor, 0.0, 1.0);
 
-  vec3 finalColor = (1.0f - fogFactor) * fogColor + fogFactor * fragColor;
-  out_Color = vec4(finalColor, 0.7f);
+  vec3 finalColor = (1.0 - fogFactor) * fogColor + fogFactor * fragColor;
+  out_Color = vec4(finalColor, 0.7);
 }
