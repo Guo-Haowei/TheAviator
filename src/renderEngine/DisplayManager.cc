@@ -18,6 +18,7 @@ void DisplayManager::createDisplay() {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+  glfwWindowHint(GLFW_SAMPLES, 4);
 
   const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
   WIDTH = mode->width;
@@ -44,6 +45,7 @@ void DisplayManager::createDisplay() {
     cout << "======================================\n";
   }
 
+  glEnable(GL_MULTISAMPLE);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_FUNC_ADD);
