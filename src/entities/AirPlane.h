@@ -17,6 +17,14 @@ private:
   Entity propeller;
   Entity blade1;
   Entity blade2;
+  Entity wheelProtectionR;
+  Entity wheelProtectionL;
+  Entity tireR;
+  Entity tireL;
+  Entity wheelAxis;
+  Entity suspension;
+  Entity wheelB;
+  Entity wheelAxisB;
 public:
   AirPlane();
   ~AirPlane();

@@ -45,10 +45,6 @@ int main() {
   Geometry::initGeometry();
   Renderer renderer;
   primaryCamera.initPrimaryCamera();
-  // Entity entity1(Geometry::cockpit, glm::vec3(0.0f, 100.0f, 150.0f), glm::vec3(0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(1.0f));
-  // Entity entity2(Geometry::cube, glm::vec3(10.0f, 110.0f, 175.0f), glm::vec3(0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(20.f, 1.0f, 20.0f));
-  // allEntities.push_back(&entity1);
-  // allEntities.push_back(&entity2);
 
   AirPlane airPlane;
 
@@ -64,7 +60,6 @@ int main() {
 
       renderer.render();
 
-      // entity1.changeRotation(0.0f, 1.0f, 0.0f);
       airPlane.update();
       DisplayManager::updateDisplay();
       ++updates;

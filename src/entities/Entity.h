@@ -16,6 +16,7 @@ public:
   void changePosition(float dx, float dy, float dz);
   void changePosition(glm::vec3 xyz);
   void changeRotation(float dx, float dy, float dz);
+  void changeRotation(glm::vec3 xyz);
 
   glm::vec3 getPosition() const;
   glm::vec3 getRotation() const;

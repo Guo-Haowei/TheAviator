@@ -33,6 +33,12 @@ void Entity::changeRotation(float dx, float dy, float dz) {
   rotation.z += Maths::toRadians(dz);
 }
 
+void Entity::changeRotation(glm::vec3 xyz) {
+  rotation.x += Maths::toRadians(xyz.x);
+  rotation.y += Maths::toRadians(xyz.y);
+  rotation.z += Maths::toRadians(xyz.z);
+}
+
 glm::vec3 Entity::getPosition() const {
   return position;
 }
