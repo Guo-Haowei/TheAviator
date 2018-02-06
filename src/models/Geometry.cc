@@ -12,15 +12,18 @@ using std::vector;
 
 RawModel* Geometry::cube;
 RawModel* Geometry::sea;
+RawModel* Geometry::cockpit;
 
 void Geometry::initGeometry() {
   cube = createCube();
   sea = createSea(SEA::RADIUS, SEA::HEIGHT, SEA::RADIAL_SEGMENTS, SEA::HEIGHT_SEGMENTS);
+  cockpit = createCockpit();
 }
 
 void Geometry::cleanGeometry() {
   delete cube;
   delete sea;
+  delete cockpit;
 }
 
 RawModel* createCube() {
@@ -123,4 +126,80 @@ RawModel* createSea(float radius, float height, int radialSegments, int heightSe
   }
 
   return Loader::loadToVAO(vertices, 3, waves, 3, indices);
+}
+
+RawModel* createCockpit() {
+  glm::vec3 vert0(4, 5, 5);
+  glm::vec3 vert1(4, 5, -5);
+  glm::vec3 vert2(4, -5, 5);
+  glm::vec3 vert3(4, -5, -5);
+  glm::vec3 vert4(-4, 4, -3);
+  glm::vec3 vert5(-4, 4, 3);
+  glm::vec3 vert6(-4, -2, -3);
+  glm::vec3 vert7(-4, -2, 3);
+
+  glm::vec3 vertices[36];
+  // face left
+  vertices[0] = vert0;
+  vertices[1] = vert1;
+  vertices[2] = vert3;
+  vertices[3] = vert0;
+  vertices[4] = vert3;
+  vertices[5] = vert2;
+  // face right
+  vertices[6] = vert4;
+  vertices[7] = vert5;
+  vertices[8] = vert6;
+  vertices[9] = vert5;
+  vertices[10] = vert7;
+  vertices[11] = vert6;
+  // face front
+  vertices[12] = vert0;
+  vertices[13] = vert2;
+  vertices[14] = vert7;
+  vertices[15] = vert0;
+  vertices[16] = vert7;
+  vertices[17] = vert5;
+  // face back
+  vertices[18] = vert1;
+  vertices[19] = vert6;
+  vertices[20] = vert3;
+  vertices[21] = vert1;
+  vertices[22] = vert4;
+  vertices[23] = vert6;
+  // face up
+  vertices[24] = vert4;
+  vertices[25] = vert1;
+  vertices[26] = vert0;
+  vertices[27] = vert4;
+  vertices[28] = vert0;
+  vertices[29] = vert5;
+  // face down
+  vertices[30] = vert6;
+  vertices[31] = vert2;
+  vertices[32] = vert3;
+  vertices[33] = vert6;
+  vertices[34] = vert7;
+  vertices[35] = vert2;
+
+  vector<float> vertexArray, normals;
+  for (int i = 0; i < 36; ++i) {
+    vertexArray.push_back(vertices[i].x);
+    vertexArray.push_back(vertices[i].y);
+    vertexArray.push_back(vertices[i].z);
+  }
+
+  for (int i = 0; i < 6; ++i) {
+    glm::vec3 point0 = vertices[i * 6];
+    glm::vec3 point1 = vertices[i * 6 + 1];
+    glm::vec3 point2 = vertices[i * 6 + 2];
+    glm::vec3 normal = glm::cross(point0 - point1, point2 - point1);
+    for (int j = 0; j < 6; ++j) {
+      normals.push_back(normal.x);
+      normals.push_back(normal.y);
+      normals.push_back(normal.z);
+    }
+  }
+
+  return Loader::loadToVAO(vertexArray, 3, normals, 3);
 }
