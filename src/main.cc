@@ -65,6 +65,7 @@ int main() {
       renderer.render();
 
       // entity1.changeRotation(0.0f, 1.0f, 0.0f);
+      airPlane.update();
       DisplayManager::updateDisplay();
       ++updates;
     }

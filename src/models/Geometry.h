@@ -7,6 +7,7 @@ namespace Geometry {
   extern RawModel* cube;
   extern RawModel* sea;
   extern RawModel* cockpit;
+  extern RawModel* propeller;
 
   void initGeometry();
   void cleanGeometry();
@@ -15,3 +16,4 @@ namespace Geometry {
 RawModel* createCube();
 RawModel* createSea(float radius, float height, int radialSegments, int heightSegments);
 RawModel* createCockpit();
+RawModel* createPropeller();

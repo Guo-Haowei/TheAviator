@@ -11,6 +11,12 @@ private:
 
   Entity cockpit;
   Entity engine;
+  Entity tail;
+  Entity sideWing;
+  Entity windShield;
+  Entity propeller;
+  Entity blade1;
+  Entity blade2;
 public:
   AirPlane();
   ~AirPlane();
