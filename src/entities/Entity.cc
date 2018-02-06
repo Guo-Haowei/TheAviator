@@ -23,6 +23,10 @@ void Entity::changePosition(float dx, float dy, float dz) {
   position.z += dz;
 }
 
+void Entity::changePosition(glm::vec3 xyz) {
+  position += xyz;
+}
+
 void Entity::changeRotation(float dx, float dy, float dz) {
   rotation.x += Maths::toRadians(dx);
   rotation.y += Maths::toRadians(dy);

@@ -47,5 +47,11 @@ namespace SHADOW {
   extern int HEIGHT;
 };
 
+namespace AIRPLANE {
+  extern float X;
+  extern float Y;
+  extern float Z;
+};
+
 class Entity;
 extern Entity* SEA_MODEL;

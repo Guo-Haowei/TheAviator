@@ -1,5 +1,5 @@
 #Sea
-radius: 600.0
+radius: 800.0
 height: 800.0
 radial_segments: 40
 height_segments: 10
@@ -24,3 +24,8 @@ near: 100.0f
 far: 500.0f
 width: 1024
 height: 1024
+
+#Airplane
+x: -10.0f
+y: 100.0f
+z: 160.0f

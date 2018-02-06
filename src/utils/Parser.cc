@@ -31,6 +31,10 @@ float SHADOW::FAR_PLANE;
 int SHADOW::WIDTH;
 int SHADOW::HEIGHT;
 
+float AIRPLANE::X;
+float AIRPLANE::Y;
+float AIRPLANE::Z;
+
 // helper
 void getNextFloat(ifstream& file, float* value) {
   string word;
@@ -77,4 +81,8 @@ void Parser::parse() {
   getNextFloat(configFile, &SHADOW::FAR_PLANE);
   getNextInt(configFile, &SHADOW::WIDTH);
   getNextInt(configFile, &SHADOW::HEIGHT);
+
+  getNextFloat(configFile, &AIRPLANE::X);
+  getNextFloat(configFile, &AIRPLANE::Y);
+  getNextFloat(configFile, &AIRPLANE::Z);
 }

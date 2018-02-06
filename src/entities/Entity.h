@@ -14,6 +14,7 @@ public:
 
   glm::mat4 getTransformationMatrix();
   void changePosition(float dx, float dy, float dz);
+  void changePosition(glm::vec3 xyz);
   void changeRotation(float dx, float dy, float dz);
 
   glm::vec3 getPosition() const;
