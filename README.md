@@ -39,6 +39,10 @@ ccmake ..
 make
 ./TheAviator
 ```
+
+## Screen shots
+![alt text](https://github.com/Guo-Haowei/TheAviator/blob/master/ScreenShot.png)
+
 ## TODO
 * Fix perspective
 * Fix entity shadow map
