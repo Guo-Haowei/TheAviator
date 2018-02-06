@@ -40,5 +40,6 @@ make
 ./TheAviator
 ```
 ## TODO
-* Try to render depth map
+* Fix perspective
+* Fix entity shadow map
 * Add cloud
