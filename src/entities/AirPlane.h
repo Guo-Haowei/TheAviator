@@ -23,7 +23,7 @@ private:
   Entity tireL;
   Entity wheelAxis;
   Entity suspension;
-  Entity wheelB;
+  Entity tireB;
   Entity wheelAxisB;
 public:
   AirPlane();

@@ -40,47 +40,47 @@ RawModel* createCube() {
   };
 
   float verticesData[]  = {
-    -1.0f, -1.0f, -1.0f,
-    1.0f, -1.0f, -1.0f,
-    1.0f,  1.0f, -1.0f,
-    1.0f,  1.0f, -1.0f,
-    -1.0f,  1.0f, -1.0f,
-    -1.0f, -1.0f, -1.0f,
+    -0.5f, -0.5f, -0.5f,
+    0.5f, -0.5f, -0.5f,
+    0.5f,  0.5f, -0.5f,
+    0.5f,  0.5f, -0.5f,
+    -0.5f,  0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f,
 
-    -1.0f, -1.0f,  1.0f,
-    1.0f, -1.0f,  1.0f,
-    1.0f,  1.0f,  1.0f,
-    1.0f,  1.0f,  1.0f,
-    -1.0f,  1.0f,  1.0f,
-    -1.0f, -1.0f,  1.0f,
+    -0.5f, -0.5f,  0.5f,
+    0.5f, -0.5f,  0.5f,
+    0.5f,  0.5f,  0.5f,
+    0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f,  0.5f,
+    -0.5f, -0.5f,  0.5f,
 
-    -1.0f,  1.0f,  1.0f,
-    -1.0f,  1.0f, -1.0f,
-    -1.0f, -1.0f, -1.0f,
-    -1.0f, -1.0f, -1.0f,
-    -1.0f, -1.0f,  1.0f,
-    -1.0f,  1.0f,  1.0f,
+    -0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f,
+    -0.5f, -0.5f,  0.5f,
+    -0.5f,  0.5f,  0.5f,
 
-    1.0f,  1.0f,  1.0f,
-    1.0f,  1.0f, -1.0f,
-    1.0f, -1.0f, -1.0f,
-    1.0f, -1.0f, -1.0f,
-    1.0f, -1.0f,  1.0f,
-    1.0f,  1.0f,  1.0f,
+    0.5f,  0.5f,  0.5f,
+    0.5f,  0.5f, -0.5f,
+    0.5f, -0.5f, -0.5f,
+    0.5f, -0.5f, -0.5f,
+    0.5f, -0.5f,  0.5f,
+    0.5f,  0.5f,  0.5f,
 
-    -1.0f, -1.0f, -1.0f,
-    1.0f, -1.0f, -1.0f,
-    1.0f, -1.0f,  1.0f,
-    1.0f, -1.0f,  1.0f,
-    -1.0f, -1.0f,  1.0f,
-    -1.0f, -1.0f, -1.0f,
+    -0.5f, -0.5f, -0.5f,
+    0.5f, -0.5f, -0.5f,
+    0.5f, -0.5f,  0.5f,
+    0.5f, -0.5f,  0.5f,
+    -0.5f, -0.5f,  0.5f,
+    -0.5f, -0.5f, -0.5f,
 
-    -1.0f,  1.0f, -1.0f,
-    1.0f,  1.0f, -1.0f,
-    1.0f,  1.0f,  1.0f,
-    1.0f,  1.0f,  1.0f,
-    -1.0f,  1.0f,  1.0f,
-    -1.0f,  1.0f, -1.0f
+    -0.5f,  0.5f, -0.5f,
+    0.5f,  0.5f, -0.5f,
+    0.5f,  0.5f,  0.5f,
+    0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f, -0.5f
   };
 
   vector<float> vertices(verticesData, verticesData + sizeof(verticesData) / sizeof(float)), normals;
@@ -132,14 +132,14 @@ RawModel* createSea(float radius, float height, int radialSegments, int heightSe
 }
 
 RawModel* createCockpit() {
-  glm::vec3 vert0(8, 5, 5);
-  glm::vec3 vert1(8, 5, -5);
-  glm::vec3 vert2(8, -5, 5);
-  glm::vec3 vert3(8, -5, -5);
-  glm::vec3 vert4(-8, 3, -1);
-  glm::vec3 vert5(-8, 3, 1);
-  glm::vec3 vert6(-8, 1, -1);
-  glm::vec3 vert7(-8, 1, 1);
+  glm::vec3 vert0(4, 2.5, 2.5);
+  glm::vec3 vert1(4, 2.5, -2.5);
+  glm::vec3 vert2(4, -2.5, 2.5);
+  glm::vec3 vert3(4, -2.5, -2.5);
+  glm::vec3 vert4(-4, 1.5, -0.5);
+  glm::vec3 vert5(-4, 1.5, 0.5);
+  glm::vec3 vert6(-4, 0.5, -0.5);
+  glm::vec3 vert7(-4, 0.5, 0.5);
 
   glm::vec3 vertices[36];
   // face left
@@ -208,14 +208,14 @@ RawModel* createCockpit() {
 }
 
 RawModel* createPropeller() {
-  glm::vec3 vert0(2, 1, 1);
-  glm::vec3 vert1(2, 1, -1);
-  glm::vec3 vert2(2, -1, 1);
-  glm::vec3 vert3(2, -1, -1);
-  glm::vec3 vert4(-2, 0, 0);
-  glm::vec3 vert5(-2, 0, 0);
-  glm::vec3 vert6(-2, 0, 0);
-  glm::vec3 vert7(-2, 0, 0);
+  glm::vec3 vert0(0.5, 0.5, 0.5);
+  glm::vec3 vert1(0.5, 0.5, -0.5);
+  glm::vec3 vert2(0.5, -0.5, 0.5);
+  glm::vec3 vert3(0.5, -0.5, -0.5);
+  glm::vec3 vert4(-0.5, 0, 0);
+  glm::vec3 vert5(-0.5, 0, 0);
+  glm::vec3 vert6(-0.5, 0, 0);
+  glm::vec3 vert7(-0.5, 0, 0);
 
   glm::vec3 vertices[36];
   // face left
