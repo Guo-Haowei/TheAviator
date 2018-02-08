@@ -31,6 +31,10 @@ void Entity::changePosition(glm::vec3 xyz) {
   position += xyz;
 }
 
+void Entity::setPosition(float dx, float dy, float dz) {
+  position = glm::vec3(dx, dy, dz);
+}
+
 void Entity::changeRotation(float dx, float dy, float dz) {
   rotation.x += Maths::toRadians(dx);
   rotation.y += Maths::toRadians(dy);
@@ -41,6 +45,20 @@ void Entity::changeRotation(glm::vec3 xyz) {
   rotation.x += Maths::toRadians(xyz.x);
   rotation.y += Maths::toRadians(xyz.y);
   rotation.z += Maths::toRadians(xyz.z);
+}
+
+void Entity::changeScale(float dx, float dy, float dz) {
+  scale.x += dx;
+  scale.y += dy;
+  scale.z += dz;
+}
+
+void Entity::setScale(float dx, float dy, float dz) {
+  scale = glm::vec3(dx, dy, dz);
+}
+
+void Entity::changeScale(glm::vec3 xyz) {
+  scale += xyz;
 }
 
 glm::vec3 Entity::getPosition() const {

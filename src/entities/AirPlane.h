@@ -32,6 +32,7 @@ private:
   Entity face;
   Entity hairSide;
   Entity hairBack;
+  Entity hair[12];
 public:
   AirPlane();
   ~AirPlane();

@@ -18,8 +18,12 @@ public:
   glm::mat4 getTransformationMatrix();
   void changePosition(float dx, float dy, float dz);
   void changePosition(glm::vec3 xyz);
+  void setPosition(float dx, float dy, float dz);
   void changeRotation(float dx, float dy, float dz);
   void changeRotation(glm::vec3 xyz);
+  void changeScale(float dx, float dy, float dz);
+  void changeScale(glm::vec3 xyz);
+  void setScale(float dx, float dy, float dz);
 
   glm::vec3 getPosition() const;
   glm::vec3 getRotation() const;
