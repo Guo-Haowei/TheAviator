@@ -47,8 +47,6 @@ void DisplayManager::createDisplay() {
 
   glEnable(GL_MULTISAMPLE);
   glEnable(GL_DEPTH_TEST);
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_FUNC_ADD);
   glCullFace(GL_BACK);
 }
 

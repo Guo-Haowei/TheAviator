@@ -15,7 +15,7 @@ AirPlane::AirPlane():
   engine(Geometry::cube, glm::vec3(5.0f, 0.0f, 0.0f), glm::vec3(0.0f), white, glm::vec3(2.0f, 5.0f, 5.0f)),
   tail(Geometry::cube, glm::vec3(-4.0f, 2.0f, 0.0f), glm::vec3(0.0f), red, glm::vec3(1.5f, 2.0f, 0.5f)),
   sideWing(Geometry::cube, glm::vec3(0.0f, 1.5f, 0.0f), glm::vec3(0.0f), red, glm::vec3(3.0f, 0.5f, 12.0f)),
-  windShield(Geometry::cube, glm::vec3(0.5f, 2.7f, 0.0f), glm::vec3(0.0f), white, glm::vec3(0.3f, 1.5f, 2.0f)),
+  windShield(Geometry::cube, glm::vec3(0.5f, 2.7f, 0.0f), glm::vec3(0.0f), white, glm::vec3(0.3f, 1.5f, 2.0f), 0.3f),
   propeller(Geometry::propeller, glm::vec3(6.0f, 0.0f, 0.0f), glm::vec3(0.0f), brown, glm::vec3(2.0f, 1.0f, 1.0f)),
   blade1(Geometry::cube, glm::vec3(6.8f, 0.0f, 0.0f), glm::vec3(0.0f), brownDark, glm::vec3(0.1f, 8.0f, 1.0f)),
   blade2(Geometry::cube, glm::vec3(6.8f, 0.0f, 0.0f), glm::vec3(0.0f), brownDark, glm::vec3(0.1f, 8.0f, 1.0f)),

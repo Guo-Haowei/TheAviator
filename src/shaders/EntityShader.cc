@@ -25,6 +25,7 @@ void EntityShader::getAllUniformLocations() {
   location_color = getUniformLocation("color");
   location_light = getUniformLocation("lightPos");
   location_shadowMap = getUniformLocation("shadowMap");
+  location_opacity = getUniformLocation("opacity");
 }
 
 void EntityShader::render() {
@@ -41,10 +42,19 @@ void EntityShader::render() {
   for (int i = 0; i < entities->size(); ++i) {
     Entity* entity = entities->at(i);
     RawModel* model = entity->getModel();
+    loadFloat(location_opacity, entity->getOpacity());
     loadVector3f(location_color, entity->getColor());
     loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
     model->bind();
-    glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
+    if (entity->getOpacity() < 1.0f) {
+      glEnable(GL_BLEND);
+      glBlendFunc(GL_SRC_ALPHA, GL_SRC_COLOR);
+      glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
+      glDisable(GL_BLEND);
+    } else {
+      glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
+    }
+
     RawModel::unbind();
   }
   stop();

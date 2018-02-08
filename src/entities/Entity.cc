@@ -5,7 +5,7 @@
 
 vector<Entity*> allEntities;
 
-Entity::Entity(RawModel* model, glm::vec3 position, glm::vec3 rotation, glm::vec3 color, glm::vec3 scale): model(model), position(position), rotation(rotation), color(color), scale(scale) { }
+Entity::Entity(RawModel* model, glm::vec3 position, glm::vec3 rotation, glm::vec3 color, glm::vec3 scale, float opacity): model(model), position(position), rotation(rotation), color(color), scale(scale), opacity(opacity) { }
 
 glm::mat4 Entity::getTransformationMatrix() {
   glm::mat4 matrix = glm::mat4(1);
@@ -53,6 +53,10 @@ glm::vec3 Entity::getColor() const {
 
 glm::vec3 Entity::getScale() const {
   return scale;
+}
+
+float Entity::getOpacity() const {
+  return opacity;
 }
 
 RawModel* Entity::getModel() const {
