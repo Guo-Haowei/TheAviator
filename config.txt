@@ -3,31 +3,31 @@ radius: 240.0
 height: 320.0
 radial_segments: 40
 height_segments: 10
-min_amplitude: 1.0
-max_amplitude: 4.0
-min_speed: 0.015
-max_speed: 0.045
+min_amplitude: 2.0
+max_amplitude: 8.0
+min_speed: 0.01
+max_speed: 0.03
 
 #Camera
 x: 0.0
-y: 50.0
+y: 40.0
 z: 80.0
 zoom: 60.0
 
 #Light
-x: 60.0
-y: 140.0
-z: 140.0
+x: 90.0
+y: 210.0
+z: 210.0
 
 #Shadow
-near: 150.0f
-far: 250.0f
+near: 250.0f
+far: 350.0f
 width: 2048
 height: 2048
 
 #Airplane
 x: -10.0f
-y: 50.0f
+y: 40.0f
 z: 0.0f
 
 # 170, 190
