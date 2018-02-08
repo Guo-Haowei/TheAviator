@@ -108,24 +108,42 @@ RawModel* createSea(float radius, float height, int radialSegments, int heightSe
       vertices.push_back(y);
       vertices.push_back(cos(angle * PI / 180.0f) * radius);
 
-      waves.push_back(Maths::rand(0.0f, 2 * PI)); // angle
-      waves.push_back(Maths::rand(SEA::MIN_AMPLITUDE, SEA::MAX_AMPLITUDE)); // amplitude
-      waves.push_back(Maths::rand(SEA::MIN_SPEED, SEA::MAX_SPEED)); // speed
+      waves.push_back(Maths::rand(0.0f, 2 * PI));
+      waves.push_back(Maths::rand(SEA::MIN_AMPLITUDE, SEA::MAX_AMPLITUDE));
+      waves.push_back(Maths::rand(SEA::MIN_SPEED, SEA::MAX_SPEED));
     }
   }
+
+  // two circles
+  vertices.push_back(0.0f);
+  vertices.push_back(-heightSegments/2);
+  vertices.push_back(0.0f);
+  waves.push_back(Maths::rand(0.0f, 2 * PI));
+  waves.push_back(Maths::rand(SEA::MIN_AMPLITUDE, SEA::MAX_AMPLITUDE));
+  waves.push_back(Maths::rand(SEA::MIN_SPEED, SEA::MAX_SPEED));
 
 
   int index1 = radialSegments - 1;
   for (int i = 0; i < heightSegments; ++i) {
     for (int index2 = 0; index2 < radialSegments; index1 = index2++) {
       int point1 = index1 + i * radialSegments, point2 = index2 + i * radialSegments, point3 = point1 + radialSegments, point4 = point2 + radialSegments;
+      // triangle 1
+      indices.push_back(point2);
       indices.push_back(point1);
+      indices.push_back(point3);
+      // triangle 2
       indices.push_back(point2);
       indices.push_back(point3);
-      indices.push_back(point2);
       indices.push_back(point4);
-      indices.push_back(point3);
     }
+  }
+
+  int topPoint = vertices.size() - 1;
+  index1 = radialSegments - 1;
+  for (int i = 0; i < radialSegments - 1; index1 = i++) {
+    indices.push_back(topPoint);
+    indices.push_back(i);
+    indices.push_back(index1);
   }
 
   return Loader::loadToVAO(vertices, 3, waves, 3, indices);

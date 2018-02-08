@@ -34,11 +34,11 @@ void main() {
   vec3 fogColor = vec3(0.968, 0.851, 0.667);
 
   // directional light
-  vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
+  vec3 lightColor = vec3(1.0, 1.0, 1.0);
   vec3 lightDir = normalize(-lightPos);
 
   // ambient
-  float ambientStrength = 0.15f;
+  float ambientStrength = 0.15;
   vec3 ambient = ambientStrength * lightColor;
 
   // diffuse
@@ -55,8 +55,9 @@ void main() {
   float near = 100.0;
   float far = 300.0;
   float fogFactor = (far - dist)/(far - near);
-  fogFactor = clamp(fogFactor, 0.0, 1.0);
+  // fogFactor = clamp(fogFactor, 0.0, 1.0);
+  fogFactor = 1.0;
 
   vec3 finalColor = (1.0 - fogFactor) * fogColor + fogFactor * fragColor;
-  out_Color = vec4(finalColor, 1.0);
+  out_Color = vec4(finalColor, 0.8);
 }
