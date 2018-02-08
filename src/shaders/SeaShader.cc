@@ -11,7 +11,7 @@ using std::cout;
 Entity* SEA_MODEL;
 
 SeaShader::SeaShader() {
-  SEA_MODEL = new Entity(Geometry::sea, glm::vec3(0.0f, -SEA::RADIUS - 10.0f, 0.0f), glm::vec3(90.0f, 0.0f, 0.0f));
+  SEA_MODEL = new Entity(Geometry::sea, glm::vec3(0.0f, -SEA::RADIUS, 0.0f), glm::vec3(90.0f, 0.0f, 0.0f));
 
   const char* VERTEX_FILE = "../shaders/sea.vert";
   const char* FRAGMENT_FILE = "../shaders/sea.frag";

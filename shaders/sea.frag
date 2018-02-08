@@ -45,15 +45,15 @@ void main() {
   float diff = max(dot(Normal, lightDir), 0.0);
   vec3 diffuse = diff * lightColor;
 
-  // float visibility
-  float visibility = 0.7;
+  // shadow
+  float visibility = 1.0;
   float shadow = visibility * shadowCalculation(LightSpaceFragPos);
   vec3 fragColor = (ambient + (1 - shadow) * diffuse) * seaColor;
 
   // fog
   float dist = abs(ViewSpace.z);
   float near = 50.0;
-  float far = 400.0;
+  float far = 170.0;
   float fogFactor = (far - dist)/(far - near);
   fogFactor = clamp(fogFactor, 0.0, 1.0);
 

@@ -10,7 +10,7 @@ max_speed: 0.045
 
 #Camera
 x: 0.0
-y: 40.0
+y: 50.0
 z: 80.0
 zoom: 60.0
 
@@ -27,5 +27,7 @@ height: 2048
 
 #Airplane
 x: -10.0f
-y: 40.0f
+y: 50.0f
 z: 0.0f
+
+# 170, 190
