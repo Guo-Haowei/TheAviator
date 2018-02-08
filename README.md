@@ -44,6 +44,12 @@ make
 ![alt text](https://github.com/Guo-Haowei/TheAviator/blob/master/ScreenShot.png)
 
 ## TODO
-* Fix perspective
-* Fix entity shadow map
-* Add cloud
+* Optimize render pass (reduce unecessary binding/unbinding)
+* Setup windows build
+* Fix alpha fog conflict
+* Figure out way to render entity and sea shadow at the same time
+* Change transformation representation
+* Add cloud, Coin and Obstacle
+* Particle effect
+* Collision detection
+* (Optional) Setup debugger
