@@ -1,31 +1,31 @@
 #Sea
-radius: 800.0
-height: 800.0
+radius: 240.0
+height: 320.0
 radial_segments: 40
 height_segments: 10
-min_amplitude: 5.0
-max_amplitude: 20.0
+min_amplitude: 1.0
+max_amplitude: 4.0
 min_speed: 0.015
 max_speed: 0.045
 
 #Camera
 x: 0.0
-y: 100.0
-z: 200.0
-zoom: 90.0
+y: 40.0
+z: 80.0
+zoom: 60.0
 
 #Light
-x: 120.0
-y: 280.0
-z: 280.0
+x: 60.0
+y: 140.0
+z: 140.0
 
 #Shadow
 near: 100.0f
 far: 500.0f
-width: 1024
-height: 1024
+width: 2048
+height: 2048
 
 #Airplane
 x: -10.0f
-y: 100.0f
-z: 160.0f
+y: 40.0f
+z: 0.0f

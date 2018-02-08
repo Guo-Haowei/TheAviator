@@ -12,8 +12,8 @@ Renderer::Renderer(): seaShadowShader(true) {
   ShadowShader::init();
   entityShader.setCamera(&primaryCamera)->setEntities(&allEntities);
   seaShader.setCamera(&primaryCamera);
-  seaShadowShader.setEntities(&allEntities);
-  entityShadowShader.setEntities(&allEntities);
+  seaShadowShader.setCamera(&primaryCamera)->setEntities(&allEntities);
+  entityShadowShader.setCamera(&primaryCamera)->setEntities(&allEntities);
 }
 
 Renderer::~Renderer() {
