@@ -20,8 +20,8 @@ y: 140.0
 z: 140.0
 
 #Shadow
-near: 100.0f
-far: 500.0f
+near: 150.0f
+far: 250.0f
 width: 2048
 height: 2048
 
