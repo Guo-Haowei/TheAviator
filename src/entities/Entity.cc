@@ -5,7 +5,11 @@
 
 vector<Entity*> allEntities;
 
-Entity::Entity(RawModel* model, glm::vec3 position, glm::vec3 color, glm::vec3 scale, float opacity): model(model), position(position), rotation(glm::vec3(0.0f)), color(color), scale(scale), opacity(opacity) { }
+Entity::Entity(): model(nullptr), position(glm::vec3(0.0f)), rotation(glm::vec3(0.0f)), color(glm::vec3(0.0f)), scale(glm::vec3(0.0f)), opacity(1.0f) {}
+
+Entity::Entity(const Entity& other): model(other.model), position(other.position), color(other.color), scale(other.scale), opacity(other.opacity) {}
+
+Entity::Entity(RawModel* model, glm::vec3 position, glm::vec3 color, glm::vec3 scale, float opacity): model(model), position(position), rotation(glm::vec3(0.0f)), color(color), scale(scale), opacity(opacity) {}
 
 glm::mat4 Entity::getTransformationMatrix() {
   glm::mat4 matrix = glm::mat4(1);
