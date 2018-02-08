@@ -9,6 +9,7 @@ private:
   glm::vec3 position;
   std::vector<Entity*> components;
 
+  // plane
   Entity cockpit;
   Entity engine;
   Entity tail;
@@ -25,6 +26,12 @@ private:
   Entity suspension;
   Entity tireB;
   Entity wheelAxisB;
+
+  // pilot
+  Entity body;
+  Entity face;
+  Entity hairSide;
+  Entity hairBack;
 public:
   AirPlane();
   ~AirPlane();

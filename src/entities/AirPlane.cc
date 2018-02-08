@@ -8,6 +8,7 @@ glm::vec3 red(RED[0], RED[1], RED[2]);
 glm::vec3 white(WHITE[0], WHITE[1], WHITE[2]);
 glm::vec3 brown(BROWN[0], BROWN[1], BROWN[2]);
 glm::vec3 brownDark(BROWNDARK[0], BROWNDARK[1], BROWNDARK[2]);
+glm::vec3 pink(PINK[0], PINK[1], PINK[2]);
 
 AirPlane::AirPlane():
   position(glm::vec3(AIRPLANE::X, AIRPLANE::Y, AIRPLANE::Z)),
@@ -26,8 +27,13 @@ AirPlane::AirPlane():
   wheelAxis(Geometry::cube, glm::vec3(2.5, -2.8f, 0.0f), glm::vec3(0.0f), brown, glm::vec3(1.0f, 1.0f, 6.0f)),
   suspension(Geometry::cube, glm::vec3(-3.2f, 0.5f, 0.0f), glm::vec3(0.0f, 0.0f, -0.3f), red, glm::vec3(0.4f, 2.0f, 0.4f)),
   tireB(Geometry::cube, glm::vec3(-3.5f, -0.5f, 0.0f), glm::vec3(0.0f), brownDark, glm::vec3(1.2f, 1.2f, 0.2f)),
-  wheelAxisB(Geometry::cube, glm::vec3(-3.5f, -0.5f, 0.0f), glm::vec3(0.0f), brown, glm::vec3(0.5f, 0.5f, 0.3f))
+  wheelAxisB(Geometry::cube, glm::vec3(-3.5f, -0.5f, 0.0f), glm::vec3(0.0f), brown, glm::vec3(0.5f, 0.5f, 0.3f)),
+  body(Geometry::cube, glm::vec3(-0.8f, 1.5f, 0.0f), glm::vec3(0.0f), brown, glm::vec3(1.5f)),
+  face(Geometry::cube, glm::vec3(-1.0f, 2.7f, 0.0f), glm::vec3(0.0f), pink, glm::vec3(1.0f)),
+  hairSide(Geometry::cube, glm::vec3(-1.3f, 3.0f, 0.0f), glm::vec3(0.0f), brown, glm::vec3(1.2f, 0.4f, 1.2f)),
+  hairBack(Geometry::cube, glm::vec3(-1.6f, 2.8f, 0.0f), glm::vec3(0.0f), brown, glm::vec3(0.2f, 0.8f, 1.0f))
 {
+  // -1.5 3.2 0
   blade2.changeRotation(90.0f, 0.0f, 0.0f);
   components.push_back(&cockpit);
   components.push_back(&propeller);
@@ -45,6 +51,10 @@ AirPlane::AirPlane():
   components.push_back(&suspension);
   components.push_back(&tireB);
   components.push_back(&wheelAxisB);
+  components.push_back(&body);
+  components.push_back(&face);
+  components.push_back(&hairSide);
+  components.push_back(&hairBack);
 
   for (int i = 0; i < components.size(); ++i) {
     allEntities.push_back(components[i]);
