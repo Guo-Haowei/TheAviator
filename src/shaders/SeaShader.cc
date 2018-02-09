@@ -52,7 +52,7 @@ void SeaShader::getAllUniformLocations() {
 void SeaShader::render() {
   start();
   glm::vec3 lightPos(LIGHT::X, LIGHT::Y, LIGHT::Z);
-  glm::mat4 viewMatrix = glm::lookAt(lightPos, glm::vec3(0.0f, -SEA::RADIUS, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+  glm::mat4 viewMatrix = glm::lookAt(lightPos, glm::vec3(AIRPLANE::X, AIRPLANE::Y, AIRPLANE::Z), glm::vec3(0.0f, 1.0f, 0.0f));
   glm::mat4 projectionMatrix = glm::perspective(glm::radians(camera->getZoom()), (float) ACTUAL_WIDTH / (float) ACTUAL_HEIGHT, SHADOW::NEAR_PLANE, SHADOW::FAR_PLANE);
   loadMatrix4f(location_lightSpaceMatrix, projectionMatrix * viewMatrix);
   loadInt(location_shadowMap, 0);
