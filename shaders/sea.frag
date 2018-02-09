@@ -55,9 +55,10 @@ void main() {
   float near = 100.0;
   float far = 300.0;
   float fogFactor = (far - dist)/(far - near);
-  // fogFactor = clamp(fogFactor, 0.0, 1.0);
-  fogFactor = 1.0;
+  fogFactor = clamp(fogFactor, 0.0, 1.0);
+  // fogFactor = 1.0;
 
   vec3 finalColor = (1.0 - fogFactor) * fogColor + fogFactor * fragColor;
-  out_Color = vec4(finalColor, 0.8);
+  // out_Color = vec4(finalColor, 0.8);
+  out_Color = vec4(finalColor, 1.0);
 }
