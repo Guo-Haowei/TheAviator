@@ -20,13 +20,13 @@ y: 210.0
 z: 210.0
 
 #Shadow
-near: 250.0f
-far: 350.0f
+near: 200.0f
+far: 370.0f
 width: 2048
 height: 2048
 
 #Airplane
-x: -10.0f
+x: 0.0f
 y: 40.0f
 z: 0.0f
 
