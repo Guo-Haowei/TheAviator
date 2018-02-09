@@ -55,10 +55,11 @@ make
 ```
 
 ## TODO
+* Setup debugger (renderdoc and NSight)
+* Change shadow map center to plane position (the old center position clip out plane when fov is small)
 * Change transformation representation
 * Fix alpha fog conflict
 * Figure out way to render entity and sea shadow at the same time
 * Add cloud, Coin and Obstacle
 * Particle effect
 * Collision detection
-* (Optional) Setup debugger
