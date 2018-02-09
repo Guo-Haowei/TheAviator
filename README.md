@@ -2,7 +2,21 @@
 
 This is an OpenGL coding practice project inspired by: https://tympanus.net/codrops/2016/04/26/the-aviator-animating-basic-3d-scene-threejs/
 
+## Screenshots
+![alt text](https://github.com/Guo-Haowei/TheAviator/blob/master/ScreenShot.png)
+
 ## Installation
+
+### Windows
+I use Visual Studio 2017 to build this project on windows. I downloaded 32-bit glfw from http://www.glfw.org/download.html,
+glew from http://glew.sourceforge.net/ and glm from https://github.com/g-truc/glm/releases/tag/0.9.8.5.
+
+Sonar System did a great job explaining how to set up glew, glfw and glm on windows, here are his youtube tutorials:
+https://www.youtube.com/watch?v=vGptI11wRxE&t=639s
+https://www.youtube.com/watch?v=6nGpoY-L2Xk
+
+If you are also using Visual Studio 2017, make sure to install Windows 8.1 SDK and Windows Universal CRT SDK.
+Also, try to use glew32s.lib instead of glew32.lib ("s" stands for static)
 
 ### MacOS
 If you already have `brew` installed, skip this step. Otherwise, do
@@ -40,15 +54,10 @@ make
 ./TheAviator
 ```
 
-## Screen shots
-![alt text](https://github.com/Guo-Haowei/TheAviator/blob/master/ScreenShot.png)
-
 ## TODO
-* Optimize render pass (reduce unecessary binding/unbinding)
-* Setup windows build
+* Change transformation representation
 * Fix alpha fog conflict
 * Figure out way to render entity and sea shadow at the same time
-* Change transformation representation
 * Add cloud, Coin and Obstacle
 * Particle effect
 * Collision detection
