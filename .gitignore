@@ -1,2 +1,9 @@
+Debug/
+Release/
 build/
-glfw3/
+.vs/
+glm/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.dll
