@@ -1,6 +1,7 @@
 // SeaShader.cc
 #include "SeaShader.h"
 #include "../common.h"
+#include "../entities/Entity.h"
 #include "../models/Geometry.h"
 #include "../utils/Debug.h"
 #include <glm/gtc/matrix_transform.hpp>
@@ -17,7 +18,7 @@ SeaShader::SeaShader() {
   const char* VERTEX_FILE = "../shaders/sea.vert";
   const char* FRAGMENT_FILE = "../shaders/sea.frag";
   const char* GEOMETRY_FILE = "../shaders/sea.geom";
-  init(VERTEX_FILE, FRAGMENT_FILE, GEOMETRY_FILE);
+  ShaderProgram::init(VERTEX_FILE, FRAGMENT_FILE, GEOMETRY_FILE);
 }
 
 void SeaShader::clean() {
@@ -76,9 +77,4 @@ void SeaShader::render() {
 
   // update sea
   SEA_MODEL->changeRotation(0.0f, 0.1f, 0.0f); // move this line to other place later
-}
-
-SeaShader* SeaShader::setCamera(Camera* camera) {
-  this->camera = camera;
-  return this;
 }

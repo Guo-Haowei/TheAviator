@@ -2,12 +2,14 @@
 #define GLEW_STATIC
 #include "ShadowShader.h"
 #include "../common.h"
+#include "../entities/Entity.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <cassert>
 #include <iostream>
+using std::vector;
 
 unsigned int ShadowShader::fboID;
 unsigned int ShadowShader::depthMap;
@@ -73,12 +75,15 @@ void ShadowShader::render() {
     glDrawElements(GL_TRIANGLES, model->getVertexCount(), GL_UNSIGNED_INT, (void*) 0);
     RawModel::unbind();
   } else {
-    for (int i = 0; i < entities->size(); ++i) {
-      Entity* entity = entities->at(i);
-      RawModel* model = entity->getModel();
-      loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
-      model->bind();
-      glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
+    for (auto& entry: allEntities) {
+      vector<Entity*>* entities = &(entry.second);
+      entry.first->bind();
+      for (int i = 0; i < entities->size(); ++i) {
+        Entity* entity = entities->at(i);
+        RawModel* model = entity->getModel();
+        loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
+        glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
+      }
       RawModel::unbind();
     }
   }
@@ -97,16 +102,6 @@ void ShadowShader::clean() {
   glDetachShader(programID, fragmentShaderID);
   glDeleteShader(fragmentShaderID);
   glDeleteProgram(programID);
-}
-
-ShadowShader* ShadowShader::setEntities(vector<Entity*>* entities) {
-  this->entities = entities;
-  return this;
-}
-
-ShadowShader* ShadowShader::setCamera(Camera* camera) {
-  this->camera = camera;
-  return this;
 }
 
 unsigned int ShadowShader::getFboID() {

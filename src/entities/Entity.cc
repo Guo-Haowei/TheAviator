@@ -2,8 +2,7 @@
 #include "Entity.h"
 #include "../utils/Maths.h"
 #include <glm/gtc/matrix_transform.hpp>
-
-vector<Entity*> allEntities;
+using std::vector;
 
 Entity::Entity(): model(nullptr), position(glm::vec3(0.0f)), rotation(glm::vec3(0.0f)), color(glm::vec3(0.0f)), scale(glm::vec3(0.0f)), opacity(1.0f) {}
 
@@ -83,4 +82,13 @@ float Entity::getOpacity() const {
 
 RawModel* Entity::getModel() const {
   return model;
+}
+
+AllEntities allEntities;
+
+void Entity::addEntity(Entity* entity) {
+  RawModel* key = entity->getModel();
+  if (allEntities.find(key) == allEntities.end())
+    allEntities.insert(std::pair<RawModel*, vector<Entity*>>(key, vector<Entity*>()));
+  allEntities.at(key).push_back(entity);
 }

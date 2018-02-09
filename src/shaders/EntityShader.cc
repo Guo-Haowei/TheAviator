@@ -2,15 +2,18 @@
 #include "EntityShader.h"
 #include "../common.h"
 #include "../utils/Debug.h"
+#include "../entities/Entity.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL/glew.h>
 #include <iostream>
 using std::cout;
+using std::vector;
 
 EntityShader::EntityShader() {
   const char* VERTEX_FILE = "../shaders/entity.vert";
   const char* FRAGMENT_FILE = "../shaders/entity.frag";
-  init(VERTEX_FILE, FRAGMENT_FILE);
+  ShaderProgram::init(VERTEX_FILE, FRAGMENT_FILE);
+  camera = &primaryCamera;
 }
 
 void EntityShader::bindAttributes() {
@@ -39,33 +42,26 @@ void EntityShader::render() {
   loadVector3f(location_light, lightPos);
   projectionMatrix = glm::perspective(glm::radians(camera->getZoom()), (float) ACTUAL_WIDTH / (float) ACTUAL_HEIGHT, NEAR_PLANE, FAR_PLANE);
   loadMatrix4f(location_projectionMatrix, projectionMatrix);
-  for (int i = 0; i < entities->size(); ++i) {
-    Entity* entity = entities->at(i);
-    RawModel* model = entity->getModel();
-    loadFloat(location_opacity, entity->getOpacity());
-    loadVector3f(location_color, entity->getColor());
-    loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
-    model->bind();
-    if (entity->getOpacity() < 1.0f) {
-      glEnable(GL_BLEND);
-      glBlendFunc(GL_SRC_ALPHA, GL_SRC_COLOR);
-      glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
-      glDisable(GL_BLEND);
-    } else {
-      glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
-    }
+  for (auto& entry: allEntities) {
+    vector<Entity*>* entities = &(entry.second);
+    entry.first->bind();
+    for (int i = 0; i < entities->size(); ++i) {
+      Entity* entity = entities->at(i);
+      RawModel* model = entity->getModel();
+      loadFloat(location_opacity, entity->getOpacity());
+      loadVector3f(location_color, entity->getColor());
+      loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
+      if (entity->getOpacity() < 1.0f) {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_SRC_COLOR);
+        glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
+        glDisable(GL_BLEND);
+      } else {
+        glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
+      }
 
+    }
     RawModel::unbind();
   }
   stop();
-}
-
-EntityShader* EntityShader::setCamera(Camera* camera) {
-  this->camera = camera;
-  return this;
-}
-
-EntityShader* EntityShader::setEntities(vector<Entity*>* entities) {
-  this->entities = entities;
-  return this;
 }

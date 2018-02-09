@@ -3,7 +3,7 @@
 #include "../models/RawModel.h"
 #include <glm/glm.hpp>
 #include <vector>
-using std::vector;
+#include <map>
 
 class Entity {
 private:
@@ -31,6 +31,9 @@ public:
   glm::vec3 getScale() const;
   float getOpacity() const;
   RawModel* getModel() const;
+  
+  static void addEntity(Entity* entity);
 };
 
-extern vector<Entity*> allEntities;
+typedef std::map<RawModel*, std::vector<Entity*>> AllEntities;
+extern AllEntities allEntities;

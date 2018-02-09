@@ -1,25 +1,23 @@
 // Renderer.cc
+#define GLEW_STATIC
 #include "Renderer.h"
 #include "../common.h"
 #include "../entities/Entity.h"
-#include "../entities/Camera.h"
-#define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 
 Renderer::Renderer(): seaShadowShader(true) {
   ShadowShader::init();
-  entityShader.setCamera(&primaryCamera)->setEntities(&allEntities);
-  seaShader.setCamera(&primaryCamera);
-  seaShadowShader.setCamera(&primaryCamera)->setEntities(&allEntities);
-  entityShadowShader.setCamera(&primaryCamera)->setEntities(&allEntities);
 }
 
 Renderer::~Renderer() {
   backgroundShader.clean();
   entityShader.clean();
+  entityShadowShader.clean();
   seaShader.clean();
+  seaShadowShader.clean();
+
 }
 
 void Renderer::render() {

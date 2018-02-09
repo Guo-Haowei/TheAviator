@@ -69,7 +69,7 @@ AirPlane::AirPlane():
   }
 
   for (int i = 0; i < components.size(); ++i) {
-    allEntities.push_back(components[i]);
+    Entity::addEntity(components[i]);
     components[i]->changePosition(position);
   }
 }

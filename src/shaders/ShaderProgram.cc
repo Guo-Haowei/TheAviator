@@ -10,6 +10,7 @@
 using std::cout;
 
 void ShaderProgram::init(const char*vertexFileName, const char* fragmentFileName, const char* geometryFileName) {
+  camera = &primaryCamera;
   programID = glCreateProgram();
   vertexShaderID = loadShader(vertexFileName, GL_VERTEX_SHADER);
   fragmentShaderID = loadShader(fragmentFileName, GL_FRAGMENT_SHADER);

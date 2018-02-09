@@ -43,8 +43,8 @@ int main() {
   Parser::parse();
   DisplayManager::createDisplay();
   Geometry::initGeometry();
-  Renderer renderer;
   primaryCamera.initPrimaryCamera();
+  Renderer renderer;
 
   AirPlane airPlane;
 
