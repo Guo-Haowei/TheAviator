@@ -21,7 +21,10 @@ public:
 
   void initPrimaryCamera();
   void update();
+  glm::mat4 getProjectionMatrix();
   glm::mat4 getViewMatrix();
+
+  glm::mat4 getLightSpaceMatrix();
 
   float getZoom() const;
   void setZoom(float zoom);

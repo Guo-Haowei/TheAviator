@@ -3,7 +3,6 @@
 #include "../common.h"
 #include "../utils/Debug.h"
 #include "../entities/Entity.h"
-#include <glm/gtc/matrix_transform.hpp>
 #include <GL/glew.h>
 #include <iostream>
 using std::cout;
@@ -34,14 +33,11 @@ void EntityShader::getAllUniformLocations() {
 void EntityShader::render() {
   start();
   glm::vec3 lightPos(LIGHT::X, LIGHT::Y, LIGHT::Z);
-  glm::mat4 viewMatrix = glm::lookAt(lightPos, glm::vec3(AIRPLANE::X, AIRPLANE::Y, AIRPLANE::Z), glm::vec3(0.0f, 1.0f, 0.0f));
-  glm::mat4 projectionMatrix = glm::perspective(glm::radians(camera->getZoom()), (float) ACTUAL_WIDTH / (float) ACTUAL_HEIGHT, SHADOW::NEAR_PLANE, SHADOW::FAR_PLANE);
-  loadMatrix4f(location_lightSpaceMatrix, projectionMatrix * viewMatrix);
   loadInt(location_shadowMap, 0);
-  loadMatrix4f(location_viewMatrix, camera->getViewMatrix());
   loadVector3f(location_light, lightPos);
-  projectionMatrix = glm::perspective(glm::radians(camera->getZoom()), (float) ACTUAL_WIDTH / (float) ACTUAL_HEIGHT, NEAR_PLANE, FAR_PLANE);
-  loadMatrix4f(location_projectionMatrix, projectionMatrix);
+  loadMatrix4f(location_lightSpaceMatrix, camera->getLightSpaceMatrix());
+  loadMatrix4f(location_viewMatrix, camera->getViewMatrix());
+  loadMatrix4f(location_projectionMatrix, camera->getProjectionMatrix());
   for (auto& entry: allEntities) {
     vector<Entity*>* entities = &(entry.second);
     entry.first->bind();
