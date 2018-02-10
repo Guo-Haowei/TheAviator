@@ -35,8 +35,8 @@ void DisplayManager::createDisplay() {
   glfwGetFramebufferSize(window, &ACTUAL_WIDTH, &ACTUAL_HEIGHT);
   glfwMakeContextCurrent(window);
 
-  // callbacks
   glfwSetKeyCallback(window, keyCallback);
+  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
   glewExperimental = GL_TRUE;
   if (glewInit() != GLEW_OK) {

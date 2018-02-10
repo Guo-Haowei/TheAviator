@@ -31,7 +31,8 @@ namespace CAMERA {
   extern float X;
   extern float Y;
   extern float Z;
-  extern float ZOOM;
+  extern float FOV;
+  extern float ZOOM_SENSITIVITY;
 };
 
 namespace LIGHT {

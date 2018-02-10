@@ -13,7 +13,7 @@ private:
   glm::vec3 right;
   glm::vec3 worldUp;
 
-  float yaw, pitch, zoom;
+  float fov;
 
   void updateCameraVectors();
 public:
@@ -26,8 +26,8 @@ public:
 
   glm::mat4 getLightSpaceMatrix();
 
-  float getZoom() const;
-  void setZoom(float zoom);
+  float getFov() const;
+  void setFov(float fov);
   void setPosition(glm::vec3 position);
 };
 

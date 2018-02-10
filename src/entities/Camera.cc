@@ -13,23 +13,23 @@ Camera::Camera() {
   up = glm::vec3(0.0f, 1.0f, 0.0f);
   worldUp = up;
   front = glm::vec3(0.0f, 0.0f, -1.0f);
-  yaw = YAW;
-  pitch = PITCH;
-  zoom = 45.0f;
+  fov = 45.0f;
   updateCameraVectors();
 }
 
 void Camera::initPrimaryCamera() {
   primaryCamera.setPosition(glm::vec3(CAMERA::X, CAMERA::Y, CAMERA::Z));
-  primaryCamera.setZoom(CAMERA::ZOOM);
+  primaryCamera.setFov(CAMERA::FOV);
 }
 
 void Camera::update() {
-  
+  float mouseX = MouseManager::getX();
+  float delta = (mouseX - WIDTH / 2) / WIDTH * CAMERA::ZOOM_SENSITIVITY;
+  fov = CAMERA::FOV + delta;
 }
 
 glm::mat4 Camera::getProjectionMatrix() {
-  return glm::perspective(glm::radians(getZoom()), (float) ACTUAL_WIDTH / (float) ACTUAL_HEIGHT, NEAR_PLANE, FAR_PLANE);
+  return glm::perspective(glm::radians(getFov()), (float) ACTUAL_WIDTH / (float) ACTUAL_HEIGHT, NEAR_PLANE, FAR_PLANE);
 }
 
 glm::mat4 Camera::getViewMatrix() {
@@ -39,7 +39,7 @@ glm::mat4 Camera::getViewMatrix() {
 glm::mat4 Camera::getLightSpaceMatrix() {
   glm::vec3 lightPos(LIGHT::X, LIGHT::Y, LIGHT::Z);
   glm::mat4 viewMatrix = glm::lookAt(lightPos, glm::vec3(AIRPLANE::X, AIRPLANE::Y, AIRPLANE::Z), glm::vec3(0.0f, 1.0f, 0.0f));
-  glm::mat4 projectionMatrix = glm::perspective(glm::radians(getZoom()), (float) ACTUAL_WIDTH / (float) ACTUAL_HEIGHT, SHADOW::NEAR_PLANE, SHADOW::FAR_PLANE);
+  glm::mat4 projectionMatrix = glm::perspective(glm::radians(getFov()), (float) ACTUAL_WIDTH / (float) ACTUAL_HEIGHT, SHADOW::NEAR_PLANE, SHADOW::FAR_PLANE);
   return projectionMatrix * viewMatrix;
 }
 
@@ -48,12 +48,12 @@ void Camera::updateCameraVectors() {
   up = glm::normalize(glm::cross(right, front));
 }
 
-float Camera::getZoom() const {
-  return zoom;
+float Camera::getFov() const {
+  return fov;
 }
 
-void Camera::setZoom(float zoom) {
-  this->zoom = zoom;
+void Camera::setFov(float fov) {
+  this->fov = fov;
 }
 
 void Camera::setPosition(glm::vec3 position) {

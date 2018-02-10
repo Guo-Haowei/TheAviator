@@ -58,6 +58,7 @@ int main() {
   while (!DisplayManager::shouldCloseDisplay()) {
     if (shouldUpdate(currentTime, delta, lastTime, fps)) {
       MouseManager::update();
+      primaryCamera.update();
       DisplayManager::prepareDisplay();
 
       renderer.render();

@@ -93,6 +93,6 @@ void AirPlane::update() {
   hairAngle += 0.16f;
 
   for (int i = 0; i < components.size(); ++i) {
-    components[i]->changePosition(glm::vec3(0.05f, 0.03f, 0.0f));
+//    components[i]->changePosition(glm::vec3(0.05f, 0.03f, 0.0f));
   }
 }

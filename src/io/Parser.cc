@@ -20,7 +20,8 @@ float SEA::MAX_SPEED;
 float CAMERA::X;
 float CAMERA::Y;
 float CAMERA::Z;
-float CAMERA::ZOOM;
+float CAMERA::FOV;
+float CAMERA::ZOOM_SENSITIVITY;
 
 float LIGHT::X;
 float LIGHT::Y;
@@ -71,7 +72,8 @@ void Parser::parse() {
   getNextFloat(configFile, &CAMERA::X);
   getNextFloat(configFile, &CAMERA::Y);
   getNextFloat(configFile, &CAMERA::Z);
-  getNextFloat(configFile, &CAMERA::ZOOM);
+  getNextFloat(configFile, &CAMERA::FOV);
+  getNextFloat(configFile, &CAMERA::ZOOM_SENSITIVITY);
 
   getNextFloat(configFile, &LIGHT::X);
   getNextFloat(configFile, &LIGHT::Y);
