@@ -1,5 +1,5 @@
-// AirPlane.cc
-#include "AirPlane.h"
+// Airplane.cc
+#include "Airplane.h"
 #include "../common.h"
 #include "../utils/Maths.h"
 #include "../models/Geometry.h"
@@ -13,7 +13,7 @@ glm::vec3 brown(BROWN[0], BROWN[1], BROWN[2]);
 glm::vec3 brownDark(BROWNDARK[0], BROWNDARK[1], BROWNDARK[2]);
 glm::vec3 pink(PINK[0], PINK[1], PINK[2]);
 
-AirPlane::AirPlane() :
+Airplane::Airplane() :
   position(glm::vec3(0.0f)),
   axisX(glm::vec4(1.0f, 0.0f, 0.0f, 0.0f)),
   axisY(glm::vec4(0.0f, 1.0f, 0.0f, 0.0f)),
@@ -80,9 +80,9 @@ AirPlane::AirPlane() :
   translate(AIRPLANE::X, AIRPLANE::Y, AIRPLANE::Z);
 }
 
-AirPlane::~AirPlane() {}
+Airplane::~Airplane() {}
 
-void AirPlane::rotate(float dx, float dy, float dz, glm::vec3 center) {
+void Airplane::rotate(float dx, float dy, float dz, glm::vec3 center) {
   float angle = dx != 0.0f ? dx : dy != 0.0f ? dy : dz;
   glm::mat4 rotationMatrix = Maths::calculateRotationMatrix(dx, dy, dz, center);
   axisX = rotationMatrix * axisX;
@@ -93,7 +93,7 @@ void AirPlane::rotate(float dx, float dy, float dz, glm::vec3 center) {
   }
 }
 
-void AirPlane::translate(float dx, float dy, float dz) {
+void Airplane::translate(float dx, float dy, float dz) {
   position += glm::vec3(dx, dy, dz);
   glm::mat4 translationMatrix = Maths::calculateTranslationMatrix(dx, dy, dz);
   for (int i = 0; i < components.size(); ++i) {
@@ -101,11 +101,11 @@ void AirPlane::translate(float dx, float dy, float dz) {
   }
 }
 
-void AirPlane::updateHair() {
+void Airplane::updateHair() {
 
 }
 
-void AirPlane::update() {
+void Airplane::update() {
 
   //static float hairAngle = 0.0f;
   //float baseY = cockpit.getPosition().y;

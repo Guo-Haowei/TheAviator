@@ -2,7 +2,7 @@
 #include "common.h"
 #include "entities/Camera.h"
 #include "entities/Entity.h"
-#include "entities/AirPlane.h"
+#include "entities/Airplane.h"
 #include "models/Geometry.h"
 #include "renderEngine/DisplayManager.h"
 #include "renderEngine/Renderer.h"
@@ -47,7 +47,7 @@ int main() {
   primaryCamera.initPrimaryCamera();
   Renderer renderer;
 
-  AirPlane airPlane;
+  Airplane airplane;
 
   int fps = 60;
   double currentTime, lastTime = DisplayManager::getTime();
@@ -63,7 +63,7 @@ int main() {
 
       renderer.render();
 
-      airPlane.update();
+      airplane.update();
       DisplayManager::updateDisplay();
       ++updates;
     }

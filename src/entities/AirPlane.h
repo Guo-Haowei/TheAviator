@@ -1,10 +1,10 @@
-// AirPlane.h
+// Airplane.h
 #pragma once
 #include "Entity.h"
 #include <glm/glm.hpp>
 #include <vector>
 
-class AirPlane {
+class Airplane {
 private:
   glm::vec3 position;
   glm::vec4 axisX, axisY, axisZ;
@@ -35,8 +35,8 @@ private:
   Entity hairBack;
   Entity hair[12];
 public:
-  AirPlane();
-  ~AirPlane();
+  Airplane();
+  ~Airplane();
 
   void updateHair();
   void rotate(float dx, float dy, float dz, glm::vec3 center);
