@@ -34,7 +34,7 @@ AirPlane::AirPlane():
   hairBack(Geometry::cube, glm::vec3(-1.6f, 2.8f, 0.0f), brown, glm::vec3(0.2f, 0.8f, 1.0f))
 {
   blade2.changeRotation(90.0f, 0.0f, 0.0f);
-  suspension.changeRotation(0.0f, 0.0f, -0.3f);
+  suspension.changeRotation(0.0f, 0.0f, -17.2f);
   components.push_back(&cockpit);
   components.push_back(&propeller);
   components.push_back(&engine);
@@ -70,7 +70,7 @@ AirPlane::AirPlane():
 
   for (int i = 0; i < components.size(); ++i) {
     Entity::addEntity(components[i]);
-    components[i]->changePosition(position);
+    components[i]->changePosition(position.x, position.y, position.z);
   }
 }
 
@@ -93,6 +93,6 @@ void AirPlane::update() {
   hairAngle += 0.16f;
 
   for (int i = 0; i < components.size(); ++i) {
-//    components[i]->changePosition(glm::vec3(0.05f, 0.03f, 0.0f));
+    components[i]->changePosition(0.05f, 0.03f, 0.0f);
   }
 }
