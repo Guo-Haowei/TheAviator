@@ -66,6 +66,7 @@ int main() {
       renderer.render();
 
       airplane.update();
+      sky.update();
       DisplayManager::updateDisplay();
       ++updates;
     }

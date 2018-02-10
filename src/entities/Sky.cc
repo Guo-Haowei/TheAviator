@@ -2,7 +2,6 @@
 #include "Sky.h"
 #include "Entity.h"
 #include "../common.h"
-#include "../utils/Debug.h"
 #include "../utils/Maths.h"
 #include "../models/Geometry.h"
 #include <iostream>
@@ -17,23 +16,41 @@ Sky::Sky(): cloudCount(20) {
   }
 }
 
-Sky::~Sky() {}
+Sky::~Sky() {
+  for (auto& cloud: clouds) {
+    for (int i = 0; i < cloud.size(); ++i) {
+      delete cloud[i];
+    }
+  }
+}
 
 void Sky::createCloud(float angle) {
   int index = clouds.size();
   clouds.push_back(vector<Entity*>());
 
   int nBlocks = 3 + Maths::rand(0, 3);
-  float height = Maths::rand(15.0f, 35.0f) + SEA::RADIUS;
+  float height = Maths::rand(60.0f, 140.0f) + SEA::RADIUS;
+  float cloudScale = Maths::rand(1.0f, 3.0f);
   for (int i = 0; i < nBlocks; ++i) {
-    glm::vec3 position((float)i * 1.5f, Maths::rand(0.0f, 1.0f), Maths::rand(0.0f, 1.0f));
-    float scale = 2.0f * Maths::rand(0.1f, 0.9f);
+    glm::vec3 position((float)i * 6.0f * cloudScale, Maths::rand(0.0f, 4.0f), Maths::rand(0.0f, 4.0f));
+    float scale = 8.0f * Maths::rand(0.2f, 0.9f) * cloudScale;
     Entity* entity = new Entity(Geometry::cube, position, color, glm::vec3(scale));
 
     clouds[index].push_back(entity);
-    entity->changeRotation(0.0f, Maths::rand(0.0f, 2 * PI), Maths::rand(0.0f, 2 * PI));
+    entity->changeRotation(0.0f, Maths::rand(0.0f, 2 * PI), Maths::rand(0.0f, 2.0f * PI));
 
     Entity::addEntity(entity);
-    entity->changePosition(glm::cos(angle) * height, glm::sin(angle) * height - SEA::RADIUS, Maths::rand(-80.0f, -30.0f));
+    entity->changePosition(glm::cos(angle) * height, glm::sin(angle) * height - SEA::RADIUS, Maths::rand(-320.0f, -120.0f));
+  }
+}
+
+void Sky::update() {
+  for (auto& cloud: clouds) {
+    for (int i = 0; i < cloud.size(); ++i) {
+      // rotate around world
+      cloud[i]->changeRotation(glm::vec3(0.0f, 0.0f, 1.0f), glm::radians(0.1f), glm::vec3(0.0f, -SEA::RADIUS, 0.0f));
+      // rotate around self
+      cloud[i]->changeRotation(0.0f, Maths::rand(0.0f, 0.005f) * (float)(i + 1), Maths::rand(0.0f, 0.002) * (float)(i + 1));
+    }
   }
 }

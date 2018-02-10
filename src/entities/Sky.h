@@ -14,5 +14,6 @@ public:
   ~Sky();
 
   void createCloud(float angle);
+  void update();
 };
 

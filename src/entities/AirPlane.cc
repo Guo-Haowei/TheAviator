@@ -108,7 +108,6 @@ void Airplane::updateHair() {
     float height = 0.3f + glm::cos(hairAngle + i / 3) * 0.1f;
     float dy = (height - hair[i].getScale().y) / 2;
     glm::vec3 translateVector = dy * glm::normalize(glm::vec3(axisY.x, axisY.y, axisY.z));
-    Debug::printVector(translateVector);
     hair[i].changePosition(translateVector.x, translateVector.y, translateVector.z);
     hair[i].setScale(0.4f, height, 0.4f);
   }
@@ -118,7 +117,7 @@ void Airplane::updateHair() {
 void Airplane::update() {
 
   //rotate(0.0, 0.0, glm::radians(1.0f), position);
-  translate(0.1f, 0.1f, 0.0f);
+  //translate(0.1f, 0.1f, 0.0f);
 
   // update hair
   updateHair();
