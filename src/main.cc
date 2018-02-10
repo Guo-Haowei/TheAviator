@@ -7,6 +7,7 @@
 #include "renderEngine/DisplayManager.h"
 #include "renderEngine/Renderer.h"
 #include "io/Parser.h"
+#include "io/MouseManager.h"
 #include <glm/glm.hpp>
 #include <vector>
 #include <iostream>
@@ -56,6 +57,7 @@ int main() {
 
   while (!DisplayManager::shouldCloseDisplay()) {
     if (shouldUpdate(currentTime, delta, lastTime, fps)) {
+      MouseManager::update();
       DisplayManager::prepareDisplay();
 
       renderer.render();
