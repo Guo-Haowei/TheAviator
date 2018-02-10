@@ -6,7 +6,7 @@
 #include "models/Geometry.h"
 #include "renderEngine/DisplayManager.h"
 #include "renderEngine/Renderer.h"
-#include "utils/Parser.h"
+#include "io/Parser.h"
 #include <glm/glm.hpp>
 #include <vector>
 #include <iostream>
