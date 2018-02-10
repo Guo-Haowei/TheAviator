@@ -8,5 +8,5 @@ namespace Maths {
 
   glm::mat4 calculateTranslationMatrix(float x, float y, float z);
   glm::mat4 calculateRotationMatrix(float x, float y, float z, glm::vec3 center);
-  glm::mat4 calculateRotationMatrix(glm::vec3 axis, float angle, glm::vec3 center);
+  glm::mat4 rotateAroundAxis(glm::vec3 axis, float angle, glm::vec3 center);
 };

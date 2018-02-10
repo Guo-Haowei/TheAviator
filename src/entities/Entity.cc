@@ -63,11 +63,11 @@ void Entity::changeRotation(glm::mat4 rotationMatrix) {
 }
 
 void Entity::changeRotation(glm::vec3 axis, float angle) {
-  updateTransformation(Maths::calculateRotationMatrix(axis, angle, position));
+  updateTransformation(Maths::rotateAroundAxis(axis, angle, position));
 }
 
 void Entity::changeRotation(glm::vec3 axis, float angle, glm::vec3 center) {
-  updateTransformation(Maths::calculateRotationMatrix(axis, angle, center));
+  updateTransformation(Maths::rotateAroundAxis(axis, angle, center));
 }
 
 void Entity::changeScale(float dx, float dy, float dz) {

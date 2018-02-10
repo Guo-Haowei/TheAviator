@@ -7,6 +7,10 @@ void Debug::printVector(glm::vec3 vec) {
   cerr << "[" << vec.x << " " << vec.y << " " << vec.z << "]\n";
 }
 
+void Debug::printVector(glm::vec4 vec) {
+  cerr << "[" << vec.x << " " << vec.y << " " << vec.z << " " << vec.w << "]\n";
+}
+
 void Debug::printMatrix(glm::mat4 mat) {
   cerr << "[" << mat[0].x << " " << mat[1].x << " " << mat[2].x << " " << mat[3].x << "]\n";
   cerr << "[" << mat[0].y << " " << mat[1].y << " " << mat[2].y << " " << mat[3].y << "]\n";

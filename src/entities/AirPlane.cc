@@ -4,6 +4,7 @@
 #include "../utils/Maths.h"
 #include "../models/Geometry.h"
 #include "../utils/Debug.h"
+#include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 using std::vector;
 
@@ -102,23 +103,25 @@ void Airplane::translate(float dx, float dy, float dz) {
 }
 
 void Airplane::updateHair() {
-
+  static float hairAngle = 0.0f;
+  for (int i = 0; i < 12; ++i) {
+    float height = 0.3f + glm::cos(hairAngle + i / 3) * 0.1f;
+    float dy = (height - hair[i].getScale().y) / 2;
+    glm::vec3 translateVector = dy * glm::normalize(glm::vec3(axisY.x, axisY.y, axisY.z));
+    Debug::printVector(translateVector);
+    hair[i].changePosition(translateVector.x, translateVector.y, translateVector.z);
+    hair[i].setScale(0.4f, height, 0.4f);
+  }
+  hairAngle += 0.16f;
 }
 
 void Airplane::update() {
 
-  //static float hairAngle = 0.0f;
-  //float baseY = cockpit.getPosition().y;
-  //for (int i = 0; i < 12; ++i) {
-    //float dy = glm::cos(hairAngle + i / 3);
-    //glm::vec3 pos = hair[i].getPosition();
-    //hair[i].setPosition(pos.x, baseY + 3.2f + .15f + dy * 0.05f, pos.z);
-    //hair[i].setScale(0.4f, 0.3f + dy * 0.1f, 0.4f);
-  //}
-  //hairAngle += 0.16f;
-  rotate(0.0, 0.0, glm::radians(1.0f), position);
-  translate(0.3f, 0.3f, 0.0f);
+  //rotate(0.0, 0.0, glm::radians(1.0f), position);
+  translate(0.1f, 0.1f, 0.0f);
 
+  // update hair
+  updateHair();
   // update propeller
   blade1.changeRotation(axisX, glm::radians(10.0f));
   blade2.changeRotation(axisX, glm::radians(10.0f));

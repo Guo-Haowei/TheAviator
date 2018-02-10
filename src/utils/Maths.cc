@@ -30,7 +30,7 @@ glm::mat4 Maths::calculateRotationMatrix(float x, float y, float z, glm::vec3 ce
   return rotationMatrix;
 }
 
-glm::mat4 Maths::calculateRotationMatrix(glm::vec3 axis, float angle, glm::vec3 center) {
+glm::mat4 Maths::rotateAroundAxis(glm::vec3 axis, float angle, glm::vec3 center) {
   glm::mat4 rotationMatrix, T, T_1;
   T = glm::translate(T, -center);
   T_1 = glm::translate(T_1, center);
