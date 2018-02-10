@@ -35,15 +35,15 @@ void Entity::setPosition(float dx, float dy, float dz) {
 }
 
 void Entity::changeRotation(float dx, float dy, float dz) {
-  rotation.x += Maths::toRadians(dx);
-  rotation.y += Maths::toRadians(dy);
-  rotation.z += Maths::toRadians(dz);
+  rotation.x += glm::radians(dx);
+  rotation.y += glm::radians(dy);
+  rotation.z += glm::radians(dz);
 }
 
 void Entity::changeRotation(glm::vec3 xyz) {
-  rotation.x += Maths::toRadians(xyz.x);
-  rotation.y += Maths::toRadians(xyz.y);
-  rotation.z += Maths::toRadians(xyz.z);
+  rotation.x += glm::radians(xyz.x);
+  rotation.y += glm::radians(xyz.y);
+  rotation.z += glm::radians(xyz.z);
 }
 
 void Entity::changeScale(float dx, float dy, float dz) {
