@@ -61,7 +61,6 @@ AirPlane::AirPlane() :
   components.push_back(&hairBack);
 
   // create hair
-  // -1.5 3.2 0
   for (int i = 0; i < 12; ++i) {
     int col = i % 3;
     int row = i / 3;
@@ -102,9 +101,12 @@ void AirPlane::translate(float dx, float dy, float dz) {
   }
 }
 
+void AirPlane::updateHair() {
+
+}
+
 void AirPlane::update() {
 
-  // update hair
   //static float hairAngle = 0.0f;
   //float baseY = cockpit.getPosition().y;
   //for (int i = 0; i < 12; ++i) {
@@ -115,7 +117,7 @@ void AirPlane::update() {
   //}
   //hairAngle += 0.16f;
   rotate(0.0, 0.0, glm::radians(1.0f), position);
-  //translate(0.3f, 0.3f, 0.0f);
+  translate(0.3f, 0.3f, 0.0f);
 
   // update propeller
   blade1.changeRotation(axisX, glm::radians(10.0f));

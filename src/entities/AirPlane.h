@@ -38,6 +38,7 @@ public:
   AirPlane();
   ~AirPlane();
 
+  void updateHair();
   void rotate(float dx, float dy, float dz, glm::vec3 center);
   void translate(float dx, float dy, float dz);
   void update();
