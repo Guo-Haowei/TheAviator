@@ -4,6 +4,6 @@ build/
 .vs/
 glm/
 *.sln
-*.vcxproj
-*.vcxproj.filters
+*.vcxproj*
 *.dll
+*.swp
