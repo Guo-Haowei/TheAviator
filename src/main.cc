@@ -3,6 +3,7 @@
 #include "entities/Camera.h"
 #include "entities/Entity.h"
 #include "entities/Airplane.h"
+#include "entities/Sky.h"
 #include "models/Geometry.h"
 #include "renderEngine/DisplayManager.h"
 #include "renderEngine/Renderer.h"
@@ -48,6 +49,7 @@ int main() {
   Renderer renderer;
 
   Airplane airplane;
+  Sky sky;
 
   int fps = 60;
   double currentTime, lastTime = DisplayManager::getTime();

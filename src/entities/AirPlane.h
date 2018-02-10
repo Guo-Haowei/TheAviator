@@ -1,8 +1,9 @@
 // Airplane.h
 #pragma once
 #include "Entity.h"
-#include <glm/glm.hpp>
 #include <vector>
+
+class Entity;
 
 class Airplane {
 private:

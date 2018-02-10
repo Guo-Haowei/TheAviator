@@ -24,13 +24,13 @@ public:
   void changePosition(glm::mat4 translationMatrix);
   void changePosition(float dx, float dy, float dz);
 
+  void changeRotation(float x, float y, float z);
   void changeRotation(glm::mat4 rotationMatrix);
   void changeRotation(glm::vec3 axis, float angle);
   void changeRotation(glm::vec3 axis, float angle, glm::vec3 center);
 
   glm::vec3 getScale() const;
   void setScale(float dx, float dy, float dz);
-  void changeScale(float dx, float dy, float dz);
 
   glm::mat4 getTransformationMatrix();
 

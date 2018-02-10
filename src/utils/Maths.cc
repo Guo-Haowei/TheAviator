@@ -6,6 +6,10 @@
 #include <iostream>
 using std::cout;
 
+int Maths::rand(int min, int max) {
+  return min + std::rand() * (max - min) / RAND_MAX;
+}
+
 float Maths::rand(float min, float max) {
   return min + (float)std::rand() / (float)RAND_MAX * (max - min);
 }

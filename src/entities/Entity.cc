@@ -58,6 +58,10 @@ void Entity::setPosition(float dx, float dy, float dz) {
   transformation[3].z = dz;
 }
 
+void Entity::changeRotation(float x, float y, float z) {
+  updateTransformation(Maths::calculateRotationMatrix(x, y, z, position));
+}
+
 void Entity::changeRotation(glm::mat4 rotationMatrix) {
   updateTransformation(rotationMatrix);
 }
@@ -68,12 +72,6 @@ void Entity::changeRotation(glm::vec3 axis, float angle) {
 
 void Entity::changeRotation(glm::vec3 axis, float angle, glm::vec3 center) {
   updateTransformation(Maths::rotateAroundAxis(axis, angle, center));
-}
-
-void Entity::changeScale(float dx, float dy, float dz) {
-  scale.x += dx;
-  scale.y += dy;
-  scale.z += dz;
 }
 
 void Entity::setScale(float dx, float dy, float dz) {

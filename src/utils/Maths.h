@@ -4,6 +4,7 @@
 #define PI 3.14159265358979323846
 
 namespace Maths {
+  int rand(int min, int max);
   float rand(float min, float max);
 
   glm::mat4 calculateTranslationMatrix(float x, float y, float z);
