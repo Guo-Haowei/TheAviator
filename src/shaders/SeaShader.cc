@@ -12,7 +12,7 @@ Entity* SEA_MODEL;
 
 SeaShader::SeaShader() {
   SEA_MODEL = new Entity(Geometry::sea, glm::vec3(0.0f, -SEA::RADIUS, 0.0f));
-  SEA_MODEL->changeRotation(glm::radians(90.0f), 0.0f, 0.0f, SEA_MODEL->getPosition());
+  SEA_MODEL->changeRotation(glm::vec3(1.0f, 0.0f, 0.0f), glm::radians(90.0f));
 
   const char* VERTEX_FILE = "../shaders/sea.vert";
   const char* FRAGMENT_FILE = "../shaders/sea.frag";
@@ -72,5 +72,5 @@ void SeaShader::render() {
   stop();
 
   // update sea
-  SEA_MODEL->changeRotation(0.0f, 0.0f, glm::radians(0.1f), SEA_MODEL->getPosition());
+  SEA_MODEL->changeRotation(glm::vec3(0.0f, 0.0f, 1.0f), glm::radians(0.1f));
 }

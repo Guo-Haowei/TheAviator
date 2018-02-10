@@ -10,7 +10,7 @@ private:
   RawModel* model;
   float opacity;
 
-  void updateRotation(glm::mat4 rotationMatrix);
+  void updateTransformation(glm::mat4 transformationMatrix);
 protected:
   glm::vec3 position, color, scale;
   glm::mat4 transformation;
@@ -21,9 +21,9 @@ public:
 
   glm::vec3 getPosition() const;
   void setPosition(float dx, float dy, float dz);
+  void changePosition(glm::mat4 translationMatrix);
   void changePosition(float dx, float dy, float dz);
 
-  void changeRotation(float dx, float dy, float dz, glm::vec3 center);
   void changeRotation(glm::mat4 rotationMatrix);
   void changeRotation(glm::vec3 axis, float angle);
   void changeRotation(glm::vec3 axis, float angle, glm::vec3 center);

@@ -6,6 +6,7 @@
 namespace Maths {
   float rand(float min, float max);
 
+  glm::mat4 calculateTranslationMatrix(float x, float y, float z);
+  glm::mat4 calculateRotationMatrix(float x, float y, float z, glm::vec3 center);
   glm::mat4 calculateRotationMatrix(glm::vec3 axis, float angle, glm::vec3 center);
-  glm::mat4 calculateRotationMatrix(glm::vec3 axis, float cosTheta, float sinTheta, glm::vec3 center);
 };

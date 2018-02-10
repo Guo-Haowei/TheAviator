@@ -55,8 +55,7 @@ make
 ```
 
 ## TODO
-* Add input manager
-* Change transformation representation
+* Implement my own rotation
 * Fix alpha fog conflict
 * Add cloud, Coin and Obstacle
 * Add structure for dynamic and static objects
