@@ -5,21 +5,31 @@
 using std::vector;
 
 Entity::Entity(): model(nullptr), position(glm::vec3(0.0f)), color(glm::vec3(0.0f)), scale(glm::vec3(0.0f)), opacity(1.0f) {
+  transformation = glm::mat4(1.0f);
   transformation[3].x = position.x;
   transformation[3].y = position.y;
   transformation[3].z = position.z;
 }
 
 Entity::Entity(const Entity& other): model(other.model), position(other.position), color(other.color), scale(other.scale), opacity(other.opacity) {
+  transformation = glm::mat4(1.0f);
   transformation[3].x = position.x;
   transformation[3].y = position.y;
   transformation[3].z = position.z;
 }
 
 Entity::Entity(RawModel* model, glm::vec3 position, glm::vec3 color, glm::vec3 scale, float opacity) : model(model), position(position), color(color), scale(scale), opacity(opacity) {
+  transformation = glm::mat4(1.0f);
   transformation[3].x = position.x;
   transformation[3].y = position.y;
   transformation[3].z = position.z;
+}
+
+void Entity::updateRotation(glm::mat4 rotationMatrix) {
+  transformation = rotationMatrix * transformation;
+  position.x = transformation[3].x;
+  position.y = transformation[3].y;
+  position.z = transformation[3].z;
 }
 
 glm::mat4 Entity::getTransformationMatrix() {
@@ -44,34 +54,28 @@ void Entity::setPosition(float dx, float dy, float dz) {
   transformation[3].z = dz;
 }
 
-void Entity::changeRotation(float dx, float dy, float dz) {
-  glm::mat4 rotationMatrix(1);
-  glm::mat4 T, T_1;
-  T = glm::translate(T, -position);
-  T_1 = glm::translate(T_1, position);
-  rotationMatrix = glm::rotate(rotationMatrix, glm::radians(dx), glm::vec3(1, 0, 0));
-  rotationMatrix = glm::rotate(rotationMatrix, glm::radians(dy), glm::vec3(0, 1, 0));
-  rotationMatrix = glm::rotate(rotationMatrix, glm::radians(dz), glm::vec3(0, 0, 1));
-
-  transformation = T_1 * rotationMatrix * T * transformation;
-  position.x = transformation[3].x;
-  position.y = transformation[3].y;
-  position.z = transformation[3].z;
-}
-
 void Entity::changeRotation(float dx, float dy, float dz, glm::vec3 center) {
   glm::mat4 rotationMatrix(1);
   glm::mat4 T, T_1;
   T = glm::translate(T, -center);
   T_1 = glm::translate(T_1, center);
-  rotationMatrix = glm::rotate(rotationMatrix, glm::radians(dx), glm::vec3(1, 0, 0));
-  rotationMatrix = glm::rotate(rotationMatrix, glm::radians(dy), glm::vec3(0, 1, 0));
-  rotationMatrix = glm::rotate(rotationMatrix, glm::radians(dz), glm::vec3(0, 0, 1));
+  rotationMatrix = glm::rotate(rotationMatrix, dx, glm::vec3(1, 0, 0));
+  rotationMatrix = glm::rotate(rotationMatrix, dy, glm::vec3(0, 1, 0));
+  rotationMatrix = glm::rotate(rotationMatrix, dz, glm::vec3(0, 0, 1));
 
-  transformation = T_1 * rotationMatrix * T * transformation;
-  position.x = transformation[3].x;
-  position.y = transformation[3].y;
-  position.z = transformation[3].z;
+  updateRotation(T_1 * rotationMatrix * T);
+}
+
+void Entity::changeRotation(glm::mat4 rotationMatrix) {
+  updateRotation(rotationMatrix);
+}
+
+void Entity::changeRotation(glm::vec3 axis, float angle) {
+  updateRotation(Maths::calculateRotationMatrix(axis, angle, position));
+}
+
+void Entity::changeRotation(glm::vec3 axis, float angle, glm::vec3 center) {
+  updateRotation(Maths::calculateRotationMatrix(axis, angle, center));
 }
 
 void Entity::changeScale(float dx, float dy, float dz) {

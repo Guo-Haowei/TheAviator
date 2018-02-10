@@ -1,7 +1,11 @@
 // Maths.h
 #pragma once
+#include <glm/glm.hpp>
 #define PI 3.14159265358979323846
 
 namespace Maths {
   float rand(float min, float max);
+
+  glm::mat4 calculateRotationMatrix(glm::vec3 axis, float angle, glm::vec3 center);
+  glm::mat4 calculateRotationMatrix(glm::vec3 axis, float cosTheta, float sinTheta, glm::vec3 center);
 };

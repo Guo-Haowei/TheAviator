@@ -7,6 +7,7 @@
 class AirPlane {
 private:
   glm::vec3 position;
+  glm::vec4 axisX, axisY, axisZ;
   std::vector<Entity*> components;
 
   // plane
@@ -37,5 +38,7 @@ public:
   AirPlane();
   ~AirPlane();
 
+  void rotate(float dx, float dy, float dz, glm::vec3 center);
+  void translate(float dx, float dy, float dz);
   void update();
 };

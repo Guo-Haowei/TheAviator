@@ -1,6 +1,7 @@
 // AirPlane.cc
 #include "AirPlane.h"
 #include "../common.h"
+#include "../utils/Maths.h"
 #include "../models/Geometry.h"
 using std::vector;
 
@@ -10,8 +11,11 @@ glm::vec3 brown(BROWN[0], BROWN[1], BROWN[2]);
 glm::vec3 brownDark(BROWNDARK[0], BROWNDARK[1], BROWNDARK[2]);
 glm::vec3 pink(PINK[0], PINK[1], PINK[2]);
 
-AirPlane::AirPlane():
+AirPlane::AirPlane() :
   position(glm::vec3(AIRPLANE::X, AIRPLANE::Y, AIRPLANE::Z)),
+  axisX(glm::vec4(1.0f, 0.0f, 0.0f, 0.0f)),
+  axisY(glm::vec4(0.0f, 1.0f, 0.0f, 0.0f)),
+  axisZ(glm::vec4(0.0f, 0.0f, 1.0f, 0.0f)),
   cockpit(Geometry::cockpit, glm::vec3(0.0f), red),
   engine(Geometry::cube, glm::vec3(5.0f, 0.0f, 0.0f), white, glm::vec3(2.0f, 5.0f, 5.0f)),
   tail(Geometry::cube, glm::vec3(-4.0f, 2.0f, 0.0f), red, glm::vec3(1.5f, 2.0f, 0.5f)),
@@ -33,8 +37,9 @@ AirPlane::AirPlane():
   hairSide(Geometry::cube, glm::vec3(-1.3f, 3.0f, 0.0f), brown, glm::vec3(1.2f, 0.4f, 1.2f)),
   hairBack(Geometry::cube, glm::vec3(-1.6f, 2.8f, 0.0f), brown, glm::vec3(0.2f, 0.8f, 1.0f))
 {
-  blade2.changeRotation(90.0f, 0.0f, 0.0f);
-  suspension.changeRotation(0.0f, 0.0f, -17.2f);
+  this->position = glm::vec3(AIRPLANE::X, AIRPLANE::Y, AIRPLANE::Z);
+  blade2.changeRotation(glm::radians(90.0f), 0.0f, 0.0f, blade2.getPosition());
+  suspension.changeRotation(glm::vec3(0.0f, 0.0f, 1.0f), -0.3f);
   components.push_back(&cockpit);
   components.push_back(&propeller);
   components.push_back(&engine);
@@ -76,23 +81,39 @@ AirPlane::AirPlane():
 
 AirPlane::~AirPlane() {}
 
+void AirPlane::rotate(float dx, float dy, float dz, glm::vec3 center) {
+  float angle = dx != 0.0f ? dx : dy != 0.0f ? dy : dz;
+  glm::mat4 rotationMatrix = Maths::calculateRotationMatrix(glm::normalize(glm::vec3(dx, dy, dz)), angle, center);
+  axisX = rotationMatrix * axisX;
+  axisY = rotationMatrix * axisY;
+  axisZ = rotationMatrix * axisZ;
+  for (int i = 0; i < components.size(); ++i) {
+    components[i]->changeRotation(rotationMatrix);
+  }
+
+  blade1.changeRotation(axisX, glm::radians(10.0f));
+  blade2.changeRotation(axisX, glm::radians(10.0f));
+  propeller.changeRotation(axisX, glm::radians(10.0f));
+}
+
+void AirPlane::translate(float dx, float dy, float dz) {
+  for (int i = 0; i < components.size(); ++i) {
+    components[i]->changePosition(dx, dy, dz);
+  }
+}
+
 void AirPlane::update() {
-  blade1.changeRotation(10.0f, 0.0f, 0.0f);
-  blade2.changeRotation(10.0f, 0.0f, 0.0f);
-  propeller.changeRotation(10.0f, 0.0f, 0.0f);
 
   // update hair
-  static float hairAngle = 0.0f;
-  float baseY = cockpit.getPosition().y;
-  for (int i = 0; i < 12; ++i) {
-    float dy = glm::cos(hairAngle + i / 3);
-    glm::vec3 pos = hair[i].getPosition();
-    hair[i].setPosition(pos.x, baseY + 3.2f + .15f + dy * 0.05f, pos.z);
-    hair[i].setScale(0.4f, 0.3f + dy * 0.1f, 0.4f);
-  }
-  hairAngle += 0.16f;
-
-  for (int i = 0; i < components.size(); ++i) {
-    components[i]->changePosition(0.05f, 0.03f, 0.0f);
-  }
+  //static float hairAngle = 0.0f;
+  //float baseY = cockpit.getPosition().y;
+  //for (int i = 0; i < 12; ++i) {
+    //float dy = glm::cos(hairAngle + i / 3);
+    //glm::vec3 pos = hair[i].getPosition();
+    //hair[i].setPosition(pos.x, baseY + 3.2f + .15f + dy * 0.05f, pos.z);
+    //hair[i].setScale(0.4f, 0.3f + dy * 0.1f, 0.4f);
+  //}
+  //hairAngle += 0.16f;
+  rotate(0.0, 0.0, glm::radians(1.0f), position);
+  translate(0.1f, 0.1f, 0.0f);
 }

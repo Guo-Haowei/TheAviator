@@ -24,7 +24,8 @@ void DisplayManager::createDisplay() {
   WIDTH = mode->width;
   HEIGHT = mode->height;
 
-  window = glfwCreateWindow(WIDTH, HEIGHT, "The Aviator", glfwGetPrimaryMonitor(), NULL);
+  //window = glfwCreateWindow(WIDTH, HEIGHT, "The Aviator", glfwGetPrimaryMonitor(), NULL);
+  window = glfwCreateWindow(WIDTH, HEIGHT, "The Aviator", NULL, NULL);
 
   if (window == nullptr) {
     cout << "====================================\n";
