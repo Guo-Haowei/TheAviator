@@ -48,6 +48,8 @@ void DisplayManager::createDisplay() {
 
   glEnable(GL_MULTISAMPLE);
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_CULL_FACE);
+  glFrontFace(GL_CW);
   glCullFace(GL_BACK);
 }
 

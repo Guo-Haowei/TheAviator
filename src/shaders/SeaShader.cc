@@ -61,11 +61,8 @@ void SeaShader::render() {
   loadMatrix4f(location_transformationMatrix, SEA_MODEL->getTransformationMatrix());
   model->bind();
 
-  glEnable(GL_CULL_FACE);
   //glEnable(GL_BLEND);
-  glCullFace(GL_FRONT);
   glDrawElements(GL_TRIANGLES, model->getVertexCount(), GL_UNSIGNED_INT, (void*) 0);
-  glDisable(GL_CULL_FACE);
   //glDisable(GL_BLEND);
 
   RawModel::unbind();
