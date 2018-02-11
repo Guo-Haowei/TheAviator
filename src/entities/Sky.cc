@@ -7,6 +7,46 @@
 #include <iostream>
 using std::vector;
 
+Cloud::Cloud() {}
+
+Cloud::~Cloud() {
+  for (auto& cloud : clouds) {
+    delete cloud;
+  }
+}
+
+void Cloud::add(Entity* entity) {
+  clouds.push_back(entity);
+}
+
+void Cloud::rotate(float dx, float dy, float dz, glm::vec3 center) {
+  float angle = dx != 0.0f ? dx : dy != 0.0f ? dy : dz;
+  glm::mat4 rotationMatrix = Maths::calculateRotationMatrix(dx, dy, dz, center);
+  for (auto& cloud: clouds) {
+    cloud->changeRotation(rotationMatrix);
+  }
+}
+
+void Cloud::translate(float dx, float dy, float dz) {
+  position += glm::vec3(dx, dy, dz);
+  glm::mat4 translationMatrix = Maths::calculateTranslationMatrix(dx, dy, dz);
+  for (auto& cloud: clouds) {
+    cloud->changePosition(translationMatrix);
+  }
+}
+
+void Cloud::rotateEntity() {
+  for (int i = 0; i < clouds.size(); ++i) {
+    clouds[i]->changeRotation(0.0f, Maths::rand(0.0f, 0.005f) * (float)(i + 1), Maths::rand(0.0f, 0.002) * (float)(i + 1));
+  }
+}
+
+void Cloud::setColor(glm::vec3 color) {
+  for (auto& cloud: clouds) {
+    cloud->setColor(color);
+  }
+}
+
 glm::vec3 color_near(WHITE[0], WHITE[1], WHITE[2]);
 glm::vec3 color_far(BACKGROUND_COLOR2[0], BACKGROUND_COLOR2[1], BACKGROUND_COLOR2[2]);
 
@@ -19,46 +59,44 @@ Sky::Sky(): cloudCount(20) {
 
 Sky::~Sky() {
   for (auto& cloud: clouds) {
-    for (int i = 0; i < cloud.size(); ++i) {
-      delete cloud[i];
-    }
+    delete cloud;
   }
 }
 
 void Sky::createCloud(float angle) {
-  int index = clouds.size();
-  clouds.push_back(vector<Entity*>());
-
-  int nBlocks = 3 + Maths::rand(0, 3);
   float height = Maths::rand(60.0f, 140.0f) + SEA::RADIUS;
+  Cloud* cloud = new Cloud();
+  clouds.push_back(cloud);
+
+  int index = clouds.size();
+  int nBlocks = 3 + Maths::rand(0, 3);
   float cloudScale = Maths::rand(1.0f, 3.0f);
   for (int i = 0; i < nBlocks; ++i) {
     glm::vec3 position((float)i * 6.0f * cloudScale, Maths::rand(0.0f, 4.0f), Maths::rand(0.0f, 4.0f));
     float scale = 8.0f * Maths::rand(0.2f, 0.9f) * cloudScale;
     Entity* entity = new Entity(Geometry::cube, position, glm::vec3(0.0f), glm::vec3(scale), 1.0f, false, true);
-
-    clouds[index].push_back(entity);
     entity->changeRotation(0.0f, Maths::rand(0.0f, 2 * PI), Maths::rand(0.0f, 2.0f * PI));
 
+    cloud->add(entity);
     Entity::addEntity(entity);
-    entity->changePosition(glm::cos(angle) * height, glm::sin(angle) * height - SEA::RADIUS, Maths::rand(-320.0f, -120.0f));
-    // linear fog color
-    static float near = -100.0f;
-    static float far = -320.0f;
-    static float dist = entity->getPosition().z;
-    float fogFactor = (far - dist) / (far - near);
-    glm::vec3 adjustedColor = (1.0f - fogFactor) * color_far + fogFactor * color_near;
-    entity->setColor(adjustedColor);
   }
+
+  glm::vec3 cloudPos(glm::cos(angle) * height, glm::sin(angle) * height - SEA::RADIUS, Maths::rand(-320.0f, -120.0f));
+  cloud->translate(cloudPos.x, cloudPos.y, cloudPos.z);
+  cloud->rotate(0.0f, 0.0f, angle + PI / 2.0f, cloudPos);
+  //linear fog color
+  // may change it later
+  static float near = -100.0f;
+  static float far = -320.0f;
+  static float dist = cloudPos.z;
+  float fogFactor = (far - dist) / (far - near);
+  glm::vec3 adjustedColor = (1.0f - fogFactor) * color_far + fogFactor * color_near;
+  cloud->setColor(adjustedColor);
 }
 
 void Sky::update() {
   for (auto& cloud: clouds) {
-    for (int i = 0; i < cloud.size(); ++i) {
-      // rotate around world
-      cloud[i]->changeRotation(glm::vec3(0.0f, 0.0f, 1.0f), glm::radians(0.1f), glm::vec3(0.0f, -SEA::RADIUS, 0.0f));
-      // rotate around self
-      cloud[i]->changeRotation(0.0f, Maths::rand(0.0f, 0.005f) * (float)(i + 1), Maths::rand(0.0f, 0.002) * (float)(i + 1));
-    }
+    cloud->rotate(0.0f, 0.0f, glm::radians(0.1f), glm::vec3(0.0f, -SEA::RADIUS, 0.0f));
+    cloud->rotateEntity();
   }
 }

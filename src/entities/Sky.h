@@ -5,10 +5,25 @@
 
 class Entity;
 
+class Cloud {
+private:
+  glm::vec3 position;
+  std::vector<Entity*> clouds;
+public:
+  Cloud();
+  ~Cloud();
+
+  void add(Entity* entity);
+  void rotate(float dx, float dy, float dz, glm::vec3 center);
+  void translate(float dx, float dy, float dz);
+  void rotateEntity();
+  void setColor(glm::vec3 color);
+};
+
 class Sky {
 private:
   int cloudCount;
-  std::vector<std::vector<Entity*>> clouds;
+  std::vector<Cloud*> clouds;
 public:
   Sky();
   ~Sky();
