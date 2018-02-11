@@ -8,12 +8,14 @@ using std::vector;
 
 Entity::Entity(): model(nullptr), position(glm::vec3(0.0f)), color(glm::vec3(0.0f)), scale(glm::vec3(0.0f)), opacity(1.0f), receiveShadow(true), castShadow(true) {
   transformation = glm::mat4(1.0f);
+  isStatic = true;
   transformation[3].x = position.x;
   transformation[3].y = position.y;
   transformation[3].z = position.z;
 }
 
 Entity::Entity(const Entity& other): model(other.model), position(other.position), color(other.color), scale(other.scale), opacity(other.opacity), receiveShadow(other.receiveShadow), castShadow(other.castShadow) {
+  isStatic = true;
   transformation = glm::mat4(1.0f);
   transformation[3].x = position.x;
   transformation[3].y = position.y;
@@ -21,6 +23,7 @@ Entity::Entity(const Entity& other): model(other.model), position(other.position
 }
 
 Entity::Entity(RawModel* model, glm::vec3 position, glm::vec3 color, glm::vec3 scale, float opacity, bool receiveShadow, bool castShadow) : model(model), position(position), color(color), scale(scale), opacity(opacity), receiveShadow(receiveShadow), castShadow(castShadow) {
+  isStatic = true;
   transformation = glm::mat4(1.0f);
   transformation[3].x = position.x;
   transformation[3].y = position.y;
@@ -108,6 +111,10 @@ bool Entity::getReceiveShadow() const {
 
 bool Entity::getCastShadow() const {
   return castShadow;
+}
+
+bool Entity::getIsStatic() const {
+  return isStatic;
 }
 
 AllEntities allEntities;

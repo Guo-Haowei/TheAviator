@@ -6,16 +6,16 @@
 #include <map>
 
 class Entity {
-private:
+protected:
   RawModel* model;
   float opacity;
   bool receiveShadow;
   bool castShadow;
-
-  void updateTransformation(glm::mat4 transformationMatrix);
-protected:
+  bool isStatic;
   glm::vec3 position, color, scale;
   glm::mat4 transformation;
+
+  void updateTransformation(glm::mat4 transformationMatrix);
 public:
   Entity();
   Entity(const Entity& other);
@@ -42,6 +42,7 @@ public:
   void setColor(glm::vec3 color);
   bool getReceiveShadow() const;
   bool getCastShadow() const;
+  bool getIsStatic() const;
   
   static void addEntity(Entity* entity);
 };
