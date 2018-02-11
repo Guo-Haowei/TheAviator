@@ -18,6 +18,7 @@ const float NEAR_PLANE = 1.0f, FAR_PLANE = 10000.0f;
 
 namespace GAME {
   extern float SPEED;
+  extern int DISPLAY_FPS;
 };
 
 namespace SEA {

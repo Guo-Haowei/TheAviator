@@ -71,7 +71,8 @@ int main() {
       ++updates;
     }
 
-    updateFPSCount(previousSecond, updates);
+    if (GAME::DISPLAY_FPS)
+      updateFPSCount(previousSecond, updates);
   }
 
   // clean up

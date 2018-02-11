@@ -84,6 +84,7 @@ void tetrahedronHelper(int segments, glm::vec3 vert1, glm::vec3 vert2, glm::vec3
 }
 
 RawModel* createTetrahedron(int segments) {
+  assert(segments > 0);
   vector<glm::vec3> vertices;
   if (segments == 1) {
     glm::vec3 vert1(0.5f, 0.5f, 0.5f);
@@ -207,6 +208,8 @@ RawModel* createCube() {
 }
 
 RawModel* createSea(float radius, float height, int radialSegments, int heightSegments) {
+  assert(radialSegments > 0);
+  assert(heightSegments > 0);
   float angleIncrement = 360 / radialSegments;
   float gridHeight = height / heightSegments;
   vector<float> vertices, waves;

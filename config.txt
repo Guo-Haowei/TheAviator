@@ -1,5 +1,6 @@
 #Game
 game_speed: 0.003
+display_fps: 0
 
 #Sea
 radius: 240.0f
@@ -33,7 +34,7 @@ height: 2048
 x: 0.0f
 y: 40.0f
 z: 0.0f
-move_sensitivity: 0.04f
+move_sensitivity: 0.06f
 rotate_sensitivity: 0.02f
 amp_width: 30.f
 amp_height: 32.0f
