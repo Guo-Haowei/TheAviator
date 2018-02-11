@@ -1,3 +1,6 @@
+#Game
+game_speed: 0.003
+
 #Sea
 radius: 240.0f
 height: 320.0f

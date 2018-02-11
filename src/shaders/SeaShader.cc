@@ -72,5 +72,5 @@ void SeaShader::render() {
   stop();
 
   // update sea
-  SEA_MODEL->changeRotation(glm::vec3(0.0f, 0.0f, 1.0f), glm::radians(0.1f));
+  SEA_MODEL->changeRotation(glm::vec3(0.0f, 0.0f, 1.0f), GAME::SPEED);
 }

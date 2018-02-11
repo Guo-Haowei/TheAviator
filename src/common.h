@@ -16,6 +16,10 @@ extern float TIMER;
 
 const float NEAR_PLANE = 1.0f, FAR_PLANE = 10000.0f;
 
+namespace GAME {
+  extern float SPEED;
+};
+
 namespace SEA {
   extern float RADIUS;
   extern float HEIGHT;

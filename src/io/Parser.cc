@@ -8,6 +8,8 @@ using std::cout;
 using std::ifstream;
 using std::string;
 
+float GAME::SPEED;
+
 float SEA::RADIUS;
 float SEA::HEIGHT;
 int SEA::RADIAL_SEGMENTS;
@@ -64,6 +66,8 @@ void getNextInt(ifstream& file, int* value) {
 void Parser::parse() {
   ifstream configFile;
   configFile.open("../config.txt");
+  getNextFloat(configFile, &GAME::SPEED);
+
   getNextFloat(configFile, &SEA::RADIUS);
   getNextFloat(configFile, &SEA::HEIGHT);
   getNextInt(configFile, &SEA::RADIAL_SEGMENTS);

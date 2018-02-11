@@ -96,7 +96,7 @@ void Sky::createCloud(float angle) {
 
 void Sky::update() {
   for (auto& cloud: clouds) {
-    cloud->rotate(0.0f, 0.0f, glm::radians(0.1f), glm::vec3(0.0f, -SEA::RADIUS, 0.0f));
+    cloud->rotate(0.0f, 0.0f, GAME::SPEED, glm::vec3(0.0f, -SEA::RADIUS, 0.0f));
     cloud->rotateEntity();
   }
 }
