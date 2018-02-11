@@ -8,6 +8,7 @@ class Entity;
 class Airplane {
 private:
   glm::vec3 position;
+  glm::vec3 rotation;
   glm::vec4 axisX, axisY, axisZ;
   std::vector<Entity*> components;
   float speed;

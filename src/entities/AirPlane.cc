@@ -27,7 +27,6 @@ glm::vec3 pink(PINK[0], PINK[1], PINK[2]);
 
 Airplane::Airplane() :
   speed(0.0f),
-  position(glm::vec3(0.0f)),
   axisX(glm::vec4(1.0f, 0.0f, 0.0f, 0.0f)),
   axisY(glm::vec4(0.0f, 1.0f, 0.0f, 0.0f)),
   axisZ(glm::vec4(0.0f, 0.0f, 1.0f, 0.0f)),
@@ -96,6 +95,7 @@ Airplane::Airplane() :
 Airplane::~Airplane() {}
 
 void Airplane::rotate(float dx, float dy, float dz, glm::vec3 center) {
+  rotation += glm::vec3(dx, dy, dz);
   float angle = dx != 0.0f ? dx : dy != 0.0f ? dy : dz;
   glm::mat4 rotationMatrix = Maths::calculateRotationMatrix(dx, dy, dz, center);
   axisX = rotationMatrix * axisX;
@@ -139,8 +139,10 @@ void Airplane::update() {
   float deltaX = targetX - position.x;
   float deltaY = targetY - position.y;
   translate(deltaX * AIRPLANE::MOVE_SENSITIVITY, deltaY * AIRPLANE::MOVE_SENSITIVITY, 0.0f);
-  rotate(glm::radians(-deltaY * AIRPLANE::ROTATE_SENSITITY), 0.0f, glm::radians(deltaY * AIRPLANE::ROTATE_SENSITITY), position);
-  // adjust rotation
+  float targetRotationZ = deltaY * AIRPLANE::ROTATE_SENSITITY;
+
+  rotate(0.0f, 0.0f, targetRotationZ - rotation.z, position);
+  rotation.z = targetRotationZ;
   // move camera
 
   COLLISION_SPEED_X += -COLLISION_DISPLACEMENT_X * 0.012f;

@@ -31,7 +31,7 @@ x: 0.0f
 y: 40.0f
 z: 0.0f
 move_sensitivity: 0.04f
-rotate_sensitivity: 0.007f
+rotate_sensitivity: 0.02f
 amp_width: 30.f
 amp_height: 32.0f
 
