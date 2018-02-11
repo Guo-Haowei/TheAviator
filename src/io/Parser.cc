@@ -67,6 +67,12 @@ void getNextInt(ifstream& file, int* value) {
 void Parser::parse() {
   ifstream configFile;
   configFile.open("../config.txt");
+  if (!configFile.is_open()) {
+    std::cout << "==================================================\n";
+    std::cout << "ERROR::PARSER: Failed to open file ../config.txt\n";
+    std::cout << "\n==================================================\n";
+    return;
+  }
   getNextFloat(configFile, &GAME::SPEED);
   getNextInt(configFile, &GAME::DISPLAY_FPS);
 

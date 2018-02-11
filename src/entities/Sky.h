@@ -9,6 +9,7 @@ class Cloud {
 private:
   glm::vec3 position;
   std::vector<Entity*> clouds;
+  float rotationSpeed;
 public:
   Cloud();
   ~Cloud();
@@ -31,4 +32,3 @@ public:
   void createCloud(float angle);
   void update();
 };
-

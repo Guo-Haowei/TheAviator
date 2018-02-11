@@ -7,7 +7,9 @@
 #include <iostream>
 using std::vector;
 
-Cloud::Cloud() {}
+Cloud::Cloud() {
+  rotationSpeed = Maths::rand(0.0f, 0.004f);
+}
 
 Cloud::~Cloud() {
   for (auto& cloud : clouds) {
@@ -37,7 +39,7 @@ void Cloud::translate(float dx, float dy, float dz) {
 
 void Cloud::rotateEntity() {
   for (int i = 0; i < clouds.size(); ++i) {
-    clouds[i]->changeRotation(0.0f, Maths::rand(0.0f, 0.005f) * (float)(i + 1), Maths::rand(0.0f, 0.002) * (float)(i + 1));
+    clouds[i]->changeRotation(0.0f, rotationSpeed * (float)(i + 1), rotationSpeed * (float)(i + 1));
   }
 }
 
@@ -70,10 +72,10 @@ void Sky::createCloud(float angle) {
 
   int index = clouds.size();
   int nBlocks = 3 + Maths::rand(0, 3);
-  float cloudScale = Maths::rand(1.0f, 3.0f);
+  float cloudScale = Maths::rand(1.5f, 2.5f);
   for (int i = 0; i < nBlocks; ++i) {
-    glm::vec3 position((float)i * 6.0f * cloudScale, Maths::rand(0.0f, 4.0f), Maths::rand(0.0f, 4.0f));
-    float scale = 8.0f * Maths::rand(0.2f, 0.9f) * cloudScale;
+    glm::vec3 position((float)i * 5.0f * cloudScale, Maths::rand(0.0f, 4.0f), Maths::rand(0.0f, 4.0f));
+    float scale = 8.0f * Maths::rand(0.5f, 0.9f) * cloudScale;
     Entity* entity = new Entity(Geometry::cube, position, glm::vec3(0.0f), glm::vec3(scale), 1.0f, false, true);
     entity->changeRotation(0.0f, Maths::rand(0.0f, 2 * PI), Maths::rand(0.0f, 2.0f * PI));
 
@@ -85,7 +87,7 @@ void Sky::createCloud(float angle) {
   cloud->translate(cloudPos.x, cloudPos.y, cloudPos.z);
   cloud->rotate(0.0f, 0.0f, angle + PI / 2.0f, cloudPos);
   //linear fog color
-  // may change it later
+  //may change it later
   static float near = -100.0f;
   static float far = -320.0f;
   static float dist = cloudPos.z;

@@ -59,6 +59,6 @@ void main() {
   // fogFactor = 1.0;
 
   vec3 finalColor = (1.0 - fogFactor) * fogColor + fogFactor * fragColor;
-  // out_Color = vec4(finalColor, 0.8);
-  out_Color = vec4(finalColor, 1.0);
+  out_Color = vec4(finalColor, 0.8);
+  //out_Color = vec4(finalColor, 1.0);
 }
