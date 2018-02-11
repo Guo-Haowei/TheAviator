@@ -1,5 +1,6 @@
 // Airplane.cc
 #include "Airplane.h"
+#include "Camera.h"
 #include "../common.h"
 #include "../utils/Maths.h"
 #include "../models/Geometry.h"
@@ -144,6 +145,7 @@ void Airplane::update() {
   rotate(0.0f, 0.0f, targetRotationZ - rotation.z, position);
   rotation.z = targetRotationZ;
   // move camera
+  primaryCamera.chasePoint(position);
 
   COLLISION_SPEED_X += -COLLISION_DISPLACEMENT_X * 0.012f;
   COLLISION_DISPLACEMENT_X += -COLLISION_DISPLACEMENT_X * 0.004f;

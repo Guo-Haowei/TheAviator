@@ -28,7 +28,9 @@ public:
 
   float getFov() const;
   void setFov(float fov);
+  glm::vec3 getPosition() const;
   void setPosition(glm::vec3 position);
+  void chasePoint(glm::vec3 position);
 };
 
 extern Camera primaryCamera;
