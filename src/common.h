@@ -52,8 +52,16 @@ namespace AIRPLANE {
   extern float X;
   extern float Y;
   extern float Z;
-  extern float H_SENSITIVITY;
+  extern float MOVE_SENSITIVITY;
+  extern float ROTATE_SENSITITY;
+  extern float AMPWIDTH;
+  extern float AMPHEIGHT;
 };
+
+extern float COLLISION_SPEED_X;
+extern float COLLISION_SPEED_Y;
+extern float COLLISION_DISPLACEMENT_X;
+extern float COLLISION_DISPLACEMENT_Y;
 
 class Entity;
 extern Entity* SEA_MODEL;

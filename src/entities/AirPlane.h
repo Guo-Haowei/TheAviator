@@ -3,12 +3,6 @@
 #include "Entity.h"
 #include <vector>
 
-enum PLANE_STATE {
-  IDLE,
-  CLIMBING,
-  KNOCKBACK,
-  FALLING
-};
 class Entity;
 
 class Airplane {
@@ -16,10 +10,7 @@ private:
   glm::vec3 position;
   glm::vec4 axisX, axisY, axisZ;
   std::vector<Entity*> components;
-
-  PLANE_STATE state;
-  bool climbing;
-  float climbingAngle;
+  float speed;
 
   // plane
   Entity cockpit;
@@ -45,6 +36,7 @@ private:
   Entity hairSide;
   Entity hairBack;
   Entity hair[12];
+
 public:
   Airplane();
   ~Airplane();

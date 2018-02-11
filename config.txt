@@ -12,7 +12,7 @@ max_speed: 0.03f
 x: 0.0f
 y: 40.0f
 z: 80.0f
-fov: 60.0f
+fov: 50.0f
 zoom_sensitivity: 45.0;
 
 #Light
@@ -27,9 +27,12 @@ width: 2048
 height: 2048
 
 #Airplane
-x: -20.0f
+x: 0.0f
 y: 40.0f
 z: 0.0f
-h_sensitivity: 30.0f
+move_sensitivity: 0.04f
+rotate_sensitivity: 0.007f
+amp_width: 30.f
+amp_height: 32.0f
 
 # 170, 190

@@ -5,18 +5,11 @@
 
 double MouseManager::x = 0;
 double MouseManager::y = 0;
-double MouseManager::prevX = 0;
-double MouseManager::prevY = 0;
-bool MouseManager::initialized = false;
 
-void MouseManager::beforeUpdate() {
+void MouseManager::update() {
   DisplayManager::getCursorPos(&x, &y);
-}
-
-void MouseManager::afterUpdate() {
-  prevX = x;
-  prevY = y;
-  initialized = true;
+  x = -1 + x * 2.0f / (float)WIDTH;
+  y = 1 - y * 2.0f / (float)HEIGHT;
 }
 
 double MouseManager::getX() {
@@ -25,12 +18,4 @@ double MouseManager::getX() {
 
 double MouseManager::getY() {
   return y;
-}
-
-double MouseManager::getDX() {
-  return initialized ? x - prevX : 0;
-}
-
-double MouseManager::getDY() {
-  return initialized ? y - prevY : 0;
 }

@@ -8,7 +8,16 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <algorithm>
 #include <iostream>
+using std::cout;
 using std::vector;
+
+float COLLISION_SPEED_X = 0;
+float COLLISION_SPEED_Y = 0;
+float COLLISION_DISPLACEMENT_X = 0;
+float COLLISION_DISPLACEMENT_Y = 0;
+
+const float PLANE_MIN_SPEED = 0.48f;
+const float PLANE_MAX_SPEED = 0.64f;
 
 glm::vec3 red(RED[0], RED[1], RED[2]);
 glm::vec3 white(WHITE[0], WHITE[1], WHITE[2]);
@@ -17,8 +26,7 @@ glm::vec3 brownDark(BROWNDARK[0], BROWNDARK[1], BROWNDARK[2]);
 glm::vec3 pink(PINK[0], PINK[1], PINK[2]);
 
 Airplane::Airplane() :
-  state(IDLE),
-  climbing(false),
+  speed(0.0f),
   position(glm::vec3(0.0f)),
   axisX(glm::vec4(1.0f, 0.0f, 0.0f, 0.0f)),
   axisY(glm::vec4(0.0f, 1.0f, 0.0f, 0.0f)),
@@ -119,33 +127,26 @@ void Airplane::updateHair() {
 }
 
 void Airplane::update() {
-  float deltaY = -MouseManager::getDY();
-  // change angle when plane starts to climb
-  //if (deltaY != 0.0f && !climbing) {
-  //  climbing = true;
-  //  static float rotationCap = 80.0f;
-  //  climbingAngle = std::max(-rotationCap, std::min(deltaY * 5.0f, rotationCap));
-  //  std::cout << "rotate " << climbingAngle << " degrees\n";
-  //  rotate(0.0f, 0.0f, glm::radians(climbingAngle), position);
-  //}
-  //// keep adjusting axisX until it's horizontal
-  //else if (climbing) {
-  //  static float tolerance = 0.5f;
-  //  float rotateAngle;
-  //  if (climbingAngle >= tolerance || climbingAngle <= -tolerance) {
-  //    rotateAngle = climbingAngle * 0.05f;
-  //    climbingAngle -= rotateAngle;
-  //  } else {
-  //    rotateAngle = climbingAngle;
-  //    climbingAngle = 0.0f;
-  //  }
-  //  rotate(0.0f, 0.0f, -glm::radians(rotateAngle), position);
-  //  if (climbingAngle == 0) {
-  //    climbing = false;
-  //  }
-  //}
-  //rotate(0.0, 0.0, glm::radians(1.0f), position);
-  translate(0.0f, deltaY * AIRPLANE::H_SENSITIVITY / HEIGHT, 0.0f);
+  speed = Maths::clamp(MouseManager::getX(), -0.5f, 0.5f, PLANE_MIN_SPEED, PLANE_MAX_SPEED);
+  float targetX = Maths::clamp(MouseManager::getX(), -1.0f, 1.0f, -AIRPLANE::AMPWIDTH, -0.7f * AIRPLANE::AMPWIDTH);
+  float targetY = Maths::clamp(MouseManager::getY(), -0.75f, 0.75f, AIRPLANE::Y - AIRPLANE::AMPHEIGHT, AIRPLANE::Y + AIRPLANE::AMPHEIGHT);
+
+  COLLISION_DISPLACEMENT_X += COLLISION_SPEED_X;
+  targetX += COLLISION_DISPLACEMENT_X;
+  COLLISION_DISPLACEMENT_Y += COLLISION_DISPLACEMENT_Y;
+  targetY += COLLISION_DISPLACEMENT_Y;
+
+  float deltaX = targetX - position.x;
+  float deltaY = targetY - position.y;
+  translate(deltaX * AIRPLANE::MOVE_SENSITIVITY, deltaY * AIRPLANE::MOVE_SENSITIVITY, 0.0f);
+  rotate(glm::radians(-deltaY * AIRPLANE::ROTATE_SENSITITY), 0.0f, glm::radians(deltaY * AIRPLANE::ROTATE_SENSITITY), position);
+  // adjust rotation
+  // move camera
+
+  COLLISION_SPEED_X += -COLLISION_DISPLACEMENT_X * 0.012f;
+  COLLISION_DISPLACEMENT_X += -COLLISION_DISPLACEMENT_X * 0.004f;
+  COLLISION_SPEED_Y += -COLLISION_DISPLACEMENT_Y * 0.012f;
+  COLLISION_DISPLACEMENT_Y += -COLLISION_DISPLACEMENT_Y * 0.004f;
 
   // update hair
   updateHair();

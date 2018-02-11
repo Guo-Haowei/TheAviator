@@ -1,6 +1,7 @@
 // Camera.cc
 #include "Camera.h"
 #include "../common.h"
+#include "../utils/Maths.h"
 #include "../io/MouseManager.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
@@ -23,9 +24,7 @@ void Camera::initPrimaryCamera() {
 }
 
 void Camera::update() {
-  float mouseX = MouseManager::getX();
-  float delta = (mouseX - WIDTH / 2) / WIDTH * CAMERA::ZOOM_SENSITIVITY;
-  fov = CAMERA::FOV + delta;
+  fov = Maths::clamp(MouseManager::getX(), -1.0f, 1.0f, 40.0f, 80.0f);
 }
 
 glm::mat4 Camera::getProjectionMatrix() {

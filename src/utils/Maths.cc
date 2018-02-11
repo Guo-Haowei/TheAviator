@@ -2,6 +2,7 @@
 #include "Maths.h"
 #include "Debug.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <algorithm>
 #include <cstdlib>
 #include <iostream>
 using std::cout;
@@ -12,6 +13,11 @@ int Maths::rand(int min, int max) {
 
 float Maths::rand(float min, float max) {
   return min + (float)std::rand() / (float)RAND_MAX * (max - min);
+}
+
+float Maths::clamp(float value, float low, float high, float clampLow, float clampHigh) {
+  float boundedValue = std::max(low, std::min(value, high));
+  return (boundedValue - low) / (high - low) * (clampHigh - clampLow) + clampLow;
 }
 
 glm::mat4 Maths::calculateTranslationMatrix(float x, float y, float z) {

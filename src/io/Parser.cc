@@ -35,7 +35,10 @@ int SHADOW::HEIGHT;
 float AIRPLANE::X;
 float AIRPLANE::Y;
 float AIRPLANE::Z;
-float AIRPLANE::H_SENSITIVITY;
+float AIRPLANE::MOVE_SENSITIVITY;
+float AIRPLANE::ROTATE_SENSITITY;
+float AIRPLANE::AMPWIDTH;
+float AIRPLANE::AMPHEIGHT;
 
 // helper
 void getNextFloat(ifstream& file, float* value) {
@@ -88,5 +91,8 @@ void Parser::parse() {
   getNextFloat(configFile, &AIRPLANE::X);
   getNextFloat(configFile, &AIRPLANE::Y);
   getNextFloat(configFile, &AIRPLANE::Z);
-  getNextFloat(configFile, &AIRPLANE::H_SENSITIVITY);
+  getNextFloat(configFile, &AIRPLANE::MOVE_SENSITIVITY);
+  getNextFloat(configFile, &AIRPLANE::ROTATE_SENSITITY);
+  getNextFloat(configFile, &AIRPLANE::AMPWIDTH);
+  getNextFloat(configFile, &AIRPLANE::AMPHEIGHT);
 }
