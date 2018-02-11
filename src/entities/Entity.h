@@ -37,6 +37,7 @@ public:
   float getOpacity() const;
   RawModel* getModel() const;
   glm::vec3 getColor() const;
+  void setColor(glm::vec3 color);
   
   static void addEntity(Entity* entity);
 };

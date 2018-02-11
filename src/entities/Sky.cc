@@ -7,7 +7,8 @@
 #include <iostream>
 using std::vector;
 
-glm::vec3 color(WHITE[0], WHITE[1], WHITE[2]);
+glm::vec3 color_near(WHITE[0], WHITE[1], WHITE[2]);
+glm::vec3 color_far(BACKGROUND_COLOR2[0], BACKGROUND_COLOR2[1], BACKGROUND_COLOR2[2]);
 
 Sky::Sky(): cloudCount(20) {
   float stepAngle = PI * 2 / cloudCount;
@@ -34,13 +35,20 @@ void Sky::createCloud(float angle) {
   for (int i = 0; i < nBlocks; ++i) {
     glm::vec3 position((float)i * 6.0f * cloudScale, Maths::rand(0.0f, 4.0f), Maths::rand(0.0f, 4.0f));
     float scale = 8.0f * Maths::rand(0.2f, 0.9f) * cloudScale;
-    Entity* entity = new Entity(Geometry::cube, position, color, glm::vec3(scale));
+    Entity* entity = new Entity(Geometry::cube, position, glm::vec3(0.0f), glm::vec3(scale));
 
     clouds[index].push_back(entity);
     entity->changeRotation(0.0f, Maths::rand(0.0f, 2 * PI), Maths::rand(0.0f, 2.0f * PI));
 
     Entity::addEntity(entity);
     entity->changePosition(glm::cos(angle) * height, glm::sin(angle) * height - SEA::RADIUS, Maths::rand(-320.0f, -120.0f));
+    // linear fog color
+    static float near = -100.0f;
+    static float far = -320.0f;
+    static float dist = entity->getPosition().z;
+    float fogFactor = (far - dist) / (far - near);
+    glm::vec3 adjustedColor = (1.0f - fogFactor) * color_far + fogFactor * color_near;
+    entity->setColor(adjustedColor);
   }
 }
 

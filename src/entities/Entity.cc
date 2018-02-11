@@ -86,6 +86,10 @@ glm::vec3 Entity::getColor() const {
   return color;
 }
 
+void Entity::setColor(glm::vec3 color) {
+  this->color = color;
+}
+
 glm::vec3 Entity::getScale() const {
   return scale;
 }
