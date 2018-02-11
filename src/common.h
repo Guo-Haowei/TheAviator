@@ -52,6 +52,7 @@ namespace AIRPLANE {
   extern float X;
   extern float Y;
   extern float Z;
+  extern float H_SENSITIVITY;
 };
 
 class Entity;

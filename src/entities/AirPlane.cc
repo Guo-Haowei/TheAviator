@@ -4,7 +4,9 @@
 #include "../utils/Maths.h"
 #include "../models/Geometry.h"
 #include "../utils/Debug.h"
+#include "../io/MouseManager.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <algorithm>
 #include <iostream>
 using std::vector;
 
@@ -15,6 +17,8 @@ glm::vec3 brownDark(BROWNDARK[0], BROWNDARK[1], BROWNDARK[2]);
 glm::vec3 pink(PINK[0], PINK[1], PINK[2]);
 
 Airplane::Airplane() :
+  state(IDLE),
+  climbing(false),
   position(glm::vec3(0.0f)),
   axisX(glm::vec4(1.0f, 0.0f, 0.0f, 0.0f)),
   axisY(glm::vec4(0.0f, 1.0f, 0.0f, 0.0f)),
@@ -115,9 +119,33 @@ void Airplane::updateHair() {
 }
 
 void Airplane::update() {
-
+  float deltaY = -MouseManager::getDY();
+  // change angle when plane starts to climb
+  //if (deltaY != 0.0f && !climbing) {
+  //  climbing = true;
+  //  static float rotationCap = 80.0f;
+  //  climbingAngle = std::max(-rotationCap, std::min(deltaY * 5.0f, rotationCap));
+  //  std::cout << "rotate " << climbingAngle << " degrees\n";
+  //  rotate(0.0f, 0.0f, glm::radians(climbingAngle), position);
+  //}
+  //// keep adjusting axisX until it's horizontal
+  //else if (climbing) {
+  //  static float tolerance = 0.5f;
+  //  float rotateAngle;
+  //  if (climbingAngle >= tolerance || climbingAngle <= -tolerance) {
+  //    rotateAngle = climbingAngle * 0.05f;
+  //    climbingAngle -= rotateAngle;
+  //  } else {
+  //    rotateAngle = climbingAngle;
+  //    climbingAngle = 0.0f;
+  //  }
+  //  rotate(0.0f, 0.0f, -glm::radians(rotateAngle), position);
+  //  if (climbingAngle == 0) {
+  //    climbing = false;
+  //  }
+  //}
   //rotate(0.0, 0.0, glm::radians(1.0f), position);
-  //translate(0.1f, 0.1f, 0.0f);
+  translate(0.0f, deltaY * AIRPLANE::H_SENSITIVITY / HEIGHT, 0.0f);
 
   // update hair
   updateHair();

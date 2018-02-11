@@ -59,7 +59,7 @@ int main() {
 
   while (!DisplayManager::shouldCloseDisplay()) {
     if (shouldUpdate(currentTime, delta, lastTime, fps)) {
-      MouseManager::update();
+      MouseManager::beforeUpdate();
       primaryCamera.update();
       DisplayManager::prepareDisplay();
 
@@ -68,6 +68,7 @@ int main() {
       airplane.update();
       sky.update();
       DisplayManager::updateDisplay();
+      MouseManager::afterUpdate();
       ++updates;
     }
 
