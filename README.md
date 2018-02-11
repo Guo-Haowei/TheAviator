@@ -55,10 +55,10 @@ make
 ```
 
 ## TODO
-* Implement my own rotation
-* Fix alpha fog conflict
-* Add cloud, Coin and Obstacle
+* Add Coin and Obstacle
 * Add structure for dynamic and static objects
 * Collision detection
 * Particle effect
+* Simple physics
 * Implement Cascade Shadow Mapping
+* Fix alpha fog conflict
