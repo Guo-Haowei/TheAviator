@@ -14,8 +14,10 @@ RawModel* Geometry::cube;
 RawModel* Geometry::sea;
 RawModel* Geometry::cockpit;
 RawModel* Geometry::propeller;
+RawModel* Geometry::tetrahedron;
 
 void Geometry::initGeometry() {
+  tetrahedron = createTetrahedron();
   cube = createCube();
   sea = createSea(SEA::RADIUS, SEA::HEIGHT, SEA::RADIAL_SEGMENTS, SEA::HEIGHT_SEGMENTS);
   cockpit = createCockpit();
@@ -23,10 +25,57 @@ void Geometry::initGeometry() {
 }
 
 void Geometry::cleanGeometry() {
+  delete tetrahedron;
   delete cube;
   delete sea;
   delete cockpit;
   delete propeller;
+}
+
+RawModel* createTetrahedron() {
+  glm::vec3 vert0(0.5f, 0.5f, 0.5f);
+  glm::vec3 vert1(-0.5f, 0.5f, -0.5f);
+  glm::vec3 vert2(-0.5f, -0.5f, 0.5f);
+  glm::vec3 vert3(0.5f, -0.5f, -0.5f);
+
+  glm::vec3 vertices[12];
+  // face 1
+  vertices[0] = vert0;
+  vertices[1] = vert2;
+  vertices[2] = vert1;
+  // face 2
+  vertices[3] = vert0;
+  vertices[4] = vert1;
+  vertices[5] = vert3;
+  // face 3
+  vertices[6] = vert2;
+  vertices[7] = vert3;
+  vertices[8] = vert1;
+  // face 3
+  vertices[9] = vert0;
+  vertices[10] = vert3;
+  vertices[11] = vert2;
+
+  vector<float> vertexArray, normals;
+  for (int i = 0; i < 12; ++i) {
+    vertexArray.push_back(vertices[i].x);
+    vertexArray.push_back(vertices[i].y);
+    vertexArray.push_back(vertices[i].z);
+  }
+
+  for (int i = 0; i < 4; ++i) {
+    glm::vec3 vertA = vertices[4 * i];
+    glm::vec3 vertB = vertices[4 * i + 1];
+    glm::vec3 vertC = vertices[4 * i + 2];
+    glm::vec3 normal = glm::cross(vertA - vertB, vertC - vertB);
+    for (int j = 0; j < 3; ++j) {
+      normals.push_back(normal.x);
+      normals.push_back(normal.y);
+      normals.push_back(normal.z);
+    }
+  }
+
+  return Loader::loadToVAO(vertexArray, 3, normals, 3);
 }
 
 RawModel* createCube() {
