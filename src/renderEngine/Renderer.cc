@@ -1,8 +1,8 @@
 // Renderer.cc
 #define GLEW_STATIC
 #include "Renderer.h"
-#include "../common.h"
-#include "../entities/Entity.h"
+#include <common.h>
+#include <entities/Entity.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>

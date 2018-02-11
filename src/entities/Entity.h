@@ -1,12 +1,13 @@
 // Entity.h
 #pragma once
-#include "../models/RawModel.h"
+#include <models/RawModel.h>
 #include <glm/glm.hpp>
 #include <vector>
 #include <map>
 
 class Entity {
 protected:
+  unsigned int id;
   RawModel* model;
   float opacity;
   bool receiveShadow;

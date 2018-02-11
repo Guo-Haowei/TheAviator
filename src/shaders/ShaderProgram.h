@@ -1,6 +1,6 @@
 // ShaderProgram.h
 #pragma once
-#include "../entities/Camera.h"
+#include <entities/gameObjects/Camera.h>
 #include <glm/glm.hpp>
 
 class ShaderProgram {

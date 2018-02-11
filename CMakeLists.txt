@@ -4,6 +4,8 @@ set(CMAKE_VERBOSE_MAKEFILE on)
 set(CMAKE_BUILD_TYPE Debug)
 
 project(TheAviator)
+SET(BASEPATH "${CMAKE_SOURCE_DIR}/src")
+INCLUDE_DIRECTORIES("${BASEPATH}")
 
 find_package(PkgConfig REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)

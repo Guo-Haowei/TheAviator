@@ -1,6 +1,6 @@
 // Airplane.h
 #pragma once
-#include "Entity.h"
+#include <entities/Entity.h>
 #include <vector>
 
 class Entity;

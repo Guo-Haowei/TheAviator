@@ -1,11 +1,11 @@
 // Airplane.cc
 #include "Airplane.h"
 #include "Camera.h"
-#include "../common.h"
-#include "../utils/Maths.h"
-#include "../models/Geometry.h"
-#include "../utils/Debug.h"
-#include "../io/MouseManager.h"
+#include <common.h>
+#include <utils/Maths.h>
+#include <models/Geometry.h>
+#include <utils/Debug.h>
+#include <io/MouseManager.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <algorithm>
 #include <iostream>

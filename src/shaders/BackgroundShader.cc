@@ -1,9 +1,9 @@
 // BackgroundShader.cc
 #include "BackgroundShader.h"
 #include "ShaderProgram.h"
-#include "../common.h"
-#include "../models/RawModel.h"
-#include "../models/Loader.h"
+#include <common.h>
+#include <models/RawModel.h>
+#include <models/Loader.h>
 #include <GL/glew.h>
 #include <vector>
 using std::vector;

@@ -1,6 +1,6 @@
 // DisplayManager.cc
 #include "DisplayManager.h"
-#include "../common.h"
+#include <common.h>
 #include <iostream>
 
 using std::cout;

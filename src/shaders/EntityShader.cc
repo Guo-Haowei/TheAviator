@@ -1,8 +1,7 @@
 // EntityShader.cc
 #include "EntityShader.h"
-#include "../common.h"
-#include "../utils/Debug.h"
-#include "../entities/Entity.h"
+#include <common.h>
+#include <entities/Entity.h>
 #include <GL/glew.h>
 #include <iostream>
 using std::cout;

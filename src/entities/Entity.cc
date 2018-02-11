@@ -1,12 +1,15 @@
 // Entity.cc
 #include "Entity.h"
-#include "../utils/Maths.h"
-#include "../utils/Debug.h"
+#include <utils/Maths.h>
+#include <utils/Debug.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 using std::vector;
 
+static int ID = 0;
+
 Entity::Entity(): model(nullptr), position(glm::vec3(0.0f)), color(glm::vec3(0.0f)), scale(glm::vec3(0.0f)), opacity(1.0f), receiveShadow(true), castShadow(true) {
+  id = ID++;
   transformation = glm::mat4(1.0f);
   isStatic = true;
   transformation[3].x = position.x;
@@ -15,6 +18,7 @@ Entity::Entity(): model(nullptr), position(glm::vec3(0.0f)), color(glm::vec3(0.0
 }
 
 Entity::Entity(const Entity& other): model(other.model), position(other.position), color(other.color), scale(other.scale), opacity(other.opacity), receiveShadow(other.receiveShadow), castShadow(other.castShadow) {
+  id = ID++;
   isStatic = true;
   transformation = glm::mat4(1.0f);
   transformation[3].x = position.x;
@@ -23,6 +27,7 @@ Entity::Entity(const Entity& other): model(other.model), position(other.position
 }
 
 Entity::Entity(RawModel* model, glm::vec3 position, glm::vec3 color, glm::vec3 scale, float opacity, bool receiveShadow, bool castShadow) : model(model), position(position), color(color), scale(scale), opacity(opacity), receiveShadow(receiveShadow), castShadow(castShadow) {
+  id = ID++;
   isStatic = true;
   transformation = glm::mat4(1.0f);
   transformation[3].x = position.x;

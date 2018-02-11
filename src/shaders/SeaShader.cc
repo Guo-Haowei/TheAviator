@@ -1,9 +1,9 @@
 // SeaShader.cc
 #include "SeaShader.h"
-#include "../common.h"
-#include "../entities/Entity.h"
-#include "../models/Geometry.h"
-#include "../utils/Debug.h"
+#include <common.h>
+#include <entities/Entity.h>
+#include <models/Geometry.h>
+#include <utils/Debug.h>
 #include <GL/glew.h>
 #include <iostream>
 using std::cout;

@@ -1,7 +1,7 @@
 // MouseManager.cc
 #include "MouseManager.h"
-#include "../common.h"
-#include "../renderEngine/DisplayManager.h"
+#include <common.h>
+#include <renderEngine/DisplayManager.h>
 
 double MouseManager::x = 0;
 double MouseManager::y = 0;

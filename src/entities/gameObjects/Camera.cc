@@ -1,8 +1,8 @@
 // Camera.cc
 #include "Camera.h"
-#include "../common.h"
-#include "../utils/Maths.h"
-#include "../io/MouseManager.h"
+#include <common.h>
+#include <utils/Maths.h>
+#include <io/MouseManager.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 using std::cout;

@@ -1,10 +1,10 @@
 // Renderer.h
 #pragma once
-#include "../shaders/BackgroundShader.h"
-#include "../shaders/EntityShader.h"
-#include "../shaders/SeaShader.h"
-#include "../shaders/ShadowShader.h"
-#include "../shaders/DBDepthMap.h"
+#include <shaders/BackgroundShader.h>
+#include <shaders/EntityShader.h>
+#include <shaders/SeaShader.h>
+#include <shaders/ShadowShader.h>
+#include <shaders/DBDepthMap.h>
 #include <vector>
 using std::vector;
 

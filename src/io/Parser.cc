@@ -1,6 +1,6 @@
 // Parser.cc
 #include "Parser.h"
-#include "../common.h"
+#include <common.h>
 #include <fstream>
 #include <iostream>
 #include <string>

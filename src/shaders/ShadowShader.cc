@@ -1,8 +1,8 @@
 // ShadowShader.cc
 #define GLEW_STATIC
 #include "ShadowShader.h"
-#include "../common.h"
-#include "../entities/Entity.h"
+#include <common.h>
+#include <entities/Entity.h>
 #include <glm/glm.hpp>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

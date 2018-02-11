@@ -1,9 +1,9 @@
 // Sky.cc
 #include "Sky.h"
-#include "Entity.h"
-#include "../common.h"
-#include "../utils/Maths.h"
-#include "../models/Geometry.h"
+#include <entities/Entity.h>
+#include <common.h>
+#include <utils/Maths.h>
+#include <models/Geometry.h>
 #include <iostream>
 using std::vector;
 
