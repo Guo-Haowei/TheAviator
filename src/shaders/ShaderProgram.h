@@ -22,6 +22,7 @@ protected:
   void bindAttribute(unsigned int attribute, const char* variable);
   int getUniformLocation(const char* uniformName);
   void loadInt(int location, int value);
+  void loadBool(int location, bool value);
   void loadFloat(int location, float value);
   void loadVector3f(int location, glm::vec3 vec);
   void loadMatrix4f(int location, glm::mat4 mat);

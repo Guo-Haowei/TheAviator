@@ -35,7 +35,7 @@ void Sky::createCloud(float angle) {
   for (int i = 0; i < nBlocks; ++i) {
     glm::vec3 position((float)i * 6.0f * cloudScale, Maths::rand(0.0f, 4.0f), Maths::rand(0.0f, 4.0f));
     float scale = 8.0f * Maths::rand(0.2f, 0.9f) * cloudScale;
-    Entity* entity = new Entity(Geometry::cube, position, glm::vec3(0.0f), glm::vec3(scale));
+    Entity* entity = new Entity(Geometry::cube, position, glm::vec3(0.0f), glm::vec3(scale), 1.0f, false, true);
 
     clouds[index].push_back(entity);
     entity->changeRotation(0.0f, Maths::rand(0.0f, 2 * PI), Maths::rand(0.0f, 2.0f * PI));

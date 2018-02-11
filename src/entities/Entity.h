@@ -9,6 +9,8 @@ class Entity {
 private:
   RawModel* model;
   float opacity;
+  bool receiveShadow;
+  bool castShadow;
 
   void updateTransformation(glm::mat4 transformationMatrix);
 protected:
@@ -17,7 +19,7 @@ protected:
 public:
   Entity();
   Entity(const Entity& other);
-  Entity(RawModel* model, glm::vec3 position = glm::vec3(0.0f), glm::vec3 color = glm::vec3(1.0f), glm::vec3 scale = glm::vec3(1.0f), float opacity = 1.0f);
+  Entity(RawModel* model, glm::vec3 position = glm::vec3(0.0f), glm::vec3 color = glm::vec3(1.0f), glm::vec3 scale = glm::vec3(1.0f), float opacity = 1.0f, bool receiveShadow = true, bool castShadow = true);
 
   glm::vec3 getPosition() const;
   void setPosition(float dx, float dy, float dz);
@@ -38,6 +40,8 @@ public:
   RawModel* getModel() const;
   glm::vec3 getColor() const;
   void setColor(glm::vec3 color);
+  bool getReceiveShadow() const;
+  bool getCastShadow() const;
   
   static void addEntity(Entity* entity);
 };

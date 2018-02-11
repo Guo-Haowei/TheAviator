@@ -12,6 +12,7 @@ protected:
   int location_light;
   int location_shadowMap;
   int location_opacity;
+  int location_receiveShadow;
   void bindAttributes();
   void getAllUniformLocations();
 public:

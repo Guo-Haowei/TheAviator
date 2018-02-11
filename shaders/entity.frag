@@ -11,6 +11,7 @@ uniform vec3 color;
 uniform vec3 lightPos;
 uniform sampler2D shadowMap;
 uniform float opacity;
+uniform int receiveShadow;
 
 float shadowCalculation(vec4 lightSpaceFragPos) {
   vec3 projCoords = lightSpaceFragPos.xyz / lightSpaceFragPos.w;
@@ -56,7 +57,9 @@ void main() {
 
   // shadow
   float visibility = 1.0;
-  float shadow = visibility * shadowCalculation(LightSpaceFragPos);
+  float shadow = 0.0;
+  if (receiveShadow == 1)
+    shadow = visibility * shadowCalculation(LightSpaceFragPos);
   vec3 fragColor = (ambient + (1 - shadow) * (diffuse + specular)) * color;
 
   out_Color = vec4(fragColor, opacity);

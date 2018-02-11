@@ -74,6 +74,10 @@ void ShaderProgram::loadInt(int location, int value) {
   glUniform1i(location, value);
 }
 
+void ShaderProgram::loadBool(int location, bool value) {
+  glUniform1i(location, value ? 1 : 0);
+}
+
 void ShaderProgram::loadFloat(int location, float value) {
   glUniform1f(location, value);
 }

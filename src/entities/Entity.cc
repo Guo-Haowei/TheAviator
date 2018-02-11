@@ -6,21 +6,21 @@
 #include <iostream>
 using std::vector;
 
-Entity::Entity(): model(nullptr), position(glm::vec3(0.0f)), color(glm::vec3(0.0f)), scale(glm::vec3(0.0f)), opacity(1.0f) {
+Entity::Entity(): model(nullptr), position(glm::vec3(0.0f)), color(glm::vec3(0.0f)), scale(glm::vec3(0.0f)), opacity(1.0f), receiveShadow(true), castShadow(true) {
   transformation = glm::mat4(1.0f);
   transformation[3].x = position.x;
   transformation[3].y = position.y;
   transformation[3].z = position.z;
 }
 
-Entity::Entity(const Entity& other): model(other.model), position(other.position), color(other.color), scale(other.scale), opacity(other.opacity) {
+Entity::Entity(const Entity& other): model(other.model), position(other.position), color(other.color), scale(other.scale), opacity(other.opacity), receiveShadow(other.receiveShadow), castShadow(other.castShadow) {
   transformation = glm::mat4(1.0f);
   transformation[3].x = position.x;
   transformation[3].y = position.y;
   transformation[3].z = position.z;
 }
 
-Entity::Entity(RawModel* model, glm::vec3 position, glm::vec3 color, glm::vec3 scale, float opacity) : model(model), position(position), color(color), scale(scale), opacity(opacity) {
+Entity::Entity(RawModel* model, glm::vec3 position, glm::vec3 color, glm::vec3 scale, float opacity, bool receiveShadow, bool castShadow) : model(model), position(position), color(color), scale(scale), opacity(opacity), receiveShadow(receiveShadow), castShadow(castShadow) {
   transformation = glm::mat4(1.0f);
   transformation[3].x = position.x;
   transformation[3].y = position.y;
@@ -100,6 +100,14 @@ float Entity::getOpacity() const {
 
 RawModel* Entity::getModel() const {
   return model;
+}
+
+bool Entity::getReceiveShadow() const {
+  return receiveShadow;
+}
+
+bool Entity::getCastShadow() const {
+  return castShadow;
 }
 
 AllEntities allEntities;

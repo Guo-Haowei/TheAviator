@@ -77,6 +77,8 @@ void ShadowShader::render() {
       entry.first->bind();
       for (int i = 0; i < entities->size(); ++i) {
         Entity* entity = entities->at(i);
+        if (!entity->getCastShadow())
+          continue;
         RawModel* model = entity->getModel();
         loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
         glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());

@@ -28,6 +28,7 @@ void EntityShader::getAllUniformLocations() {
   location_light = getUniformLocation("lightPos");
   location_shadowMap = getUniformLocation("shadowMap");
   location_opacity = getUniformLocation("opacity");
+  location_receiveShadow = getUniformLocation("receiveShadow");
 }
 
 void EntityShader::render() {
@@ -44,6 +45,7 @@ void EntityShader::render() {
     for (int i = 0; i < entities->size(); ++i) {
       Entity* entity = entities->at(i);
       RawModel* model = entity->getModel();
+      loadBool(location_receiveShadow, entity->getReceiveShadow());
       loadFloat(location_opacity, entity->getOpacity());
       loadVector3f(location_color, entity->getColor());
       loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
