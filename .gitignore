@@ -1,4 +1,6 @@
-Debug/
+Debug/*
+!Debug/TheAviator.exe
+!Debug/glew32.dll
 Release/
 build/
 .vs/
