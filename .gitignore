@@ -1,8 +1,9 @@
 Debug/*
 !Debug/TheAviator.exe
 !Debug/glew32.dll
+build/*
+!build/TheAviator
 Release/
-build/
 .vs/
 glm/
 *.sln
