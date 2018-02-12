@@ -55,8 +55,7 @@ make
 ```
 
 ## TODO
-* Add Obstacle
-* Collision detection (use same method as color pick)
+* Collision detection (assign each object a unique color, render it and find if pixels overlap. Optimization: 1. trackball 2. minimize viewport)
 * Particle effect
 * Implement Cascaded Shadow Mapping
 * Fix alpha fog conflict
