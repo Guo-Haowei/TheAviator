@@ -8,28 +8,57 @@ using std::vector;
 
 static int ID = 0;
 
-Entity::Entity(): model(nullptr), position(glm::vec3(0.0f)), color(glm::vec3(0.0f)), scale(glm::vec3(0.0f)), opacity(1.0f), receiveShadow(true), castShadow(true) {
-  id = ID++;
-  transformation = glm::mat4(1.0f);
-  isStatic = true;
+Entity::Entity():
+  id(ID++),
+  model(nullptr),
+  position(glm::vec3(0.0f)),
+  transformation(glm::mat4(1.0f)),
+  color(glm::vec3(0.0f)),
+  scale(glm::vec3(0.0f)),
+  opacity(1.0f),
+  receiveShadow(true),
+  castShadow(true)
+{
   transformation[3].x = position.x;
   transformation[3].y = position.y;
   transformation[3].z = position.z;
 }
 
-Entity::Entity(const Entity& other): model(other.model), position(other.position), color(other.color), scale(other.scale), opacity(other.opacity), receiveShadow(other.receiveShadow), castShadow(other.castShadow) {
-  id = ID++;
-  isStatic = true;
-  transformation = glm::mat4(1.0f);
+Entity::Entity(const Entity& other):
+  id(ID++),
+  model(other.model),
+  position(other.position),
+  transformation(glm::mat4(1.0f)),
+  color(other.color),
+  scale(other.scale),
+  opacity(other.opacity),
+  receiveShadow(other.receiveShadow),
+  castShadow(other.castShadow)
+{
   transformation[3].x = position.x;
   transformation[3].y = position.y;
   transformation[3].z = position.z;
 }
 
-Entity::Entity(RawModel* model, glm::vec3 position, glm::vec3 color, glm::vec3 scale, float opacity, bool receiveShadow, bool castShadow) : model(model), position(position), color(color), scale(scale), opacity(opacity), receiveShadow(receiveShadow), castShadow(castShadow) {
-  id = ID++;
-  isStatic = true;
-  transformation = glm::mat4(1.0f);
+Entity::Entity(
+  RawModel* model,
+  glm::vec3 position,
+  glm::vec3 color,
+  glm::vec3 scale,
+  float opacity,
+  bool receiveShadow,
+  bool castShadow
+):
+  id(ID++),
+  model(model),
+  position(position),
+  transformation(glm::mat4(1.0f)),
+  color(color),
+  scale(scale),
+  opacity(opacity),
+  receiveShadow(receiveShadow),
+  castShadow(castShadow)
+{
   transformation[3].x = position.x;
   transformation[3].y = position.y;
   transformation[3].z = position.z;
@@ -118,15 +147,15 @@ bool Entity::getCastShadow() const {
   return castShadow;
 }
 
-bool Entity::getIsStatic() const {
-  return isStatic;
+unsigned int Entity::getId() const {
+  return id;
 }
 
-AllEntities allEntities;
+StaticEntities staticEntities;
 
 void Entity::addEntity(Entity* entity) {
   RawModel* key = entity->getModel();
-  if (allEntities.find(key) == allEntities.end())
-    allEntities.insert(std::pair<RawModel*, vector<Entity*>>(key, vector<Entity*>()));
-  allEntities.at(key).push_back(entity);
+  if (staticEntities.find(key) == staticEntities.end())
+    staticEntities.insert(std::pair<RawModel*, vector<Entity*>>(key, vector<Entity*>()));
+  staticEntities.at(key).push_back(entity);
 }

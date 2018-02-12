@@ -3,6 +3,7 @@
 #include "ShadowShader.h"
 #include <common.h>
 #include <entities/Entity.h>
+#include <entities/DynamicEntity.h>
 #include <glm/glm.hpp>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -72,11 +73,25 @@ void ShadowShader::render() {
 
     RawModel::unbind();
   } else {
-    for (auto& entry: allEntities) {
-      vector<Entity*>* entities = &(entry.second);
+    for (auto& entry: staticEntities) {
+      vector<Entity*>& entities = entry.second;
       entry.first->bind();
-      for (int i = 0; i < entities->size(); ++i) {
-        Entity* entity = entities->at(i);
+      for (int i = 0; i < entities.size(); ++i) {
+        Entity* entity = entities.at(i);
+        if (!entity->getCastShadow())
+          continue;
+        RawModel* model = entity->getModel();
+        loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
+        glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
+      }
+      RawModel::unbind();
+    }
+
+    for (auto& entry: dynamicEntities) {
+      vector<DynamicEntity*>& entities = entry.second;
+      entry.first->bind();
+      for (int i = 0; i < entities.size(); ++i) {
+        DynamicEntity* entity = entities.at(i);
         if (!entity->getCastShadow())
           continue;
         RawModel* model = entity->getModel();

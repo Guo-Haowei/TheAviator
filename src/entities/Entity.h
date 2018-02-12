@@ -12,7 +12,6 @@ protected:
   float opacity;
   bool receiveShadow;
   bool castShadow;
-  bool isStatic;
   glm::vec3 position, color, scale;
   glm::mat4 transformation;
 
@@ -43,10 +42,10 @@ public:
   void setColor(glm::vec3 color);
   bool getReceiveShadow() const;
   bool getCastShadow() const;
-  bool getIsStatic() const;
+  unsigned int getId() const;
   
   static void addEntity(Entity* entity);
 };
 
-typedef std::map<RawModel*, std::vector<Entity*>> AllEntities;
-extern AllEntities allEntities;
+typedef std::map<RawModel*, std::vector<Entity*>> StaticEntities;
+extern StaticEntities staticEntities;

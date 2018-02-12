@@ -55,11 +55,8 @@ make
 ```
 
 ## TODO
-* Add display fps
 * Add Coin and Obstacle
-* Use list for dynamic and static objects (erase at const time)
 * Collision detection
 * Particle effect
-* Simple physics
-* Implement Cascade Shadow Mapping
+* Implement Cascaded Shadow Mapping
 * Fix alpha fog conflict

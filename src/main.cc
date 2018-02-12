@@ -1,9 +1,11 @@
 // main.cc
 #include <common.h>
+#include <utils/Maths.h>
 #include <entities/gameObjects/Camera.h>
 #include <entities/Entity.h>
 #include <entities/gameObjects/Airplane.h>
 #include <entities/gameObjects/Sky.h>
+#include <entities/gameObjects/ObstacleHolder.h>
 #include <models/Geometry.h>
 #include <renderEngine/DisplayManager.h>
 #include <renderEngine/Renderer.h>
@@ -14,6 +16,8 @@
 #include <iostream>
 using std::cout;
 using std::vector;
+
+float GAME::AIRPLANE_DISTANCE = 0.0f;
 
 float TIMER = 0;
 
@@ -50,6 +54,7 @@ int main() {
 
   Airplane airplane;
   Sky sky;
+  ObstacleHolder obstacles;
 
   int fps = 60;
   double currentTime, lastTime = DisplayManager::getTime();
@@ -59,12 +64,16 @@ int main() {
 
   while (!DisplayManager::shouldCloseDisplay()) {
     if (shouldUpdate(currentTime, delta, lastTime, fps)) {
+      // temporary code for updating game angle
+      GAME::AIRPLANE_DISTANCE += GAME::SPEED;
+
       MouseManager::update();
       primaryCamera.update();
       DisplayManager::prepareDisplay();
 
       renderer.render();
 
+      obstacles.update();
       airplane.update();
       sky.update();
       DisplayManager::updateDisplay();

@@ -20,6 +20,10 @@ float Maths::clamp(float value, float low, float high, float clampLow, float cla
   return (boundedValue - low) / (high - low) * (clampHigh - clampLow) + clampLow;
 }
 
+bool Maths::chance(float chance) {
+  return chance >= rand(0.0f, 1.0f);
+}
+
 glm::mat4 Maths::calculateTranslationMatrix(float x, float y, float z) {
   glm::vec3 delta = glm::vec3(x, y, z);
   glm::mat4 translation(1);

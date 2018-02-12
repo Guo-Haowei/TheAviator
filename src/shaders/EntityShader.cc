@@ -2,6 +2,7 @@
 #include "EntityShader.h"
 #include <common.h>
 #include <entities/Entity.h>
+#include <entities/DynamicEntity.h>
 #include <GL/glew.h>
 #include <iostream>
 using std::cout;
@@ -38,25 +39,33 @@ void EntityShader::render() {
   loadMatrix4f(location_lightSpaceMatrix, camera->getLightSpaceMatrix());
   loadMatrix4f(location_viewMatrix, camera->getViewMatrix());
   loadMatrix4f(location_projectionMatrix, camera->getProjectionMatrix());
-  for (auto& entry: allEntities) {
-    vector<Entity*>* entities = &(entry.second);
+  for (auto& entry: staticEntities) {
+    vector<Entity*>& entities = entry.second;
     entry.first->bind();
-    for (int i = 0; i < entities->size(); ++i) {
-      Entity* entity = entities->at(i);
+    for (int i = 0; i < entities.size(); ++i) {
+      Entity* entity = entities.at(i);
       RawModel* model = entity->getModel();
       loadBool(location_receiveShadow, entity->getReceiveShadow());
       loadFloat(location_opacity, entity->getOpacity());
       loadVector3f(location_color, entity->getColor());
       loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
-      if (entity->getOpacity() < 1.0f) {
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_SRC_COLOR);
-        glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
-        glDisable(GL_BLEND);
-      } else {
-        glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
-      }
 
+      glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
+    }
+    RawModel::unbind();
+  }
+  for (auto& entry: dynamicEntities) {
+    vector<DynamicEntity*>& entities = entry.second;
+    entry.first->bind();
+    for (int i = 0; i < entities.size(); ++i) {
+      DynamicEntity* entity = entities.at(i);
+      RawModel* model = entity->getModel();
+      loadBool(location_receiveShadow, entity->getReceiveShadow());
+      loadFloat(location_opacity, entity->getOpacity());
+      loadVector3f(location_color, entity->getColor());
+      loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
+
+      glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
     }
     RawModel::unbind();
   }
