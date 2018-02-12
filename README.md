@@ -55,8 +55,8 @@ make
 ```
 
 ## TODO
-* Add Coin and Obstacle
-* Collision detection
+* Add Obstacle
+* Collision detection (use same method as color pick)
 * Particle effect
 * Implement Cascaded Shadow Mapping
 * Fix alpha fog conflict

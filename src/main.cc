@@ -21,12 +21,12 @@ float GAME::AIRPLANE_DISTANCE = 0.0f;
 
 float TIMER = 0;
 
-bool shouldUpdate(double& currentTime, double& delta, double& lastTime, const int fps) {
+bool shouldUpdate(double& currentTime, double& delta, double& lastTime) {
   currentTime = DisplayManager::getTime();
   delta += currentTime - lastTime;
   lastTime = currentTime;
-  if (delta >= 1.0/fps) {
-    delta -= 1.0/fps;
+  if (delta >= 1.0 / GAME::FPS) {
+    delta -= 1.0/ GAME::FPS;
     ++TIMER;
     return true;
   } else {
@@ -56,14 +56,13 @@ int main() {
   Sky sky;
   ObstacleHolder obstacles;
 
-  int fps = 60;
   double currentTime, lastTime = DisplayManager::getTime();
   double previousSecond = lastTime;
   double delta = 0;
   int updates = 0;
 
   while (!DisplayManager::shouldCloseDisplay()) {
-    if (shouldUpdate(currentTime, delta, lastTime, fps)) {
+    if (shouldUpdate(currentTime, delta, lastTime)) {
       // temporary code for updating game angle
       GAME::AIRPLANE_DISTANCE += GAME::SPEED;
 

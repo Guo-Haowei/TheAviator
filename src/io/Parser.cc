@@ -9,6 +9,7 @@ using std::ifstream;
 using std::string;
 
 float GAME::SPEED;
+float GAME::FPS;
 int GAME::DISPLAY_FPS;
 
 float SEA::RADIUS;
@@ -74,6 +75,7 @@ void Parser::parse() {
     return;
   }
   getNextFloat(configFile, &GAME::SPEED);
+  getNextFloat(configFile, &GAME::FPS);
   getNextInt(configFile, &GAME::DISPLAY_FPS);
 
   getNextFloat(configFile, &SEA::RADIUS);
