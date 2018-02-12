@@ -8,6 +8,7 @@
 
 // extract to common later
 const float offscreenLeft = 0.5f;
+const float offscreenRight = 1.0f;
 const float miniumDist = 0.1f;
 const float spawnChance = 0.3f;
 const float minHeight = 20.0f;
@@ -40,14 +41,14 @@ void ObstacleHolder::spawn(float distance) {
 void ObstacleHolder::update() {
   spawn(GAME::AIRPLANE_DISTANCE);
   // check if need to delete
-  //for (int i = 0; i < obstatcles.size(); ++i) {
-  //  if (obstatcles[i]->getDistance() + okToSpawn < GAME::AIRPLANE_DISTANCE) {
-  //    DynamicEntity* entity = obstatcles[i];
-  //    DynamicEntity::removeEntity(entity);
-  //    obstatcles.erase(obstatcles.begin() + i);
-  //    --i;
-  //  }
-  //}
+  for (int i = 0; i < obstatcles.size(); ++i) {
+    if (obstatcles[i]->getDistance() + offscreenRight < GAME::AIRPLANE_DISTANCE) {
+      DynamicEntity* entity = obstatcles[i];
+      DynamicEntity::removeEntity(entity);
+      obstatcles.erase(obstatcles.begin() + i);
+      --i;
+    }
+  }
   // update rotation
   for (auto& obstatcle : obstatcles) {
     obstatcle->changeRotation(0.0f, 0.01f, 0.0f);
