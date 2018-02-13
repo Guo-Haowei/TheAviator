@@ -19,6 +19,11 @@ DynamicEntity::DynamicEntity(
   Entity(model, position, color, scale, opacity, receiveShadow, castShadow)
 {}
 
+DynamicEntity::~DynamicEntity() {
+  // particle effects
+  //removeEntity(this);
+}
+
 float DynamicEntity::getDistance() const {
   return distance;
 }

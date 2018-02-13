@@ -5,10 +5,10 @@
 class DynamicEntity: public Entity {
 private:
   float distance; // distance is the angle relative to plane
-  int lifespan;
   bool expired;
 public:
   DynamicEntity(RawModel* model, glm::vec3 position = glm::vec3(0.0f), glm::vec3 color = glm::vec3(1.0f), glm::vec3 scale = glm::vec3(1.0f), float opacity = 1.0f, bool receiveShadow = true, bool castShadow = true);
+  ~DynamicEntity();
 
   float getDistance() const;
   void setDistance(float distance);
