@@ -77,7 +77,7 @@ Airplane::Airplane() :
 
   rigidBody.push_back(&cockpit);
   cockpit.setBody(new Sphere(6.0f));
-  rigidBody.push_back(&engine);
+  //rigidBody.push_back(&engine);
   // create hair
   for (int i = 0; i < 12; ++i) {
     int col = i % 3;
@@ -150,7 +150,7 @@ void Airplane::update() {
   rotate(0.0f, 0.0f, targetRotationZ - rotation.z, position);
   rotation.z = targetRotationZ;
   // move camera
-  primaryCamera.chasePoint(position);
+  Camera::primary().chasePoint(position);
 
   COLLISION_SPEED_X += -COLLISION_DISPLACEMENT_X * 0.012f;
   COLLISION_DISPLACEMENT_X += -COLLISION_DISPLACEMENT_X * 0.004f;

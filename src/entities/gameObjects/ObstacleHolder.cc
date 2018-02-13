@@ -48,6 +48,7 @@ void ObstacleHolder::update() {
     if (obstatcles[i]->getDistance() + offscreenRight < GAME::AIRPLANE_DISTANCE || obstatcles[i]->getExpired()) {
       //DynamicEntity* entity = obstatcles[i];
       //DynamicEntity::removeEntity(entity);
+      delete obstatcles[i];
       obstatcles.erase(obstatcles.begin() + i);
       --i;
     }

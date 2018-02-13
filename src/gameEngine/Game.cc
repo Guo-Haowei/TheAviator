@@ -7,6 +7,7 @@
 #include <entities/gameObjects/Sky.h>
 #include <entities/gameObjects/Airplane.h>
 #include <entities/gameObjects/ObstacleHolder.h>
+#include <entities/gameObjects/Camera.h>
 #include <models/Geometry.h>
 #include <renderEngine/DisplayManager.h>
 #include <io/MouseManager.h>
@@ -38,7 +39,6 @@ void Game::init() {
   Parser::parse();
   DisplayManager::createDisplay();
   Geometry::initGeometry();
-  primaryCamera.initPrimaryCamera();
 }
 
 Game& Game::theOne() {
@@ -52,7 +52,7 @@ void Game::run() {
       GAME::AIRPLANE_DISTANCE += GAME::SPEED;
 
       MouseManager::update();
-      primaryCamera.update();
+      Camera::primary().update();
       DisplayManager::prepareDisplay();
 
       // check collision

@@ -21,7 +21,7 @@ DynamicEntity::DynamicEntity(
 
 DynamicEntity::~DynamicEntity() {
   // particle effects
-  //removeEntity(this);
+  removeEntity(this);
 }
 
 float DynamicEntity::getDistance() const {
