@@ -15,5 +15,6 @@ public:
   SeaShader();
 
   void render();
-  void clean();
+
+  virtual ~SeaShader();
 };

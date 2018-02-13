@@ -20,17 +20,7 @@ SeaShader::SeaShader() {
   ShaderProgram::init(VERTEX_FILE, FRAGMENT_FILE, GEOMETRY_FILE);
 }
 
-void SeaShader::clean() {
-  stop();
-  glDetachShader(programID, vertexShaderID);
-  glDeleteShader(vertexShaderID);
-  if (geometryShaderID != 0) {
-    glDetachShader(programID, geometryShaderID);
-    glDeleteShader(geometryShaderID);
-  }
-  glDetachShader(programID, fragmentShaderID);
-  glDeleteShader(fragmentShaderID);
-  glDeleteProgram(programID);
+SeaShader::~SeaShader() {
   delete SEA_MODEL;
 }
 

@@ -11,14 +11,7 @@ Renderer::Renderer(): seaShadowShader(true) {
   ShadowShader::init();
 }
 
-Renderer::~Renderer() {
-  backgroundShader.clean();
-  entityShader.clean();
-  entityShadowShader.clean();
-  seaShader.clean();
-  seaShadowShader.clean();
-
-}
+Renderer::~Renderer() {}
 
 void Renderer::render() {
   glClearColor(0.1f, 0.1f, 0.1f, 1.0f);

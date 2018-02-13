@@ -30,6 +30,6 @@ public:
   void init(const char* vertexFileName, const char* fragmentFileName, const char* geometryFileName = nullptr);
   void start();
   void stop();
-  virtual void clean();
+  virtual ~ShaderProgram();
 };
 

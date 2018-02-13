@@ -49,7 +49,7 @@ void ShaderProgram::stop() {
   glUseProgram(0);
 }
 
-void ShaderProgram::clean() {
+ShaderProgram::~ShaderProgram() {
   stop();
   glDetachShader(programID, vertexShaderID);
   glDeleteShader(vertexShaderID);

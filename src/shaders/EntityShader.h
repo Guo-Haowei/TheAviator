@@ -3,9 +3,8 @@
 #include "ShaderProgram.h"
 
 class EntityShader: public ShaderProgram {
-private:
-  Camera* camera;
 protected:
+  Camera* camera;
   int location_projectionMatrix;
   int location_viewMatrix;
   int location_color;
