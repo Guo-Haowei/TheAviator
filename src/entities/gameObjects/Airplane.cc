@@ -77,7 +77,7 @@ Airplane::Airplane() :
 
   rigidBody.push_back(&cockpit);
   cockpit.setBody(new Sphere(6.0f));
-  //rigidBody.push_back(&engine);
+  rigidBody.push_back(&engine);
   // create hair
   for (int i = 0; i < 12; ++i) {
     int col = i % 3;

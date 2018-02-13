@@ -33,23 +33,23 @@ void CollisionShader::render(const std::vector<DynamicEntity*>& entities) {
   start();
   loadMatrix4f(location_viewMatrix, Camera::primary().getViewMatrix());
   loadMatrix4f(location_projectionMatrix, Camera::primary().getProjectionMatrix());
-  //RawModel* model = nullptr;
-  //RawModel::unbind();
-  //for (int i = 0; i < entities.size(); ++i) {
-  //  int r = (i & 0x000000ff) >> 0;
-  //  int g = (i & 0x0000ff00) >> 8;
-  //  int b = (i & 0x00ff0000) >> 16;
-  //  loadVector3f(location_color, glm::vec3(r / 255.0f, g / 255.0f, b / 255.0f));
+  RawModel* model = nullptr;
+  RawModel::unbind();
+  for (int i = 0; i < entities.size(); ++i) {
+    int r = (i & 0x000000ff) >> 0;
+    int g = (i & 0x0000ff00) >> 8;
+    int b = (i & 0x00ff0000) >> 16;
+    loadVector3f(location_color, glm::vec3(r / 255.0f, g / 255.0f, b / 255.0f));
 
-  //  DynamicEntity* entity = entities[i];
-  //  RawModel* model = entity->getModel();
-  //  model->bind();
-  //  loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
+    DynamicEntity* entity = entities[i];
+    RawModel* model = entity->getModel();
+    model->bind();
+    loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
 
-  //  glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
+    glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
 
-  //  RawModel::unbind();
-  //}
+    RawModel::unbind();
+  }
 
   loadVector3f(location_color, glm::vec3(1.0f, 0.0f, 0.0f));
   for (int i = 0; i < Airplane::rigidBody.size(); ++i) {
@@ -57,6 +57,7 @@ void CollisionShader::render(const std::vector<DynamicEntity*>& entities) {
     Entity* entity = Airplane::rigidBody[i];
     RawModel* model = entity->getModel();
     model->bind();
+    Debug::printMatrix(entity->getTransformationMatrix(), "transformation");
     loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
 
     glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
@@ -66,11 +67,11 @@ void CollisionShader::render(const std::vector<DynamicEntity*>& entities) {
   stop();
   // change viewport back
   glEnable(GL_CULL_FACE);
-  //glFlush();
-  //glFinish();
+  glFlush();
+  glFinish();
 }
 
 CollisionShader& CollisionShader::theOne() {
-  CollisionShader collisionShader;
+  static CollisionShader collisionShader;
   return collisionShader;
 }
