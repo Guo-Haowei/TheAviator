@@ -1,5 +1,6 @@
 // DynamicEntity.cc
 #include "DynamicEntity.h"
+#include <models/Geometry.h>
 #include <common.h>
 #include <iostream>
 using std::cout;
@@ -13,6 +14,7 @@ DynamicEntity::DynamicEntity(
   float opacity,
   bool receiveShadow,
   bool castShadow):
+  expired(false),
   distance(0.0f),
   Entity(model, position, color, scale, opacity, receiveShadow, castShadow)
 {}
@@ -23,6 +25,14 @@ float DynamicEntity::getDistance() const {
 
 void DynamicEntity::setDistance(float distance) {
   this->distance = distance;
+}
+
+bool DynamicEntity::getExpired() const {
+  return expired;
+}
+
+void DynamicEntity::setExpired(bool expired) {
+  this->expired = expired;
 }
 
 DynamicEntities dynamicEntities;

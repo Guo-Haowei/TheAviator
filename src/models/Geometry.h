@@ -1,6 +1,8 @@
 // Geometry.h
 #pragma once
 #include "RawModel.h"
+#include <glm/glm.hpp>
+#include <string>
 
 namespace Geometry {
   // models

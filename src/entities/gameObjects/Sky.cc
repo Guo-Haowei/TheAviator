@@ -2,7 +2,7 @@
 #include "Sky.h"
 #include <entities/Entity.h>
 #include <common.h>
-#include <utils/Maths.h>
+#include <maths/Maths.h>
 #include <models/Geometry.h>
 #include <iostream>
 using std::vector;
@@ -101,4 +101,9 @@ void Sky::update() {
     cloud->rotate(0.0f, 0.0f, GAME::SPEED, glm::vec3(0.0f, -SEA::RADIUS, 0.0f));
     cloud->rotateEntity();
   }
+}
+
+Sky& Sky::theOne() {
+  static Sky sky;
+  return sky;
 }

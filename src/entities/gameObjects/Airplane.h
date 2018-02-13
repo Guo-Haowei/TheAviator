@@ -1,5 +1,6 @@
 // Airplane.h
 #pragma once
+#include <models/Geometry.h>
 #include <entities/Entity.h>
 #include <vector>
 
@@ -46,4 +47,8 @@ public:
   void rotate(float dx, float dy, float dz, glm::vec3 center);
   void translate(float dx, float dy, float dz);
   void update();
+  Object3D* getBody();
+
+  static Airplane& theOne();
+  static std::vector<Entity*> rigidBody;
 };

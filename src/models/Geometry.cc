@@ -2,9 +2,8 @@
 #include "Geometry.h"
 #include "Loader.h"
 #include <common.h>
-#include <utils/Maths.h>
+#include <maths/Maths.h>
 #include <utils/Debug.h>
-#include <glm/glm.hpp>
 #include <math.h>
 #include <vector>
 #include <iostream>

@@ -2,8 +2,8 @@
 #include "Airplane.h"
 #include "Camera.h"
 #include <common.h>
-#include <utils/Maths.h>
-#include <models/Geometry.h>
+#include <maths/Object3D.h>
+#include <maths/Maths.h>
 #include <utils/Debug.h>
 #include <io/MouseManager.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -25,6 +25,8 @@ glm::vec3 white(WHITE[0], WHITE[1], WHITE[2]);
 glm::vec3 brown(BROWN[0], BROWN[1], BROWN[2]);
 glm::vec3 brownDark(BROWNDARK[0], BROWNDARK[1], BROWNDARK[2]);
 glm::vec3 pink(PINK[0], PINK[1], PINK[2]);
+
+vector<Entity*> Airplane::rigidBody;
 
 Airplane::Airplane() :
   speed(0.0f),
@@ -73,6 +75,9 @@ Airplane::Airplane() :
   components.push_back(&hairSide);
   components.push_back(&hairBack);
 
+  rigidBody.push_back(&cockpit);
+  cockpit.setBody(new Sphere(6.0f));
+  rigidBody.push_back(&engine);
   // create hair
   for (int i = 0; i < 12; ++i) {
     int col = i % 3;
@@ -159,3 +164,12 @@ void Airplane::update() {
   blade2.changeRotation(axisX, glm::radians(10.0f));
   propeller.changeRotation(axisX, glm::radians(10.0f));
 } 
+
+Object3D* Airplane::getBody() {
+  return cockpit.getBody();
+}
+
+Airplane& Airplane::theOne() {
+  static Airplane airplane;
+  return airplane;
+}

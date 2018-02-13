@@ -1,6 +1,7 @@
 // Entity.cc
 #include "Entity.h"
-#include <utils/Maths.h>
+#include <maths/Maths.h>
+#include <maths/Object3D.h>
 #include <utils/Debug.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
@@ -10,6 +11,7 @@ static int ID = 0;
 
 Entity::Entity():
   id(ID++),
+  rigidBody(nullptr),
   model(nullptr),
   position(glm::vec3(0.0f)),
   transformation(glm::mat4(1.0f)),
@@ -26,6 +28,7 @@ Entity::Entity():
 
 Entity::Entity(const Entity& other):
   id(ID++),
+  rigidBody(nullptr),
   model(other.model),
   position(other.position),
   transformation(glm::mat4(1.0f)),
@@ -50,6 +53,7 @@ Entity::Entity(
   bool castShadow
 ):
   id(ID++),
+  rigidBody(nullptr),
   model(model),
   position(position),
   transformation(glm::mat4(1.0f)),
@@ -62,6 +66,11 @@ Entity::Entity(
   transformation[3].x = position.x;
   transformation[3].y = position.y;
   transformation[3].z = position.z;
+}
+
+Entity::~Entity() {
+  if (rigidBody != nullptr)
+    delete rigidBody;
 }
 
 void Entity::updateTransformation(glm::mat4 transformationMatrix) {
@@ -149,6 +158,17 @@ bool Entity::getCastShadow() const {
 
 unsigned int Entity::getId() const {
   return id;
+}
+
+Object3D* Entity::getBody() {
+  if (!rigidBody)
+    return nullptr;
+  rigidBody->center = position;
+  return rigidBody;
+}
+
+void Entity::setBody(Object3D* body) {
+  this->rigidBody = body;
 }
 
 StaticEntities staticEntities;

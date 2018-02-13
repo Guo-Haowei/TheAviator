@@ -31,4 +31,6 @@ public:
 
   void createCloud(float angle);
   void update();
+
+  static Sky& theOne();
 };

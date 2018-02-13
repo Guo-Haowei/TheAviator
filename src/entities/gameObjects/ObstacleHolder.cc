@@ -1,8 +1,9 @@
 // ObstacleHolder.cc
 #include "ObstacleHolder.h"
+#include <maths/Object3D.h>
 #include <common.h>
 #include <utils/Debug.h>
-#include <utils/Maths.h>
+#include <maths/Maths.h>
 #include <models/Geometry.h>
 #include <iostream>
 
@@ -32,6 +33,7 @@ void ObstacleHolder::spawn(float distance) {
     float h = Maths::rand(minHeight, maxHeight) + SEA::RADIUS;
     glm::vec3 position(h * glm::sin(offscreenLeft), h * glm::cos(offscreenLeft) - SEA::RADIUS, 0.0f);
     DynamicEntity* obstacle = new DynamicEntity(Geometry::sphere, position, obstacleColor, glm::vec3(2.0f));
+    obstacle->setBody(new Sphere(1.8f));
     obstacle->setDistance(distance);
     obstatcles.push_back(obstacle);
     DynamicEntity::addEntity(obstacle);
@@ -42,7 +44,7 @@ void ObstacleHolder::update() {
   spawn(GAME::AIRPLANE_DISTANCE);
   // check if need to delete
   for (int i = 0; i < obstatcles.size(); ++i) {
-    if (obstatcles[i]->getDistance() + offscreenRight < GAME::AIRPLANE_DISTANCE) {
+    if (obstatcles[i]->getDistance() + offscreenRight < GAME::AIRPLANE_DISTANCE || obstatcles[i]->getExpired()) {
       DynamicEntity* entity = obstatcles[i];
       DynamicEntity::removeEntity(entity);
       obstatcles.erase(obstatcles.begin() + i);
@@ -54,4 +56,9 @@ void ObstacleHolder::update() {
     obstatcle->changeRotation(0.0f, 0.01f, 0.0f);
     obstatcle->changeRotation(glm::vec3(0.0f, 0.0f, 1.0f), GAME::SPEED, glm::vec3(0.0f, -SEA::RADIUS, 0.0f));
   }
+}
+
+ObstacleHolder& ObstacleHolder::theOne() {
+  static ObstacleHolder obstacleHolder;
+  return obstacleHolder;
 }

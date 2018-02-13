@@ -1,8 +1,12 @@
 // Game.cc
 #include "Game.h"
+#include "Collision.h"
 #include <common.h>
-#include <utils/Maths.h>
+#include <maths/Maths.h>
 #include <entities/Entity.h>
+#include <entities/gameObjects/Sky.h>
+#include <entities/gameObjects/Airplane.h>
+#include <entities/gameObjects/ObstacleHolder.h>
 #include <models/Geometry.h>
 #include <renderEngine/DisplayManager.h>
 #include <io/MouseManager.h>
@@ -18,7 +22,6 @@ float TIMER = 0;
 void updateFPSCount(double& previousSecond, int& updates);
 
 Game::Game() {
-
   currentTime = 0;
   lastTime = DisplayManager::getTime();
   previousSecond = lastTime;
@@ -52,11 +55,14 @@ void Game::run() {
       primaryCamera.update();
       DisplayManager::prepareDisplay();
 
+      // check collision
+      Collision::checkCollisionAgainstPlane();
+
       renderer.render();
 
-      obstacles.update();
-      airplane.update();
-      sky.update();
+      ObstacleHolder::theOne().update();
+      Airplane::theOne().update();
+      Sky::theOne().update();
       DisplayManager::updateDisplay();
       ++updates;
     }

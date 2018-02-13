@@ -12,4 +12,6 @@ public:
 
   void spawn(float distance);
   void update();
+
+  static ObstacleHolder& theOne();
 };
