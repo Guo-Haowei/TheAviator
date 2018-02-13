@@ -21,14 +21,16 @@ void CollisionShader::getAllUniformLocations() {
   location_transformationMatrix = getUniformLocation("transformationMatrix");
   location_projectionMatrix = getUniformLocation("projectionMatrix");
   location_viewMatrix = getUniformLocation("viewMatrix");
-  location_color = getUniformLocation("color");
+
+  // use alpha instead of color just in case anti-aliasing change the color
+  location_alpha = getUniformLocation("alpha");
 }
 
 void CollisionShader::render(const std::vector<DynamicEntity*>& entities) {
-  glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
   glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
   glViewport(0, 0, ACTUAL_WIDTH, ACTUAL_HEIGHT);
   glDisable(GL_CULL_FACE);
+  glDisable(GL_BLEND);
   // change viewport
   start();
   loadMatrix4f(location_viewMatrix, Camera::primary().getViewMatrix());
@@ -36,10 +38,8 @@ void CollisionShader::render(const std::vector<DynamicEntity*>& entities) {
   RawModel* model = nullptr;
   RawModel::unbind();
   for (int i = 0; i < entities.size(); ++i) {
-    int r = (i & 0x000000ff) >> 0;
-    int g = (i & 0x0000ff00) >> 8;
-    int b = (i & 0x00ff0000) >> 16;
-    loadVector3f(location_color, glm::vec3(r / 255.0f, g / 255.0f, b / 255.0f));
+    // it's impossible to have more than 256 objects
+    loadFloat(location_alpha, (float)i / 255.0f);
 
     DynamicEntity* entity = entities[i];
     RawModel* model = entity->getModel();
@@ -51,9 +51,8 @@ void CollisionShader::render(const std::vector<DynamicEntity*>& entities) {
     RawModel::unbind();
   }
 
-  loadVector3f(location_color, glm::vec3(1.0f, 0.0f, 0.0f));
+  loadFloat(location_alpha, 1.0f);
   for (int i = 0; i < Airplane::rigidBody.size(); ++i) {
-
     Entity* entity = Airplane::rigidBody[i];
     RawModel* model = entity->getModel();
     model->bind();

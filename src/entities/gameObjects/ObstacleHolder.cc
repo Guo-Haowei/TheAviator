@@ -43,11 +43,8 @@ void ObstacleHolder::spawn(float distance) {
 
 void ObstacleHolder::update() {
   spawn(GAME::AIRPLANE_DISTANCE);
-  // check if need to delete
   for (int i = 0; i < obstatcles.size(); ++i) {
     if (obstatcles[i]->getDistance() + offscreenRight < GAME::AIRPLANE_DISTANCE || obstatcles[i]->getExpired()) {
-      //DynamicEntity* entity = obstatcles[i];
-      //DynamicEntity::removeEntity(entity);
       delete obstatcles[i];
       obstatcles.erase(obstatcles.begin() + i);
       --i;
@@ -55,7 +52,7 @@ void ObstacleHolder::update() {
   }
   // update rotation
   for (auto& obstatcle : obstatcles) {
-    obstatcle->changeRotation(0.0f, 0.01f, 0.0f);
+    obstatcle->changeRotation(0.0f, 0.05f, 0.0f);
     obstatcle->changeRotation(glm::vec3(0.0f, 0.0f, 1.0f), GAME::SPEED, glm::vec3(0.0f, -SEA::RADIUS, 0.0f));
   }
 }

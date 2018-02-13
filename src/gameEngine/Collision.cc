@@ -32,6 +32,6 @@ void Collision::checkCollisionAgainstPlane() {
     }
   }
 
-  //if (needToCheck.size())
+  if (needToCheck.size())
     CollisionShader::theOne().render(needToCheck);
 }
