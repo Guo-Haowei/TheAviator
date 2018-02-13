@@ -2,6 +2,7 @@
 #include "SeaShader.h"
 #include <common.h>
 #include <entities/Entity.h>
+#include <entities/gameObjects/Camera.h>
 #include <models/Geometry.h>
 #include <utils/Debug.h>
 #include <GL/glew.h>
@@ -44,9 +45,9 @@ void SeaShader::render() {
   loadInt(location_shadowMap, 0);
   loadFloat(location_time, TIMER);
   loadVector3f(location_light, lightPos);
-  loadMatrix4f(location_lightSpaceMatrix, camera->getLightSpaceMatrix());
-  loadMatrix4f(location_viewMatrix, camera->getViewMatrix());
-  loadMatrix4f(location_projectionMatrix, camera->getProjectionMatrix());
+  loadMatrix4f(location_lightSpaceMatrix, Camera::primary().getLightSpaceMatrix());
+  loadMatrix4f(location_viewMatrix, Camera::primary().getViewMatrix());
+  loadMatrix4f(location_projectionMatrix, Camera::primary().getProjectionMatrix());
   RawModel* model = SEA_MODEL->getModel();
   loadMatrix4f(location_transformationMatrix, SEA_MODEL->getTransformationMatrix());
   model->bind();

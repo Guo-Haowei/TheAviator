@@ -4,6 +4,7 @@
 #include <common.h>
 #include <entities/Entity.h>
 #include <entities/DynamicEntity.h>
+#include <entities/gameObjects/Camera.h>
 #include <glm/glm.hpp>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -62,7 +63,7 @@ void ShadowShader::getAllUniformLocations() {
 
 void ShadowShader::render() {
   start();
-  loadMatrix4f(location_lightSpaceMatrix, camera->getLightSpaceMatrix());
+  loadMatrix4f(location_lightSpaceMatrix, Camera::primary().getLightSpaceMatrix());
   if (isSeaShadow) {
     loadFloat(location_time, TIMER);
     RawModel* model = SEA_MODEL->getModel();

@@ -6,7 +6,6 @@
 
 class CollisionShader: public ShaderProgram {
 protected:
-  Camera* camera;
   int location_projectionMatrix;
   int location_viewMatrix;
   int location_color;

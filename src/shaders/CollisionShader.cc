@@ -3,13 +3,13 @@
 #include <common.h>
 #include <utils/Debug.h>
 #include <entities/gameObjects/Airplane.h>
+#include <entities/gameObjects/Camera.h>
 #include <GL/glew.h>
 
 CollisionShader::CollisionShader() {
   const char* VERTEX_FILE = "../shaders/collision.vert";
   const char* FRAGMENT_FILE = "../shaders/collision.frag";
   ShaderProgram::init(VERTEX_FILE, FRAGMENT_FILE);
-  camera = &primaryCamera;
 }
 
 void CollisionShader::bindAttributes() {
@@ -26,8 +26,8 @@ void CollisionShader::getAllUniformLocations() {
 void CollisionShader::render(const std::vector<DynamicEntity*>& entities) {
   // change viewport
   start();
-  loadMatrix4f(location_viewMatrix, camera->getViewMatrix());
-  loadMatrix4f(location_projectionMatrix, camera->getProjectionMatrix());
+  loadMatrix4f(location_viewMatrix, Camera::primary().getViewMatrix());
+  loadMatrix4f(location_projectionMatrix, Camera::primary().getProjectionMatrix());
   RawModel* model = nullptr;
   RawModel::unbind();
   for (int i = 0; i < entities.size(); ++i) {

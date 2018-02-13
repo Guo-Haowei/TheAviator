@@ -7,20 +7,13 @@
 #include <iostream>
 using std::cout;
 
-Camera primaryCamera;
-
 Camera::Camera() {
-  position = glm::vec3(0.0f);
+  position = glm::vec3(CAMERA::X, CAMERA::Y, CAMERA::Z);
   up = glm::vec3(0.0f, 1.0f, 0.0f);
   worldUp = up;
   front = glm::vec3(0.0f, 0.0f, -1.0f);
-  fov = 45.0f;
+  fov = CAMERA::FOV;
   updateCameraVectors();
-}
-
-void Camera::initPrimaryCamera() {
-  primaryCamera.setPosition(glm::vec3(CAMERA::X, CAMERA::Y, CAMERA::Z));
-  primaryCamera.setFov(CAMERA::FOV);
 }
 
 void Camera::update() {
@@ -66,4 +59,9 @@ void Camera::setPosition(glm::vec3 position) {
 void Camera::chasePoint(glm::vec3 position) {
   float delta = (position.y - this->position.y) * 0.1f;
   this->position.y += delta;
+}
+
+Camera& Camera::primary() {
+  static Camera primary;
+  return primary;
 }

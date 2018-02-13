@@ -1,6 +1,5 @@
 // ShaderProgram.h
 #pragma once
-#include <entities/gameObjects/Camera.h>
 #include <glm/glm.hpp>
 
 class ShaderProgram {
@@ -11,8 +10,6 @@ protected:
   unsigned int vertexShaderID;
   unsigned int fragmentShaderID;
   unsigned int geometryShaderID;
-
-  Camera* camera;
 
   int location_transformationMatrix;
   int location_lightSpaceMatrix;

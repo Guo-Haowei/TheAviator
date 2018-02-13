@@ -3,6 +3,7 @@
 #include <common.h>
 #include <entities/Entity.h>
 #include <entities/DynamicEntity.h>
+#include <entities/gameObjects/Camera.h>
 #include <GL/glew.h>
 #include <iostream>
 using std::cout;
@@ -12,7 +13,6 @@ EntityShader::EntityShader() {
   const char* VERTEX_FILE = "../shaders/entity.vert";
   const char* FRAGMENT_FILE = "../shaders/entity.frag";
   ShaderProgram::init(VERTEX_FILE, FRAGMENT_FILE);
-  camera = &primaryCamera;
 }
 
 void EntityShader::bindAttributes() {
@@ -36,9 +36,9 @@ void EntityShader::render() {
   glm::vec3 lightPos(LIGHT::X, LIGHT::Y, LIGHT::Z);
   loadInt(location_shadowMap, 0);
   loadVector3f(location_light, lightPos);
-  loadMatrix4f(location_lightSpaceMatrix, camera->getLightSpaceMatrix());
-  loadMatrix4f(location_viewMatrix, camera->getViewMatrix());
-  loadMatrix4f(location_projectionMatrix, camera->getProjectionMatrix());
+  loadMatrix4f(location_lightSpaceMatrix, Camera::primary().getLightSpaceMatrix());
+  loadMatrix4f(location_viewMatrix, Camera::primary().getViewMatrix());
+  loadMatrix4f(location_projectionMatrix, Camera::primary().getProjectionMatrix());
   for (auto& entry: staticEntities) {
     vector<Entity*>& entities = entry.second;
     entry.first->bind();
