@@ -48,6 +48,7 @@ public:
   void translate(float dx, float dy, float dz);
   void update();
   Entity& getBody();
+  void knockBack(glm::vec3 otherPosition);
 
   static Airplane& theOne();
   static std::vector<Entity*> rigidBody;

@@ -139,8 +139,6 @@ void Airplane::update() {
 
   COLLISION_DISPLACEMENT_X += COLLISION_SPEED_X;
   targetX += COLLISION_DISPLACEMENT_X;
-  COLLISION_DISPLACEMENT_Y += COLLISION_DISPLACEMENT_Y;
-  targetY += COLLISION_DISPLACEMENT_Y;
 
   float deltaX = targetX - position.x;
   float deltaY = targetY - position.y;
@@ -152,10 +150,10 @@ void Airplane::update() {
   // move camera
   Camera::primary().chasePoint(position);
 
-  COLLISION_SPEED_X += -COLLISION_DISPLACEMENT_X * 0.012f;
-  COLLISION_DISPLACEMENT_X += -COLLISION_DISPLACEMENT_X * 0.004f;
-  COLLISION_SPEED_Y += -COLLISION_DISPLACEMENT_Y * 0.012f;
-  COLLISION_DISPLACEMENT_Y += -COLLISION_DISPLACEMENT_Y * 0.004f;
+  COLLISION_SPEED_X += -COLLISION_DISPLACEMENT_X * 0.2f;
+  if (COLLISION_SPEED_X > 0)
+    COLLISION_DISPLACEMENT_X = 0;
+  COLLISION_DISPLACEMENT_X += -COLLISION_DISPLACEMENT_X * 0.1f;
 
   // update hair
   updateHair();
@@ -164,6 +162,12 @@ void Airplane::update() {
   blade2.changeRotation(axisX, glm::radians(10.0f));
   propeller.changeRotation(axisX, glm::radians(10.0f));
 } 
+
+void Airplane::knockBack(glm::vec3 otherPosition) {
+  glm::vec3 distance = position - otherPosition;
+  float length = glm::length(distance);
+  COLLISION_SPEED_X = 20.0f * distance.x / length;
+}
 
 Entity& Airplane::getBody() {
   return cockpit;
