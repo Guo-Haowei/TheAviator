@@ -23,7 +23,7 @@ float shadowCalculation(vec4 lightSpaceFragPos) {
   if (currentDepth > 1.0)
     return 0;
   float shadow = 0.0;
-  float bias = max(0.05 * (1.0 - dot(Normal, normalize(-lightPos))), 0.001);
+  float bias = max(0.002 * (1.0 - dot(Normal, normalize(lightPos))), 0.0005);
   vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
   int sampleSize = 1;
   for(int x = -sampleSize; x <= sampleSize; ++x) {

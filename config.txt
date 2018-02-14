@@ -28,8 +28,8 @@ z: 210.0f
 #Shadow
 near: 150.0f
 far: 500.0f
-width: 2048
-height: 2048
+width: 4096
+height: 4096
 
 #Airplane
 x: 0.0f
