@@ -65,7 +65,6 @@ void Sky::createCloud(float angle) {
 
   int index = clouds.size();
   int nBlocks = 3 + Maths::rand(0, 3);
-  std::cout << nBlocks << "\n";
   float cloudScale = Maths::rand(1.5f, 2.5f);
   for (int i = 0; i < nBlocks; ++i) {
     glm::vec3 position((float)i * 5.0f * cloudScale, Maths::rand(0.0f, 4.0f), Maths::rand(0.0f, 4.0f));

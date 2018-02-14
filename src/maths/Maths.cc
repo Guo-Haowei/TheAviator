@@ -8,7 +8,7 @@
 using std::cout;
 
 int Maths::rand(int min, int max) {
-  return min + std::rand() * (max - min) / RAND_MAX;
+  return min + std::rand() * (float)(max - min) / (float)RAND_MAX;
 }
 
 float Maths::rand(float min, float max) {
