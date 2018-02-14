@@ -6,9 +6,7 @@ class Game {
 private:
   Renderer renderer;
   
-  double currentTime, lastTime;
-  double previousSecond = lastTime;
-  double delta = 0;
+  double currentTime, lastTime, previousSecond, delta;
   int updates = 0;
 public:
   Game();

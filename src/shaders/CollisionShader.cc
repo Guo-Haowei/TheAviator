@@ -30,7 +30,6 @@ void CollisionShader::render(const std::vector<DynamicEntity*>& entities) {
   glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
   glViewport(0, 0, ACTUAL_WIDTH, ACTUAL_HEIGHT);
   glDisable(GL_CULL_FACE);
-  glDisable(GL_BLEND);
   // change viewport
   start();
   loadMatrix4f(location_viewMatrix, Camera::primary().getViewMatrix());
@@ -56,7 +55,6 @@ void CollisionShader::render(const std::vector<DynamicEntity*>& entities) {
     Entity* entity = Airplane::rigidBody[i];
     RawModel* model = entity->getModel();
     model->bind();
-    Debug::printMatrix(entity->getTransformationMatrix(), "transformation");
     loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
 
     glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());

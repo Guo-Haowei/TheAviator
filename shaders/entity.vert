@@ -7,6 +7,7 @@ out vec3 FragPos;
 out vec3 Normal;
 out vec3 ToCameraVector;
 out vec4 LightSpaceFragPos;
+out vec4 ViewSpace;
 
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
@@ -15,7 +16,8 @@ uniform mat4 lightSpaceMatrix;
 
 void main() {
   vec4 worldPosition = transformationMatrix * vec4(position, 1.0);
-  gl_Position = projectionMatrix * viewMatrix * worldPosition;
+  ViewSpace = viewMatrix * worldPosition;
+  gl_Position = projectionMatrix * ViewSpace;
 
   FragPos = vec3(worldPosition);
   Normal = normalize(mat3(transpose(inverse(transformationMatrix))) * normal);

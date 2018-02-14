@@ -49,7 +49,8 @@ void DisplayManager::createDisplay() {
   glEnable(GL_MULTISAMPLE);
   glEnable(GL_DEPTH_TEST);
   // alpha blending
-  glBlendFunc(GL_SRC_ALPHA, GL_SRC_COLOR);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   // face culling
   glEnable(GL_CULL_FACE);

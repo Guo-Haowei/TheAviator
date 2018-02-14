@@ -4,6 +4,7 @@ in vec3 FragPos;
 in vec3 Normal;
 in vec3 ToCameraVector;
 in vec4 LightSpaceFragPos;
+in vec4 ViewSpace;
 
 out vec4 out_Color;
 
@@ -34,6 +35,7 @@ float shadowCalculation(vec4 lightSpaceFragPos) {
 }
 
 void main() {
+  vec3 fogColor = vec3(0.968, 0.851, 0.667);
   vec3 unitNormal = normalize(Normal);
   vec3 unitToCameraVector = normalize(ToCameraVector);
 
@@ -62,5 +64,16 @@ void main() {
     shadow = visibility * shadowCalculation(LightSpaceFragPos);
   vec3 fragColor = (ambient + (1 - shadow) * (diffuse + specular)) * color;
 
+  // fog
+  float dist = abs(ViewSpace.z);
+  float near = 250.0;
+  float far = 350.0;
+  float fogFactor = (far - dist)/(far - near);
+  fogFactor = max(0.0, clamp(fogFactor, 0.0, 1.0) - 0.2);
+
+  vec3 finalColor = (1.0 - fogFactor) * fogColor + fogFactor * fragColor;
   out_Color = vec4(fragColor, opacity);
+
+  // if (fogFactor < 0.2)
+    // out_Color = vec4(0.0, 0.0, 0.0, 1.0);
 }
