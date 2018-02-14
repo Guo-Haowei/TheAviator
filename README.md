@@ -55,6 +55,8 @@ make
 ```
 
 ## TODO
-* Collision detection (assign each object a unique color, render it and find if pixels overlap. Optimization: 1. trackball 2. minimize viewport)
+* Add energy coins
+* Collision detection
 * Particle effect
+* UI
 * Implement Cascaded Shadow Mapping
