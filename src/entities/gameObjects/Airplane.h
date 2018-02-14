@@ -47,7 +47,7 @@ public:
   void rotate(float dx, float dy, float dz, glm::vec3 center);
   void translate(float dx, float dy, float dz);
   void update();
-  Object3D* getBody();
+  Entity& getBody();
 
   static Airplane& theOne();
   static std::vector<Entity*> rigidBody;

@@ -10,10 +10,8 @@ using std::cout;
 Camera::Camera() {
   position = glm::vec3(CAMERA::X, CAMERA::Y, CAMERA::Z);
   up = glm::vec3(0.0f, 1.0f, 0.0f);
-  worldUp = up;
   front = glm::vec3(0.0f, 0.0f, -1.0f);
   fov = CAMERA::FOV;
-  updateCameraVectors();
 }
 
 void Camera::update() {
@@ -35,11 +33,6 @@ glm::mat4 Camera::getLightSpaceMatrix() {
   return projectionMatrix * viewMatrix;
 }
 
-void Camera::updateCameraVectors() {
-  right = glm::normalize(glm::cross(front, worldUp));
-  up = glm::normalize(glm::cross(right, front));
-}
-
 float Camera::getFov() const {
   return fov;
 }
@@ -59,6 +52,13 @@ void Camera::setPosition(glm::vec3 position) {
 void Camera::chasePoint(glm::vec3 position) {
   float delta = (position.y - this->position.y) * 0.1f;
   this->position.y += delta;
+}
+
+glm::vec2 Camera::screenPos(glm::vec4 worldPos) {
+  glm::vec4 screenPos = getProjectionMatrix() * getViewMatrix() * worldPos;
+  float x = (1.0f + screenPos.x) / 2.0f * (float)ACTUAL_WIDTH;
+  float y = (1.0f - screenPos.y) / 2.0f * (float)ACTUAL_HEIGHT;
+  return glm::vec2(x, y);
 }
 
 Camera& Camera::primary() {

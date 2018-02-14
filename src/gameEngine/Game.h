@@ -15,6 +15,7 @@ public:
   void run();
   bool shouldRun();
   bool shouldUpdate();
+
   static void init();
   static Game& theOne();
 };

@@ -10,12 +10,8 @@ private:
   glm::vec3 position;
   glm::vec3 front;
   glm::vec3 up;
-  glm::vec3 right;
-  glm::vec3 worldUp;
 
   float fov;
-
-  void updateCameraVectors();
 public:
   Camera();
 
@@ -30,6 +26,8 @@ public:
   glm::vec3 getPosition() const;
   void setPosition(glm::vec3 position);
   void chasePoint(glm::vec3 position);
+
+  glm::vec2 screenPos(glm::vec4 worldPos);
 
   static Camera& primary();
 };

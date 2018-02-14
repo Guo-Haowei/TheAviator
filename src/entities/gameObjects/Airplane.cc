@@ -165,8 +165,8 @@ void Airplane::update() {
   propeller.changeRotation(axisX, glm::radians(10.0f));
 } 
 
-Object3D* Airplane::getBody() {
-  return cockpit.getBody();
+Entity& Airplane::getBody() {
+  return cockpit;
 }
 
 Airplane& Airplane::theOne() {

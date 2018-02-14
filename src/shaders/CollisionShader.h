@@ -8,7 +8,7 @@ class CollisionShader: public ShaderProgram {
 protected:
   int location_projectionMatrix;
   int location_viewMatrix;
-  int location_alpha;
+  int location_color;
   void bindAttributes();
   void getAllUniformLocations();
 public:

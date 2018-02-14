@@ -8,14 +8,20 @@ double MouseManager::y = 0;
 
 void MouseManager::update() {
   DisplayManager::getCursorPos(&x, &y);
-  x = -1 + x * 2.0f / (float)WIDTH;
-  y = 1 - y * 2.0f / (float)HEIGHT;
 }
 
 double MouseManager::getX() {
-  return x;
+  return -1 + x * 2.0f / (float)WIDTH;
 }
 
 double MouseManager::getY() {
+  return 1 - y * 2.0f / (float)HEIGHT;
+}
+
+double MouseManager::getRawX() {
+  return x;
+}
+
+double MouseManager::getRawY() {
   return y;
 }

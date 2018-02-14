@@ -86,6 +86,10 @@ glm::mat4 Entity::getTransformationMatrix() {
   return transformation * scaleMatrix;
 }
 
+glm::vec4 Entity::getWorldPos() {
+  return glm::vec4(position, 1.0f);
+}
+
 void Entity::changePosition(glm::mat4 translationMatrix) {
   updateTransformation(translationMatrix);
 }

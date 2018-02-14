@@ -4,6 +4,12 @@
 using std::cerr;
 using std::string;
 
+void Debug::printVector(glm::vec2 vec, string name) {
+  if (name != "")
+    cerr << "Vector " << name << ":\n";
+  cerr << "[" << vec.x << " " << vec.y << "]\n";
+}
+
 void Debug::printVector(glm::vec3 vec, string name) {
   if (name != "")
     cerr << "Vector " << name << ":\n";

@@ -22,6 +22,7 @@ protected:
   void loadBool(int location, bool value);
   void loadFloat(int location, float value);
   void loadVector3f(int location, glm::vec3 vec);
+  void loadVector4f(int location, glm::vec4 vec);
   void loadMatrix4f(int location, glm::mat4 mat);
 public:
   void init(const char* vertexFileName, const char* fragmentFileName, const char* geometryFileName = nullptr);

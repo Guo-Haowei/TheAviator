@@ -9,4 +9,6 @@ public:
   static void update();
   static double getX();
   static double getY();
+  static double getRawX();
+  static double getRawY();
 };

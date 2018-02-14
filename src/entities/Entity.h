@@ -39,6 +39,7 @@ public:
   void setScale(float dx, float dy, float dz);
 
   glm::mat4 getTransformationMatrix();
+  glm::vec4 getWorldPos();
 
   float getOpacity() const;
   RawModel* getModel() const;
