@@ -8,6 +8,7 @@ out vec4 out_Color;
 
 uniform vec3 lightPos;
 uniform sampler2D shadowMap;
+uniform float ambientLightIntensity;
 
 float shadowCalculation(vec4 lightSpaceFragPos) {
   vec3 projCoords = lightSpaceFragPos.xyz / lightSpaceFragPos.w;
@@ -38,7 +39,7 @@ void main() {
   vec3 lightDir = normalize(-lightPos);
 
   // ambient
-  float ambientStrength = 0.15;
+  float ambientStrength = 0.15 * ambientLightIntensity;
   vec3 ambient = ambientStrength * lightColor;
 
   // diffuse

@@ -42,6 +42,7 @@ void SeaShader::getAllUniformLocations() {
 void SeaShader::render() {
   start();
   glm::vec3 lightPos(LIGHT::X, LIGHT::Y, LIGHT::Z);
+  loadFloat(location_ambientLightIntensity, AMBIENT_LIGHT_INTENSITY);
   loadInt(location_shadowMap, 0);
   loadFloat(location_time, TIMER);
   loadVector3f(location_light, lightPos);

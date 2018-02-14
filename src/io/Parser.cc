@@ -8,6 +8,8 @@ using std::cout;
 using std::ifstream;
 using std::string;
 
+float AMBIENT_LIGHT_INTENSITY = 1.0f;
+
 float GAME::SPEED;
 float GAME::FPS;
 int GAME::DISPLAY_FPS;

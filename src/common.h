@@ -14,6 +14,7 @@ const float BACKGROUND_COLOR2[] = { 247.0f/255.0f, 217.0f/255.0f, 170.0f/255.0f 
 extern int WIDTH, HEIGHT, ACTUAL_WIDTH, ACTUAL_HEIGHT;
 extern float TIMER;
 
+extern float AMBIENT_LIGHT_INTENSITY;
 const float NEAR_PLANE = 1.0f, FAR_PLANE = 10000.0f;
 
 namespace GAME {

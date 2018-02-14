@@ -167,6 +167,7 @@ void Airplane::knockBack(glm::vec3 otherPosition) {
   glm::vec3 distance = position - otherPosition;
   float length = glm::length(distance);
   COLLISION_SPEED_X = 20.0f * distance.x / length;
+  AMBIENT_LIGHT_INTENSITY = 2.0f;
 }
 
 Entity& Airplane::getBody() {

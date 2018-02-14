@@ -12,6 +12,7 @@ uniform vec3 color;
 uniform vec3 lightPos;
 uniform sampler2D shadowMap;
 uniform float opacity;
+uniform float ambientLightIntensity;
 uniform int receiveShadow;
 
 float shadowCalculation(vec4 lightSpaceFragPos) {
@@ -40,11 +41,11 @@ void main() {
   vec3 unitToCameraVector = normalize(ToCameraVector);
 
   // directional light
-  vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
+  vec3 lightColor = vec3(1.0, 1.0, 1.0);
   vec3 lightDir = normalize(lightPos);
 
   // ambient
-  float ambientStrength = 0.4;
+  float ambientStrength = 0.4 * ambientLightIntensity;
   vec3 ambient = ambientStrength * lightColor;
 
   // diffuse

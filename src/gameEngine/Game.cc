@@ -13,6 +13,7 @@
 #include <io/MouseManager.h>
 #include <io/Parser.h>
 #include <glm/glm.hpp>
+#include <algorithm>
 #include <iostream>
 using std::cout;
 
@@ -55,6 +56,8 @@ void Game::run() {
       Camera::primary().update();
       DisplayManager::prepareDisplay();
 
+      // update light intensity
+      AMBIENT_LIGHT_INTENSITY = std::max(1.0f, AMBIENT_LIGHT_INTENSITY - 0.05f);
       // check collision
       Collision::checkCollisionAgainstPlane();
 

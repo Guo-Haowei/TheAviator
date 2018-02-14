@@ -35,6 +35,7 @@ void EntityShader::render() {
   start();
   glm::vec3 lightPos(LIGHT::X, LIGHT::Y, LIGHT::Z);
   loadInt(location_shadowMap, 0);
+  loadFloat(location_ambientLightIntensity, AMBIENT_LIGHT_INTENSITY);
   loadVector3f(location_light, lightPos);
   loadMatrix4f(location_lightSpaceMatrix, Camera::primary().getLightSpaceMatrix());
   loadMatrix4f(location_viewMatrix, Camera::primary().getViewMatrix());
