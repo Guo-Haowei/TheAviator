@@ -7,6 +7,7 @@
 #include <entities/gameObjects/Sky.h>
 #include <entities/gameObjects/Airplane.h>
 #include <entities/gameObjects/ObstacleHolder.h>
+#include <entities/gameObjects/BatteryHolder.h>
 #include <entities/gameObjects/ParticleHolder.h>
 #include <entities/gameObjects/Camera.h>
 #include <models/Geometry.h>
@@ -66,6 +67,7 @@ void Game::run() {
       renderer.render();
 
       ObstacleHolder::theOne().update();
+      BatteryHolder::theOne().update();
       Airplane::theOne().update();
       Sky::theOne().update();
       DisplayManager::updateDisplay();

@@ -9,15 +9,15 @@ using std::cout;
 using std::vector;
 
 DynamicEntity::DynamicEntity(
+  EntityType type,
   RawModel* model,
   glm::vec3 position,
   glm::vec3 color,
   float scale,
   float opacity,
   bool receiveShadow,
-  bool castShadow,
-  bool isParticle):
-  isParticle(isParticle),
+  bool castShadow):
+  type(type),
   lifespan(1),
   distance(0.0f),
   originScale(scale),
@@ -25,7 +25,7 @@ DynamicEntity::DynamicEntity(
 {}
 
 DynamicEntity::~DynamicEntity() {
-  if (!isParticle) {
+  if (type) {
     removeEntity(this);
     // generate particle effects
     ParticleHolder::theOne().spawnParticles(position, 20, color, scale.x);

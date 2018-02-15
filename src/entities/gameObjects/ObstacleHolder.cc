@@ -7,14 +7,6 @@
 #include <models/Geometry.h>
 #include <iostream>
 
-// extract to common later
-const float offscreenLeft = 0.5f;
-const float offscreenRight = 1.0f;
-const float miniumDist = 0.1f;
-const float spawnChance = 0.3f;
-const float minHeight = 20.0f;
-const float maxHeight = 60.0f;
-
 glm::vec3 obstacleColor(RED[0], RED[1], RED[2]);
 
 ObstacleHolder::ObstacleHolder(): lastSpawnDistance(offscreenLeft) {}
@@ -26,14 +18,20 @@ ObstacleHolder::~ObstacleHolder() {
 }
 
 void ObstacleHolder::spawn(float distance) {
-  if (distance >= lastSpawnDistance + miniumDist) {
+  if (distance >= lastSpawnDistance + miniumDist_O) {
     lastSpawnDistance = distance;
     if (!Maths::chance(spawnChance))
       return;
     float h = Maths::rand(minHeight, maxHeight) + SEA::RADIUS;
     glm::vec3 position(h * glm::sin(offscreenLeft), h * glm::cos(offscreenLeft) - SEA::RADIUS, 0.0f);
     float scale = 3.0f;
-    DynamicEntity* obstacle = new DynamicEntity(Geometry::sphere, position, obstacleColor, scale);
+    DynamicEntity* obstacle = new DynamicEntity(
+      OBSTACLE,
+      Geometry::sphere,
+      position,
+      obstacleColor,
+      scale
+    );
     obstacle->setBody(new Sphere(scale));
     obstacle->setDistance(distance);
     obstatcles.push_back(obstacle);
