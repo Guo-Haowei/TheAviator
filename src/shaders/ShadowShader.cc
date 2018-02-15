@@ -5,6 +5,7 @@
 #include <entities/Entity.h>
 #include <entities/DynamicEntity.h>
 #include <entities/gameObjects/Camera.h>
+#include <entities/gameObjects/ParticleHolder.h>
 #include <glm/glm.hpp>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -78,7 +79,7 @@ void ShadowShader::render() {
       vector<Entity*>& entities = entry.second;
       entry.first->bind();
       for (int i = 0; i < entities.size(); ++i) {
-        Entity* entity = entities.at(i);
+        Entity* entity = entities[i];
         if (!entity->getCastShadow())
           continue;
         RawModel* model = entity->getModel();
@@ -92,7 +93,7 @@ void ShadowShader::render() {
       vector<DynamicEntity*>& entities = entry.second;
       entry.first->bind();
       for (int i = 0; i < entities.size(); ++i) {
-        DynamicEntity* entity = entities.at(i);
+        DynamicEntity* entity = entities[i];
         if (!entity->getCastShadow())
           continue;
         RawModel* model = entity->getModel();
@@ -101,6 +102,19 @@ void ShadowShader::render() {
       }
       RawModel::unbind();
     }
+
+    vector<DynamicEntity*> particles = ParticleHolder::getParticles();
+    if (particles.size())
+      particles[0]->getModel()->bind();
+      for (int i = 0; i < particles.size(); ++i) {
+        DynamicEntity* particle = particles[i];
+        if (!particle->getCastShadow())
+          continue;
+        RawModel* model = particle->getModel();
+        loadMatrix4f(location_transformationMatrix, particle->getTransformationMatrix());
+        glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
+      }
+      RawModel::unbind();
   }
 
   stop();
