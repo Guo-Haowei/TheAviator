@@ -1,6 +1,8 @@
 // DynamicEntity.cc
 #include "DynamicEntity.h"
 #include <models/Geometry.h>
+#include <maths/Maths.h>
+#include <entities/gameObjects/ParticleHolder.h>
 #include <common.h>
 #include <iostream>
 using std::cout;
@@ -10,18 +12,24 @@ DynamicEntity::DynamicEntity(
   RawModel* model,
   glm::vec3 position,
   glm::vec3 color,
-  glm::vec3 scale,
+  float scale,
   float opacity,
   bool receiveShadow,
-  bool castShadow):
-  expired(false),
+  bool castShadow,
+  bool isParticle):
+  isParticle(isParticle),
+  lifespan(1),
   distance(0.0f),
-  Entity(model, position, color, scale, opacity, receiveShadow, castShadow)
+  originScale(scale),
+  Entity(model, position, color, glm::vec3(scale), opacity, receiveShadow, castShadow)
 {}
 
 DynamicEntity::~DynamicEntity() {
-  // particle effects
-  removeEntity(this);
+  if (!isParticle) {
+    removeEntity(this);
+    // generate particle effects
+    ParticleHolder::theOne().spawnParticles(position, 20, color, scale.x);
+  }
 }
 
 float DynamicEntity::getDistance() const {
@@ -32,12 +40,28 @@ void DynamicEntity::setDistance(float distance) {
   this->distance = distance;
 }
 
-bool DynamicEntity::getExpired() const {
-  return expired;
+int DynamicEntity::getLifespan() const {
+  return lifespan;
 }
 
-void DynamicEntity::setExpired(bool expired) {
-  this->expired = expired;
+void DynamicEntity::setLifespan(int lifespan) {
+  this->lifespan = lifespan;
+}
+
+void DynamicEntity::deplete() {
+  // change scale
+  scale = glm::vec3(originScale * (float)lifespan / (float)LIFESPAN);
+  // change velocity and position
+  velocity += glm::vec3(velocity.x > 0.0f ? -0.04f: 0.04f, -0.06f, 0.0f);
+  changePosition(velocity.x, velocity.y, velocity.z);
+  // rotate randomly
+  changeRotation(Maths::rand(0.0f, 12.0f), Maths::rand(0.0f, 12.0f), 0.0f);
+  if (lifespan)
+    lifespan--;
+}
+
+void DynamicEntity::setVelocity(glm::vec3 velocity) {
+  this->velocity = velocity;
 }
 
 DynamicEntities dynamicEntities;

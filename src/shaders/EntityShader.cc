@@ -4,6 +4,7 @@
 #include <entities/Entity.h>
 #include <entities/DynamicEntity.h>
 #include <entities/gameObjects/Camera.h>
+#include <entities/gameObjects/ParticleHolder.h>
 #include <GL/glew.h>
 #include <iostream>
 using std::cout;
@@ -65,6 +66,21 @@ void EntityShader::render() {
       loadFloat(location_opacity, entity->getOpacity());
       loadVector3f(location_color, entity->getColor());
       loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
+
+      glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
+    }
+    RawModel::unbind();
+
+    vector<DynamicEntity*>& particles = ParticleHolder::getParticles();
+    if (particles.size())
+      particles[0]->getModel()->bind();
+    for (int i = 0; i < particles.size(); ++i) {
+      DynamicEntity* particle = particles.at(i);
+      RawModel* model = particle->getModel();
+      loadBool(location_receiveShadow, particle->getReceiveShadow());
+      loadFloat(location_opacity, particle->getOpacity());
+      loadVector3f(location_color, particle->getColor());
+      loadMatrix4f(location_transformationMatrix, particle->getTransformationMatrix());
 
       glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
     }

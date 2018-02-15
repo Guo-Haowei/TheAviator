@@ -33,7 +33,7 @@ void ObstacleHolder::spawn(float distance) {
     float h = Maths::rand(minHeight, maxHeight) + SEA::RADIUS;
     glm::vec3 position(h * glm::sin(offscreenLeft), h * glm::cos(offscreenLeft) - SEA::RADIUS, 0.0f);
     float scale = 3.0f;
-    DynamicEntity* obstacle = new DynamicEntity(Geometry::sphere, position, obstacleColor, glm::vec3(scale));
+    DynamicEntity* obstacle = new DynamicEntity(Geometry::sphere, position, obstacleColor, scale);
     obstacle->setBody(new Sphere(scale));
     obstacle->setDistance(distance);
     obstatcles.push_back(obstacle);
@@ -44,7 +44,7 @@ void ObstacleHolder::spawn(float distance) {
 void ObstacleHolder::update() {
   spawn(GAME::AIRPLANE_DISTANCE);
   for (int i = 0; i < obstatcles.size(); ++i) {
-    if (obstatcles[i]->getDistance() + offscreenRight < GAME::AIRPLANE_DISTANCE || obstatcles[i]->getExpired()) {
+    if (obstatcles[i]->getDistance() + offscreenRight < GAME::AIRPLANE_DISTANCE || !obstatcles[i]->getLifespan()) {
       delete obstatcles[i];
       obstatcles.erase(obstatcles.begin() + i);
       --i;

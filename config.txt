@@ -1,7 +1,7 @@
 #Game
 game_speed: 0.003
 fps: 60.0
-display_fps: 0
+display_fps: 1
 
 #Sea
 radius: 240.0f

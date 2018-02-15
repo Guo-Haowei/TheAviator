@@ -30,7 +30,7 @@ void Collision::checkCollisionAgainstPlane() {
     if (overlap(obstacle->getBody(), Airplane::theOne().getBody().getBody())) {
       //needToCheck.push_back(obstacle);
       Airplane::theOne().knockBack(obstacle->getPosition());
-      obstacle->setExpired(true);
+      obstacle->setLifespan(0);
     }
   }
 

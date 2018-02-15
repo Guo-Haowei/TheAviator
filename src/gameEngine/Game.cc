@@ -7,6 +7,7 @@
 #include <entities/gameObjects/Sky.h>
 #include <entities/gameObjects/Airplane.h>
 #include <entities/gameObjects/ObstacleHolder.h>
+#include <entities/gameObjects/ParticleHolder.h>
 #include <entities/gameObjects/Camera.h>
 #include <models/Geometry.h>
 #include <renderEngine/DisplayManager.h>
@@ -60,6 +61,7 @@ void Game::run() {
       AMBIENT_LIGHT_INTENSITY = std::max(1.0f, AMBIENT_LIGHT_INTENSITY - 0.05f);
       // check collision
       Collision::checkCollisionAgainstPlane();
+      ParticleHolder::theOne().update();
 
       renderer.render();
 

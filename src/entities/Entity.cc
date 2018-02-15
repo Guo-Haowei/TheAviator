@@ -124,10 +124,6 @@ void Entity::changeRotation(glm::vec3 axis, float angle, glm::vec3 center) {
   updateTransformation(Maths::rotateAroundAxis(axis, angle, center));
 }
 
-void Entity::setScale(float dx, float dy, float dz) {
-  scale = glm::vec3(dx, dy, dz);
-}
-
 glm::vec3 Entity::getPosition() const {
   return position;
 }
@@ -142,6 +138,10 @@ void Entity::setColor(glm::vec3 color) {
 
 glm::vec3 Entity::getScale() const {
   return scale;
+}
+
+void Entity::setScale(float dx, float dy, float dz) {
+  scale = glm::vec3(dx, dy, dz);
 }
 
 float Entity::getOpacity() const {

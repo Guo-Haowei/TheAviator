@@ -23,7 +23,7 @@ public:
   Entity();
   Entity(const Entity& other);
   Entity(RawModel* model, glm::vec3 position = glm::vec3(0.0f), glm::vec3 color = glm::vec3(1.0f), glm::vec3 scale = glm::vec3(1.0f), float opacity = 1.0f, bool receiveShadow = true, bool castShadow = true);
-  ~Entity();
+  virtual ~Entity();
 
   glm::vec3 getPosition() const;
   void setPosition(float dx, float dy, float dz);
