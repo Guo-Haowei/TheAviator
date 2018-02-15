@@ -11,8 +11,8 @@ ParticleHolder::ParticleHolder() {}
 
 ParticleHolder::~ParticleHolder() {}
 
-void ParticleHolder::spawnParticles(glm::vec3 position, int denstiy, glm::vec3 color, float scale) {
-  for (int i = 0; i < denstiy; ++i) {
+void ParticleHolder::spawnParticles(glm::vec3 position, int density, glm::vec3 color, float scale) {
+  for (int i = 0; i < density; ++i) {
     DynamicEntity* particle = new DynamicEntity(
       PARTICLE,
       Geometry::tetrahedron,
@@ -25,7 +25,8 @@ void ParticleHolder::spawnParticles(glm::vec3 position, int denstiy, glm::vec3 c
     );
     particle->setLifespan(LIFESPAN);
     particle->setBody(new Sphere(scale));
-    particle->setVelocity(glm::vec3(Maths::rand(-1.2f, 1.4f), Maths::rand(-0.5f, 1.5f), 0.0f));
+    glm::vec3 velocity = glm::vec3(Maths::rand(-1.2f, 1.4f), Maths::rand(-0.5f, 1.5f), 0.0f);
+    particle->setVelocity(velocity);
     particles.push_back(particle);
   }
 }

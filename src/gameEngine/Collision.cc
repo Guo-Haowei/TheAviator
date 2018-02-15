@@ -23,12 +23,16 @@ bool overlap(Object3D* o1, Object3D* o2) {
 
 void Collision::checkCollisionAgainstPlane() {
   // check all dynamic entities except particles
-  const vector<DynamicEntity*> obstacles = dynamicEntities[Geometry::sphere];
   
-  for (auto& obstacle : obstacles) {
-    if (overlap(obstacle->getBody(), Airplane::theOne().getBody().getBody())) {
-      Airplane::theOne().knockBack(obstacle->getPosition());
-      obstacle->setLifespan(0);
+  for (auto& entry: dynamicEntities) {
+    vector<DynamicEntity*>& entities = entry.second;
+    for (int i = 0; i < entities.size(); ++i) {
+      DynamicEntity* entity = entities[i];
+      if (entity->getType() && overlap(entity->getBody(), Airplane::theOne().getBody().getBody())) {
+        if (entity->getType() == OBSTACLE)
+          Airplane::theOne().knockBack(entity->getPosition());
+        entity->setLifespan(0);
+      }
     }
   }
 

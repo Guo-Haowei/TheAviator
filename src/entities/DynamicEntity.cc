@@ -28,7 +28,7 @@ DynamicEntity::~DynamicEntity() {
   if (type) {
     removeEntity(this);
     // generate particle effects
-    ParticleHolder::theOne().spawnParticles(position, 20, color, scale.x);
+    ParticleHolder::theOne().spawnParticles(position, type == OBSTACLE ? 20 : 6, color, scale.x);
   }
 }
 
@@ -62,6 +62,10 @@ void DynamicEntity::deplete() {
 
 void DynamicEntity::setVelocity(glm::vec3 velocity) {
   this->velocity = velocity;
+}
+
+EntityType DynamicEntity::getType() const {
+  return type;
 }
 
 DynamicEntities dynamicEntities;
