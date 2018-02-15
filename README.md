@@ -53,10 +53,17 @@ ccmake ..
 make
 ./TheAviator
 ```
-
-## TODO
-* Add energy coins
+## FEATURES
+* Primitives including tetrahedron, box, sphere, cylinder
+* Shadow mapping
+* Fog
+* Transparent water
 * Collision detection
 * Particle effect
+* Animation (hair and propeller)
+* Realtime normal vector calculation using geometry shader
+* UI (comming soon)
+
+## TODO
 * UI
-* Implement Cascaded Shadow Mapping
+* Advanced collision detection (try shader approach and math approach)
