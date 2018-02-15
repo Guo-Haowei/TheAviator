@@ -25,10 +25,8 @@ void Collision::checkCollisionAgainstPlane() {
   // check all dynamic entities except particles
   const vector<DynamicEntity*> obstacles = dynamicEntities[Geometry::sphere];
   
-  //vector<DynamicEntity*> needToCheck;
   for (auto& obstacle : obstacles) {
     if (overlap(obstacle->getBody(), Airplane::theOne().getBody().getBody())) {
-      //needToCheck.push_back(obstacle);
       Airplane::theOne().knockBack(obstacle->getPosition());
       obstacle->setLifespan(0);
     }

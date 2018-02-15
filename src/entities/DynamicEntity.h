@@ -4,10 +4,11 @@
 
 const int LIFESPAN = 60;
 const float offscreenLeft = 0.5f;
-const float offscreenRight = 1.0f;
+const float offscreenRight = 1.5f;
 const float miniumDist_O = 0.1f;
-const float miniumDist_B = 0.1f;
-const float spawnChance = 0.3f;
+const float miniumDist_B = 0.3f;
+const float spawnChance_O = 0.3f;
+const float spawnChance_B = 0.5f;
 const float minHeight = 20.0f;
 const float maxHeight = 60.0f;
 

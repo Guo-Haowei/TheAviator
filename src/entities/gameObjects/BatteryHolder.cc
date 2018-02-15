@@ -20,14 +20,14 @@ BatteryHolder::~BatteryHolder() {
 void BatteryHolder::spawn(float distance) {
   if (distance >= lastSpawnDistance + miniumDist_B) {
     lastSpawnDistance = distance;
-    if (!Maths::chance(spawnChance))
+    if (!Maths::chance(spawnChance_B))
       return;
     int batteryNumber = 1 + Maths::rand(0, 10);
     float h = Maths::rand(minHeight, maxHeight) + SEA::RADIUS;
     for (int i = 0; i < batteryNumber; ++i) {
       float angle = offscreenLeft + i * 0.02f;
-      float height = h + glm::cos(i) * 10.0f;
-      glm::vec3 position(h * glm::sin(angle), h * glm::cos(angle) - SEA::RADIUS, 0.0f);
+      float height = h + glm::cos((float)i * 0.2f) * 5.0f;
+      glm::vec3 position(height * glm::sin(angle), height * glm::cos(angle) - SEA::RADIUS, 0.0f);
       float scale = 2.0f;
       DynamicEntity* battery = new DynamicEntity(
         BATTERY,
@@ -48,7 +48,7 @@ void BatteryHolder::spawn(float distance) {
 void BatteryHolder::update() {
   spawn(GAME::AIRPLANE_DISTANCE);
   for (int i = 0; i < batteries.size(); ++i) {
-    if (batteries[i]->getDistance() + offscreenRight + 1.0f < GAME::AIRPLANE_DISTANCE || !batteries[i]->getLifespan()) {
+    if (batteries[i]->getDistance() + offscreenRight < GAME::AIRPLANE_DISTANCE || !batteries[i]->getLifespan()) {
       delete batteries[i];
       batteries.erase(batteries.begin() + i);
       --i;

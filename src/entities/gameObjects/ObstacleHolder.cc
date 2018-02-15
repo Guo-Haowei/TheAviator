@@ -20,7 +20,7 @@ ObstacleHolder::~ObstacleHolder() {
 void ObstacleHolder::spawn(float distance) {
   if (distance >= lastSpawnDistance + miniumDist_O) {
     lastSpawnDistance = distance;
-    if (!Maths::chance(spawnChance))
+    if (!Maths::chance(spawnChance_O))
       return;
     float h = Maths::rand(minHeight, maxHeight) + SEA::RADIUS;
     glm::vec3 position(h * glm::sin(offscreenLeft), h * glm::cos(offscreenLeft) - SEA::RADIUS, 0.0f);
