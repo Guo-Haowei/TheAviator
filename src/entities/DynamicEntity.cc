@@ -28,7 +28,8 @@ DynamicEntity::~DynamicEntity() {
   if (type) {
     removeEntity(this);
     // generate particle effects
-    ParticleHolder::theOne().spawnParticles(position, type == OBSTACLE ? 20 : 6, color, scale.x);
+    float density = type == OBSTACLE ? 15 : 8;
+    ParticleHolder::theOne().spawnParticles(position, density, color, (float) density * scale.x / 15.0f);
   }
 }
 
