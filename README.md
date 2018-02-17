@@ -1,9 +1,16 @@
-# The Aviator (In Progess)
+# The Aviator
 
-This is an OpenGL coding practice project inspired by: https://tympanus.net/codrops/2016/04/26/the-aviator-animating-basic-3d-scene-threejs/
+This is an OpenGL project inspired by: https://tympanus.net/codrops/2016/04/26/the-aviator-animating-basic-3d-scene-threejs/
+The main purpose of this project is to practice OpenGL rendering techniques and applying 3D maths.
 
 ## Screenshots
-![alt text](https://github.com/Guo-Haowei/TheAviator/blob/master/ScreenShot.png)
+![alt text](https://github.com/Guo-Haowei/TheAviator/blob/master/screenshots/Screenshot.png)
+#### Front face culling
+![alt text](https://github.com/Guo-Haowei/TheAviator/blob/master/screenshots/Front_face_culling.png)
+#### Use tetrahedron for models
+![alt text](https://github.com/Guo-Haowei/TheAviator/blob/master/screenshots/Tetrahedron.png)
+#### Use low-poly sphere for models
+![alt text](https://github.com/Guo-Haowei/TheAviator/blob/master/screenshots/Sphere.png)
 
 ## Installation
 
@@ -63,7 +70,3 @@ make
 * Animation (hair and propeller)
 * Realtime normal vector calculation using geometry shader
 * UI (comming soon)
-
-## TODO
-* UI
-* Advanced collision detection (try shader approach and math approach)
