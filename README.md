@@ -69,4 +69,6 @@ make
 * Particle effect
 * Animation (hair and propeller)
 * Realtime normal vector calculation using geometry shader
-* UI (comming soon)
+
+## TODO
+* Implement cel shading
