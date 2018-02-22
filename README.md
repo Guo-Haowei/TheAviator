@@ -56,7 +56,7 @@ sudo apt-get install libglm-dev
 ```
 mkdir build
 cd build
-ccmake ..
+cmake ..
 make
 ./TheAviator
 ```
