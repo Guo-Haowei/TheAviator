@@ -72,3 +72,4 @@ make
 
 ## TODO
 * Implement cel shading
+* Add outline
