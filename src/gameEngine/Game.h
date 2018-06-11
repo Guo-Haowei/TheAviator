@@ -5,7 +5,7 @@
 class Game {
 private:
   Renderer renderer;
-  
+
   double currentTime, lastTime, previousSecond, delta;
   int updates = 0;
 public:
