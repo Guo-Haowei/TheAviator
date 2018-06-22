@@ -17,7 +17,6 @@
 #include <glm/glm.hpp>
 #include <algorithm>
 #include <iostream>
-#include <unistd.h>
 using std::cout;
 
 float GAME::AIRPLANE_DISTANCE = 0.0f;
@@ -73,8 +72,6 @@ void Game::run() {
       Sky::theOne().update();
       DisplayManager::updateDisplay();
       ++updates;
-      // sleep
-      usleep(1.0 / GAME::FPS - delta);
     }
 
     if (GAME::DISPLAY_FPS)
