@@ -5,7 +5,6 @@
 #include <models/Geometry.h>
 #include <entities/DynamicEntity.h>
 #include <entities/gameObjects/Airplane.h>
-#include <shaders/CollisionShader.h>
 #include <utils/Audio.h>
 #include <iostream>
 #include <vector>
