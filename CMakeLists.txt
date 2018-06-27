@@ -16,6 +16,8 @@ find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 include_directories(${GLEW_INCLUDE_DIRS})
 
+find_package(OpenAL REQUIRED)
+
 find_package(glm REQUIRED)
 include_directories(${GLM_INCLUDE_DIRS})
 
@@ -24,4 +26,4 @@ file(GLOB_RECURSE HEADER src/*.h)
 
 add_executable(TheAviator ${HEADER} ${SOURCE})
 target_compile_definitions(TheAviator PRIVATE DB_DEPTHMAP=0)
-target_link_libraries(TheAviator ${OPENGL_LIBRARY} ${GLEW_LIBRARY} ${GLFW_STATIC_LIBRARIES})
+target_link_libraries(TheAviator ${OPENAL_LIBRARY} ${OPENGL_LIBRARY} ${GLEW_LIBRARY} ${GLFW_STATIC_LIBRARIES})

@@ -14,6 +14,7 @@
 #include <renderEngine/DisplayManager.h>
 #include <io/MouseManager.h>
 #include <io/Parser.h>
+#include <utils/Audio.h>
 #include <glm/glm.hpp>
 #include <algorithm>
 #include <iostream>
@@ -42,6 +43,7 @@ void Game::init() {
   Parser::parse();
   DisplayManager::createDisplay();
   Geometry::initGeometry();
+  Audio::init();
 }
 
 Game& Game::theOne() {
