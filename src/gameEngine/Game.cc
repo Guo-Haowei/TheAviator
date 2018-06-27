@@ -37,6 +37,7 @@ Game::Game() {
 Game::~Game() {
   DisplayManager::cleanDisplay();
   Geometry::cleanGeometry();
+  Audio::cleanUp();
 }
 
 void Game::init() {

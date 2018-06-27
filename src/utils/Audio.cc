@@ -4,18 +4,22 @@
 #include <OpenAL/alc.h>
 #include <AL/alut.h>
 #include <iostream>
-#include <string>
+#include <map>
 using std::cout;
+using std::map;
 using std::string;
 
-ALCdevice* device = nullptr;
-ALCcontext* context = nullptr;
+namespace {
+  ALCdevice* device = nullptr;
+  ALCcontext* context = nullptr;
+  map<string, ALuint> sourceManager;
+  map<string, ALuint> bufferManager;
+};
 
 void Audio::init() {
-
   // initialize library
-  device = alcOpenDevice(NULL);
-  if (!device) {
+  ::device = alcOpenDevice(NULL);
+  if (!::device) {
     cout << "======================================\n";
     cout << "ERROR::Audio: Failed to initialize OpenAL\n";
     cout << "======================================\n";
@@ -32,6 +36,7 @@ void Audio::init() {
     return;
   }
 
+  // create context
   context = alcCreateContext(device, NULL);
   if (!alcMakeContextCurrent(context)) {
     cout << "======================================\n";
@@ -40,79 +45,60 @@ void Audio::init() {
     return;
   }
 
+  // set up position, velocity and orientation
   ALfloat listenerOri[] = { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f };
 
   alListener3f(AL_POSITION, 0, 0, 1.0f);
-// check for errors
   alListener3f(AL_VELOCITY, 0, 0, 0);
-// check for errors
   alListenerfv(AL_ORIENTATION, listenerOri);
-// check for errors
 
+  Audio::playAudio("ouch");
+  Audio::playAudio("tink");
+}
+
+void Audio::playAudio(std::string audioName) {
   ALuint source;
+  if (sourceManager.find(audioName) == sourceManager.end()) {
+    ALuint buffer;
+    // load buffer
+    ALuint source;
+    alGenSources((ALuint)1, &source);
+    alGenBuffers((ALuint)1, &buffer);
+    alSourcef(source, AL_PITCH, 1);
+    alSourcef(source, AL_GAIN, 1);
+    alSource3f(source, AL_POSITION, 0, 0, 0);
+    alSource3f(source, AL_VELOCITY, 0, 0, 0);
+    alSourcei(source, AL_LOOPING, AL_FALSE);
+    ALsizei size, freq;
+    ALenum format;
+    ALvoid *data;
 
+    char file[256];
+    strcpy(file, "../resources/sounds/");
+    strcat(file, audioName.c_str());
+    strcat(file, ".wav");
+    alutLoadWAVFile(file, &format, &data, &size, &freq);
+    alBufferData(buffer, format, data, size, freq);
+    alSourcei(source, AL_BUFFER, buffer);
 
-alGenSources((ALuint)1, &source);
-// check for errors
+    sourceManager[audioName] = source;
+    bufferManager[audioName] = buffer;
+  } else {
+    source = sourceManager[audioName];
+  }
 
-alSourcef(source, AL_PITCH, 1);
-// check for errors
-alSourcef(source, AL_GAIN, 1);
-// check for errors
-alSource3f(source, AL_POSITION, 0, 0, 0);
-// check for errors
-alSource3f(source, AL_VELOCITY, 0, 0, 0);
-// check for errors
-alSourcei(source, AL_LOOPING, AL_FALSE);
-// check for errros
-
-ALuint buffer;
-
-alGenBuffers((ALuint)1, &buffer);
-// check for errors
-
-ALsizei size, freq;
-ALenum format;
-ALvoid *data;
-
-ALCenum error;
-
-char file[] = "../resources/sounds/tink.wav";
-alutLoadWAVFile(file, &format, &data, &size, &freq);
-
-alBufferData(buffer, format, data, size, freq);
-error = alGetError();
-if (error != AL_NO_ERROR) {
-  cout << "ERROR1\n";
+  alSourcePlay(source);
 }
 
-alSourcei(source, AL_BUFFER, buffer);
-error = alGetError();
-if (error != AL_NO_ERROR) {
-  cout << "ERROR2\n";
-}
-
-alSourcePlay(source);
-error = alGetError();
-if (error != AL_NO_ERROR) {
-  cout << "ERROR3\n";
-}
-ALint source_state;
-alGetSourcei(source, AL_SOURCE_STATE, &source_state);
-error = alGetError();
-if (error != AL_NO_ERROR) {
-  cout << "ERROR4\n";
-}
-// check for errors
-while (source_state == AL_PLAYING) {
-        alGetSourcei(source, AL_SOURCE_STATE, &source_state);
-      }
-
-// cleanup context
-alDeleteSources(1, &source);
-alDeleteBuffers(1, &buffer);
-device = alcGetContextsDevice(context);
-alcMakeContextCurrent(NULL);
-alcDestroyContext(context);
-alcCloseDevice(device);
+void Audio::cleanUp() {
+  for (auto& source: sourceManager) {
+    alDeleteSources(1, &source.second);
+  }
+  for (auto& buffer: bufferManager) {
+    alDeleteBuffers(1, &buffer.second);
+  }
+  device = alcGetContextsDevice(context);
+  alcMakeContextCurrent(NULL);
+  alcDestroyContext(context);
+  alcCloseDevice(device);
 }
