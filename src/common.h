@@ -22,6 +22,8 @@ namespace GAME {
   extern float FPS;
   extern int DISPLAY_FPS;
   extern float AIRPLANE_DISTANCE;
+  extern float MILES;
+  extern float HEALTH;
 };
 
 namespace SEA {

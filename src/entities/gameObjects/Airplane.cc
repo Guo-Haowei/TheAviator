@@ -133,27 +133,38 @@ void Airplane::updateHair() {
 }
 
 void Airplane::update() {
-  speed = Maths::clamp(MouseManager::getX(), -0.5f, 0.5f, PLANE_MIN_SPEED, PLANE_MAX_SPEED);
-  float targetX = Maths::clamp(MouseManager::getX(), -1.0f, 1.0f, -AIRPLANE::AMPWIDTH, -0.7f * AIRPLANE::AMPWIDTH);
-  float targetY = Maths::clamp(MouseManager::getY(), -0.75f, 0.75f, AIRPLANE::Y - AIRPLANE::AMPHEIGHT, AIRPLANE::Y + AIRPLANE::AMPHEIGHT);
+  if (GAME::HEALTH <= 0.0f) {
+    static float totalRotation = 0.0f;
+    static float y = 0.0f;
+    const float zRotation = 0.3f;
+    totalRotation += zRotation;
+    y += 0.01f;
+    if (y <= 2.0f)
+      translate(0.0f, -y, 0.0f);
+    if (totalRotation < 80.0f)
+      rotate(0.0f, 0.0f, -glm::radians(zRotation), position);
+  } else {
+    speed = Maths::clamp(MouseManager::getX(), -0.5f, 0.5f, PLANE_MIN_SPEED, PLANE_MAX_SPEED);
+    float targetX = Maths::clamp(MouseManager::getX(), -1.0f, 1.0f, -AIRPLANE::AMPWIDTH, -0.7f * AIRPLANE::AMPWIDTH);
+    float targetY = Maths::clamp(MouseManager::getY(), -0.75f, 0.75f, AIRPLANE::Y - AIRPLANE::AMPHEIGHT, AIRPLANE::Y + AIRPLANE::AMPHEIGHT);
 
-  COLLISION_DISPLACEMENT_X += COLLISION_SPEED_X;
-  targetX += COLLISION_DISPLACEMENT_X;
+    COLLISION_DISPLACEMENT_X += COLLISION_SPEED_X;
+    targetX += COLLISION_DISPLACEMENT_X;
 
-  float deltaX = targetX - position.x;
-  float deltaY = targetY - position.y;
-  translate(deltaX * AIRPLANE::MOVE_SENSITIVITY, deltaY * AIRPLANE::MOVE_SENSITIVITY, 0.0f);
-  float targetRotationZ = deltaY * AIRPLANE::ROTATE_SENSITITY;
+    float deltaX = targetX - position.x;
+    float deltaY = targetY - position.y;
+    translate(deltaX * AIRPLANE::MOVE_SENSITIVITY, deltaY * AIRPLANE::MOVE_SENSITIVITY, 0.0f);
+    float targetRotationZ = deltaY * AIRPLANE::ROTATE_SENSITITY;
 
-  rotate(0.0f, 0.0f, targetRotationZ - rotation.z, position);
-  rotation.z = targetRotationZ;
-  // move camera
-  Camera::primary().chasePoint(position);
+    rotate(0.0f, 0.0f, targetRotationZ - rotation.z, position);
+    rotation.z = targetRotationZ;
 
-  COLLISION_SPEED_X += -COLLISION_DISPLACEMENT_X * 0.2f;
-  if (COLLISION_SPEED_X > 0)
-    COLLISION_DISPLACEMENT_X = 0;
-  COLLISION_DISPLACEMENT_X += -COLLISION_DISPLACEMENT_X * 0.1f;
+
+    COLLISION_SPEED_X += -COLLISION_DISPLACEMENT_X * 0.2f;
+    if (COLLISION_SPEED_X > 0)
+      COLLISION_DISPLACEMENT_X = 0;
+    COLLISION_DISPLACEMENT_X += -COLLISION_DISPLACEMENT_X * 0.1f;
+  }
 
   // update hair
   updateHair();
@@ -161,6 +172,8 @@ void Airplane::update() {
   blade1.changeRotation(axisX, glm::radians(10.0f));
   blade2.changeRotation(axisX, glm::radians(10.0f));
   propeller.changeRotation(axisX, glm::radians(10.0f));
+  // move camera
+  Camera::primary().chasePoint(position);
 } 
 
 void Airplane::knockBack(glm::vec3 otherPosition) {

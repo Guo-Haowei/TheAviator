@@ -21,6 +21,8 @@
 using std::cout;
 
 float GAME::AIRPLANE_DISTANCE = 0.0f;
+float GAME::MILES = 0.0f;
+float GAME::HEALTH = 100.0f;
 float TIMER = 0;
 
 /* Helper function declaration */
@@ -74,6 +76,10 @@ void Game::run() {
       Airplane::theOne().update();
       Sky::theOne().update();
       DisplayManager::updateDisplay();
+
+      // update health
+      GAME::HEALTH -= 1.0f;
+      GAME::HEALTH = Maths::clamp(-0.1f, GAME::HEALTH, 100.0f);
       ++updates;
     }
 

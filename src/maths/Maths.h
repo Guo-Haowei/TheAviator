@@ -6,6 +6,7 @@
 namespace Maths {
   int rand(int min, int max);
   float rand(float min, float max);
+  float clamp(float low, float value, float high);
   float clamp(float value, float low, float high, float clampLow, float clampHigh);
   bool chance(float chance);
 
