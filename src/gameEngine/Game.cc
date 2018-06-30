@@ -14,7 +14,9 @@
 #include <renderEngine/DisplayManager.h>
 #include <io/MouseManager.h>
 #include <io/Parser.h>
+#ifdef __APPLE__
 #include <utils/Audio.h>
+#endif // __APPLE__
 #include <glm/glm.hpp>
 #include <algorithm>
 #include <iostream>
@@ -39,14 +41,18 @@ Game::Game() {
 Game::~Game() {
   DisplayManager::cleanDisplay();
   Geometry::cleanGeometry();
+#ifdef __APPLE__
   Audio::cleanUp();
+#endif // __APPLE__
 }
 
 void Game::init() {
   Parser::parse();
   DisplayManager::createDisplay();
   Geometry::initGeometry();
+#ifdef __APPLE__
   Audio::init();
+#endif // __APPLE__
 }
 
 Game& Game::theOne() {

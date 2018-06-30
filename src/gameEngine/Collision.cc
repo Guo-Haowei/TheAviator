@@ -5,7 +5,9 @@
 #include <models/Geometry.h>
 #include <entities/DynamicEntity.h>
 #include <entities/gameObjects/Airplane.h>
+#ifdef __APPLE__
 #include <utils/Audio.h>
+#endif // __APPLE__
 #include <iostream>
 #include <vector>
 using std::vector;
@@ -30,9 +32,11 @@ void Collision::checkCollisionAgainstPlane() {
       if (entity->getType() && overlap(entity->getBody(), Airplane::theOne().getBody().getBody())) {
         if (entity->getType() == OBSTACLE) {
           Airplane::theOne().knockBack(entity->getPosition());
+#ifdef __APPLE__
           Audio::playAudio("ouch");
         } else {
           Audio::playAudio("tink");
+#endif // __APPLE__
         }
         entity->setLifespan(0);
       }
