@@ -78,7 +78,7 @@ void Game::run() {
       DisplayManager::updateDisplay();
 
       // update health
-      GAME::HEALTH -= 1.0f;
+      GAME::HEALTH -= 0.1f;
       GAME::HEALTH = Maths::clamp(-0.1f, GAME::HEALTH, 100.0f);
       ++updates;
     }
