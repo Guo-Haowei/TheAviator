@@ -3,6 +3,7 @@
 in vec4 ViewSpace;
 in vec3 Normal;
 in vec4 LightSpaceFragPos;
+in vec3 FragPos;
 
 out vec4 out_Color;
 
@@ -36,7 +37,7 @@ void main() {
 
   // directional light
   vec3 lightColor = vec3(1.0, 1.0, 1.0);
-  vec3 lightDir = normalize(-lightPos);
+  vec3 lightDir = normalize(FragPos - lightPos);
 
   // ambient
   float ambientStrength = 0.15 * ambientLightIntensity;

@@ -3,6 +3,7 @@
 #include <common.h>
 #include <entities/Entity.h>
 #include <entities/DynamicEntity.h>
+#include <entities/gameObjects/Light.h>
 #include <entities/gameObjects/Camera.h>
 #include <entities/gameObjects/ParticleHolder.h>
 #include <GL/glew.h>
@@ -34,7 +35,7 @@ void EntityShader::getAllUniformLocations() {
 
 void EntityShader::render() {
   start();
-  glm::vec3 lightPos(LIGHT::X, LIGHT::Y, LIGHT::Z);
+  glm::vec3 lightPos(Light::theOne().getPosition());
   loadInt(location_shadowMap, 0);
   loadFloat(location_ambientLightIntensity, AMBIENT_LIGHT_INTENSITY);
   loadVector3f(location_light, lightPos);

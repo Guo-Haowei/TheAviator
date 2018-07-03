@@ -6,6 +6,7 @@ layout (triangle_strip, max_vertices = 3) out;
 out vec4 ViewSpace;
 out vec3 Normal;
 out vec4 LightSpaceFragPos;
+out vec3 FragPos;
 
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
@@ -21,6 +22,7 @@ void main() {
   vec3 normal = getNormal();
 
   vec4 worldPosition = gl_in[0].gl_Position;
+  FragPos = vec3(worldPosition);
   LightSpaceFragPos = lightSpaceMatrix * worldPosition;
   ViewSpace = viewMatrix * worldPosition;
   gl_Position = projectionMatrix * ViewSpace;
@@ -28,6 +30,7 @@ void main() {
   EmitVertex();
 
   worldPosition = gl_in[1].gl_Position;
+  FragPos = vec3(worldPosition);
   LightSpaceFragPos = lightSpaceMatrix * worldPosition;
   ViewSpace = viewMatrix * worldPosition;
   gl_Position = projectionMatrix * ViewSpace;
@@ -35,6 +38,7 @@ void main() {
   EmitVertex();
 
   worldPosition = gl_in[2].gl_Position;
+  FragPos = vec3(worldPosition);
   LightSpaceFragPos = lightSpaceMatrix * worldPosition;
   ViewSpace = viewMatrix * worldPosition;
   gl_Position = projectionMatrix * ViewSpace;

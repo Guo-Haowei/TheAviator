@@ -42,7 +42,7 @@ void main() {
 
   // directional light
   vec3 lightColor = vec3(1.0, 1.0, 1.0);
-  vec3 lightDir = normalize(lightPos);
+  vec3 lightDir = normalize(lightPos - FragPos);
 
   // ambient
   float ambientStrength = 0.4 * ambientLightIntensity;

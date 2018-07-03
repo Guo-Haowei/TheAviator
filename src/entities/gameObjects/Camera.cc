@@ -1,5 +1,6 @@
 // Camera.cc
 #include "Camera.h"
+#include "Light.h"
 #include <common.h>
 #include <maths/Maths.h>
 #include <io/MouseManager.h>
@@ -27,7 +28,7 @@ glm::mat4 Camera::getViewMatrix() {
 }
 
 glm::mat4 Camera::getLightSpaceMatrix() {
-  glm::vec3 lightPos(LIGHT::X, LIGHT::Y, LIGHT::Z);
+  glm::vec3 lightPos(Light::theOne().getPosition());
   glm::mat4 viewMatrix = glm::lookAt(lightPos, glm::vec3(AIRPLANE::X, AIRPLANE::Y, AIRPLANE::Z), glm::vec3(0.0f, 1.0f, 0.0f));
   glm::mat4 projectionMatrix = glm::perspective(glm::radians(getFov()), (float) ACTUAL_WIDTH / (float) ACTUAL_HEIGHT, SHADOW::NEAR_PLANE, SHADOW::FAR_PLANE);
   return projectionMatrix * viewMatrix;

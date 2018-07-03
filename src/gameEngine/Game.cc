@@ -4,6 +4,7 @@
 #include <common.h>
 #include <maths/Maths.h>
 #include <entities/Entity.h>
+#include <entities/gameObjects/Light.h>
 #include <entities/gameObjects/Sky.h>
 #include <entities/gameObjects/Airplane.h>
 #include <entities/gameObjects/ObstacleHolder.h>
@@ -53,6 +54,7 @@ void Game::init() {
 #ifdef __APPLE__
   Audio::init();
 #endif // __APPLE__
+  Light::theOne().setPosition(LIGHT::X, LIGHT::Y, LIGHT::Z);
 }
 
 Game& Game::theOne() {
@@ -67,6 +69,7 @@ void Game::run() {
 
       MouseManager::update();
       Camera::primary().update();
+      Light::theOne().update();
       DisplayManager::prepareDisplay();
 
       // update light intensity

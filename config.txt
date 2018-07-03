@@ -22,8 +22,8 @@ zoom_sensitivity: 45.0;
 
 #Light
 x: 90.0f
-y: 210.0f
-z: 210.0f
+y: 160.0f
+z: -110.0f
 
 #Shadow
 near: 150.0f
