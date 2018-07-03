@@ -16,7 +16,9 @@ Camera::Camera() {
 }
 
 void Camera::update() {
-  fov = Maths::clamp(MouseManager::getX(), -1.0f, 1.0f, 40.0f, 80.0f);
+  float delta = (1.0f - 2 * MouseManager::getRawX() / (float) WIDTH);
+  float z = Maths::clamp(delta, -1.0f, 1.0f, CAMERA::Z - 10.0f, CAMERA::Z + 80.0f);
+  position.z = z;
 }
 
 glm::mat4 Camera::getProjectionMatrix() {
