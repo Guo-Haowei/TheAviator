@@ -8,7 +8,7 @@ using std::vector;
 vector<unsigned int> Loader::vaos;
 vector<unsigned int> Loader::vbos;
 
-RawModel* Loader::loadToVAO(vector<float> data1, int data1Dimension, vector<float> data2, int data2Dimension, vector<unsigned int> indices) {
+RawModel* Loader::loadToVAO(vector<float>& data1, int data1Dimension, vector<float>& data2, int data2Dimension, vector<unsigned int>& indices) {
   unsigned int vaoID = createVAO();
   bindIndicesBuffer(indices);
   storeDataInAttributeList(0, data1Dimension, data1);
@@ -16,11 +16,17 @@ RawModel* Loader::loadToVAO(vector<float> data1, int data1Dimension, vector<floa
   return new RawModel(vaoID, indices.size());
 }
 
-RawModel* Loader::loadToVAO(vector<float> data1, int data1Dimension, vector<float> data2, int data2Dimension) {
+RawModel* Loader::loadToVAO(vector<float>& data1, int data1Dimension, vector<float>& data2, int data2Dimension) {
   unsigned int vaoID = createVAO();
   storeDataInAttributeList(0, data1Dimension, data1);
   storeDataInAttributeList(1, data2Dimension, data2);
   return new RawModel(vaoID, data1.size());
+}
+
+RawModel* Loader::loadToVAO(vector<float>& data, int dimension) {
+  unsigned int vaoID = createVAO();
+  storeDataInAttributeList(0, dimension, data);
+  return new RawModel(vaoID, data.size(), 1);
 }
 
 void Loader::clean() {
@@ -40,7 +46,7 @@ unsigned int Loader::createVAO() {
   return vaoID;
 }
 
-void Loader::storeDataInAttributeList(unsigned int attrubuteNumber, int coordinateSize, vector<float> data) {
+void Loader::storeDataInAttributeList(unsigned int attrubuteNumber, int coordinateSize, vector<float>& data) {
   unsigned int vboID;
   glGenBuffers(1, &vboID);
   vbos.push_back(vboID);
@@ -50,7 +56,7 @@ void Loader::storeDataInAttributeList(unsigned int attrubuteNumber, int coordina
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Loader::bindIndicesBuffer(vector<unsigned int> indices) {
+void Loader::bindIndicesBuffer(vector<unsigned int>& indices) {
   unsigned int vboID;
   glGenBuffers(1, &vboID);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboID);

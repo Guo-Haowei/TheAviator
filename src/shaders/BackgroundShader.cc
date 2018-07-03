@@ -8,7 +8,7 @@
 #include <vector>
 using std::vector;
 
-BackgroundShader::BackgroundShader() {
+BackgroundShader::BackgroundShader():background(nullptr) {
   vector<float> vertices, colors;
 
   // first triangle
@@ -53,7 +53,8 @@ BackgroundShader::BackgroundShader() {
 }
 
 BackgroundShader::~BackgroundShader() {
-  delete background;
+  if (background)
+    delete background;
 }
 
 void BackgroundShader::bindAttributes() {

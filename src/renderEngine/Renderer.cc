@@ -34,5 +34,6 @@ void Renderer::render() {
   backgroundShader.render();
   entityShader.render();
   seaShader.render();
+  uiShader.render();
 #endif
 }

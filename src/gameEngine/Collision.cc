@@ -1,5 +1,6 @@
 // Collision.cc
 #include "Collision.h"
+#include <common.h>
 #include <utils/Debug.h>
 #include <maths/Object3D.h>
 #include <models/Geometry.h>
@@ -10,6 +11,7 @@
 #endif // __APPLE__
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using std::vector;
 
 bool overlap(Object3D* o1, Object3D* o2) {
@@ -32,9 +34,13 @@ void Collision::checkCollisionAgainstPlane() {
       if (entity->getType() && overlap(entity->getBody(), Airplane::theOne().getBody().getBody())) {
         if (entity->getType() == OBSTACLE) {
           Airplane::theOne().knockBack(entity->getPosition());
+          GAME::HEALTH = std::max(0.0f, GAME::HEALTH - 10.0f);
 #ifdef __APPLE__
           Audio::playAudio("ouch");
+#endif // __APPLE__
         } else {
+          GAME::HEALTH = std::min(100.0f, GAME::HEALTH + 1.0f);
+#ifdef __APPLE__
           Audio::playAudio("tink");
 #endif // __APPLE__
         }

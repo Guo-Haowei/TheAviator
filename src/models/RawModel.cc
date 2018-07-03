@@ -2,7 +2,7 @@
 #include "RawModel.h"
 #include <GL/glew.h>
 
-RawModel::RawModel(unsigned int vaoID, unsigned int vertexCount): vaoID(vaoID), vertexCount(vertexCount) { }
+RawModel::RawModel(unsigned int vaoID, unsigned int vertexCount, int vbos): vbos(vbos), vaoID(vaoID), vertexCount(vertexCount) { }
 
 unsigned int RawModel::getVaoID() const {
   return vaoID;
@@ -14,12 +14,14 @@ unsigned int RawModel::getVertexCount() const {
 
 void RawModel::bind() {
   glBindVertexArray(vaoID);
-  glEnableVertexAttribArray(0);
-  glEnableVertexAttribArray(1);
+  for (int i = 0; i < vbos; ++i) {
+    glEnableVertexAttribArray(i);
+  }
 }
 
-void RawModel::unbind() {
-  glDisableVertexAttribArray(0);
-  glDisableVertexAttribArray(1);
+void RawModel::unbind(int vbos) {
+  for (int i = 0; i < vbos; ++i) {
+    glDisableVertexAttribArray(i);
+  }
   glBindVertexArray(0);
 }
