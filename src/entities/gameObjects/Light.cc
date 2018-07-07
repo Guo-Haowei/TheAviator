@@ -3,9 +3,7 @@
 #include <models/Geometry.h>
 #include <glm/gtc/matrix_transform.hpp>
 
-Light::Light(): light(Geometry::cube, glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(10.0f)) {
-  Entity::addEntity(&light);    
-}
+Light::Light() {}
 
 Light::~Light() {}
 
@@ -13,7 +11,6 @@ void Light::setPosition(float x, float y, float z) {
   position.x = x;
   position.y = y;
   position.z = z;
-  light.setPosition(x, y, z);
 }
 
 const glm::vec3& Light::getPosition() {

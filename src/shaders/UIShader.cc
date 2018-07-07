@@ -26,9 +26,9 @@ UIShader::UIShader(): quad(nullptr) {
   vertices.push_back(1.0f);
   quad = Loader::loadToVAO(vertices, 2);
 
-  const char* vertexFile = "../shaders/ui.vert";
-  const char* fragFile = "../shaders/ui.frag";
-  init(vertexFile, fragFile);
+  const char* VERTEX_FILE = "../shaders/ui.vert";
+  const char* FRAG_FILE = "../shaders/ui.frag";
+  init(VERTEX_FILE, FRAG_FILE);
 }
 
 UIShader::~UIShader() {

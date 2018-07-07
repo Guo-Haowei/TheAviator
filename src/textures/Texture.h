@@ -16,6 +16,7 @@ public:
 
   unsigned int getID() const;
   int getSize() const;
+  void setTextureID(unsigned int textureID);
 private:
   unsigned int m_textureID;
   int m_size;

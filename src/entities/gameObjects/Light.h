@@ -1,12 +1,10 @@
 // Light.h
 #pragma once
 #include <glm/glm.hpp>
-#include <entities/Entity.h>
 
 class Light {
 private:
   glm::vec3 position;
-  Entity light;
 public:
   Light();
   ~Light();

@@ -8,7 +8,7 @@ TextureBuilder::TextureBuilder(const File& file):
 
 Texture TextureBuilder::create() {
   TextureData textureData = TextureUtils::decodeTextureFile(m_file);
-  uint textureID = TextureUtils::loadTextureToOpenGL(textureData, *this);
+  unsigned int textureID = TextureUtils::loadTextureToOpenGL(textureData, *this);
   return Texture(textureID, textureData.getWidth());
 }
 

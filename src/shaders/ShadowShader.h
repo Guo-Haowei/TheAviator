@@ -1,12 +1,13 @@
 // SeaShader.h
 #pragma once
 #include "ShaderProgram.h"
+#include <textures/Texture.h>
 
 class ShadowShader: public ShaderProgram {
 private:
   bool isSeaShadow;
   static unsigned int fboID;
-  static unsigned int depthMap;
+  static Texture depthMap;
 protected:
   int location_time;
   void bindAttributes();
@@ -19,5 +20,5 @@ public:
   void clean();
 
   static unsigned int getFboID();
-  static unsigned int getDepthMap();
+  static Texture& getDepthMap();
 };

@@ -27,13 +27,14 @@ void Renderer::render() {
   glViewport(0, 0, ACTUAL_WIDTH, ACTUAL_HEIGHT);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, ShadowShader::getDepthMap());
+  glBindTexture(GL_TEXTURE_2D, ShadowShader::getDepthMap().getID());
 #if DB_DEPTHMAP
   dbDepthMapSahder.render();
 #else
   backgroundShader.render();
   entityShader.render();
   seaShader.render();
+  sunShader.render();
   uiShader.render();
 #endif
 }

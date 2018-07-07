@@ -14,7 +14,7 @@
 using std::vector;
 
 unsigned int ShadowShader::fboID;
-unsigned int ShadowShader::depthMap;
+Texture ShadowShader::depthMap;
 
 ShadowShader::ShadowShader(bool isSeaShadow): isSeaShadow(isSeaShadow) {
   if (isSeaShadow) {
@@ -30,9 +30,11 @@ ShadowShader::ShadowShader(bool isSeaShadow): isSeaShadow(isSeaShadow) {
 
 void ShadowShader::init() {
   glGenFramebuffers(1, &fboID);
-  glGenTextures(1, &depthMap);
+  unsigned int textureID;
+  glGenTextures(1, &textureID);
+  depthMap.setTextureID(textureID);
 
-  glBindTexture(GL_TEXTURE_2D, depthMap);
+  glBindTexture(GL_TEXTURE_2D, textureID);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW::WIDTH, SHADOW::HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -42,7 +44,7 @@ void ShadowShader::init() {
   glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
   glBindFramebuffer(GL_FRAMEBUFFER, fboID);
-  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, textureID, 0);
   glDrawBuffer(GL_NONE);
   glReadBuffer(GL_NONE);
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -137,6 +139,6 @@ unsigned int ShadowShader::getFboID() {
   return fboID;
 }
 
-unsigned int ShadowShader::getDepthMap() {
+Texture& ShadowShader::getDepthMap() {
   return depthMap;
 }
