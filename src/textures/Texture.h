@@ -1,0 +1,23 @@
+#pragma once
+#include <GL/glew.h>
+#include <vector>
+
+class File;
+
+class Texture {
+public:
+  Texture();
+  Texture(const Texture& other);
+  Texture(unsigned int textureID, int size, int type = GL_TEXTURE_2D);
+
+  void bindToUint(unsigned int unit);
+  static Texture newCubeMap(std::vector<File*>& files);
+  static Texture newEmptyCubeMap(int size);
+
+  unsigned int getID() const;
+  int getSize() const;
+private:
+  unsigned int m_textureID;
+  int m_size;
+  int m_type;
+};
