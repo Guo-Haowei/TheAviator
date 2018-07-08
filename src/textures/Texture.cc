@@ -1,6 +1,8 @@
 #include "Texture.h"
 #include "TextureUtils.h"
 #include <utils/File.h>
+#include <iostream>
+using std::cout;
 
 Texture::Texture(): m_textureID(0), m_size(0), m_type(GL_TEXTURE_2D) {}
 
