@@ -5,6 +5,5 @@ in vec2 textureCoords;
 uniform sampler2D sunTexture;
 
 void main() {
-  vec4 color = texture(sunTexture, textureCoords);
-  out_Color = vec4(1, 0, 0, 1);
+  out_Color = texture(sunTexture, textureCoords);
 }

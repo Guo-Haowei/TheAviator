@@ -94,7 +94,7 @@ Airplane::Airplane() :
   }
 
   suspension.changeRotation(glm::vec3(0.0f, 0.0f, 1.0f), -0.3f);
-  blade2.changeRotation(axisX, glm::radians(90.0f));
+  blade2.changeRotation(glm::vec3(axisX), glm::radians(90.0f));
   translate(AIRPLANE::X, AIRPLANE::Y, AIRPLANE::Z);
 }
 
@@ -169,9 +169,9 @@ void Airplane::update() {
   // update hair
   updateHair();
   // update propeller
-  blade1.changeRotation(axisX, glm::radians(10.0f));
-  blade2.changeRotation(axisX, glm::radians(10.0f));
-  propeller.changeRotation(axisX, glm::radians(10.0f));
+  blade1.changeRotation(glm::vec3(axisX), glm::radians(10.0f));
+  blade2.changeRotation(glm::vec3(axisX), glm::radians(10.0f));
+  propeller.changeRotation(glm::vec3(axisX), glm::radians(10.0f));
   // move camera
   Camera::primary().chasePoint(position);
 } 

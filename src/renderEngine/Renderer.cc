@@ -4,7 +4,11 @@
 #include <common.h>
 #include <entities/Entity.h>
 #include <GL/glew.h>
+#ifdef __linux__
+#include <GLFW/glfw3.hpp>
+#else
 #include <GLFW/glfw3.h>
+#endif
 #include <iostream>
 
 Renderer::Renderer(): seaShadowShader(true) {

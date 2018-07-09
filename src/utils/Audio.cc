@@ -1,8 +1,14 @@
 // Audio.cc
 #include "Audio.h"
+#ifdef __linux__
+#include <AL/al.h>
+#include <AL/alc.h>
+#else
 #include <OpenAL/al.h>
 #include <OpenAL/alc.h>
+#endif
 #include <AL/alut.h>
+#include <string.h>
 #include <iostream>
 #include <map>
 using std::cout;
@@ -77,7 +83,12 @@ void Audio::playAudio(std::string audioName) {
     strcpy(file, "../resources/sounds/");
     strcat(file, audioName.c_str());
     strcat(file, ".wav");
-    alutLoadWAVFile(file, &format, &data, &size, &freq);
+#ifdef __linux__
+    // not sure what the last parameter does
+    alutLoadWAVFile((ALbyte*)file, &format, &data, &size, &freq, false);
+#else
+    alutLoadWAVFile((ALbyte*)file, &format, &data, &size, &freq);
+#endif
     alBufferData(buffer, format, data, size, freq);
     alSourcei(source, AL_BUFFER, buffer);
 
