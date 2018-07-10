@@ -80,12 +80,14 @@ void Audio::playAudio(std::string audioName) {
     ALvoid *data;
 
     char file[256];
+    ALint error;
+
     strcpy(file, "../resources/sounds/");
     strcat(file, audioName.c_str());
     strcat(file, ".wav");
 #ifdef __linux__
     // not sure what the last parameter does
-    alutLoadWAVFile((ALbyte*)file, &format, &data, &size, &freq, false);
+    alutLoadWAVFile((ALbyte*)file, &format, &data, &size, &freq, (ALboolean*)false);
 #else
     alutLoadWAVFile((ALbyte*)file, &format, &data, &size, &freq);
 #endif

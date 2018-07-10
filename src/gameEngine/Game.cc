@@ -15,9 +15,9 @@
 #include <renderEngine/DisplayManager.h>
 #include <io/MouseManager.h>
 #include <io/Parser.h>
-#ifdef __APPLE__
+#ifndef _WIN32
 #include <utils/Audio.h>
-#endif // __APPLE__
+#endif // _WIN32
 #include <glm/glm.hpp>
 #include <algorithm>
 #include <iostream>
@@ -42,18 +42,18 @@ Game::Game() {
 Game::~Game() {
   DisplayManager::cleanDisplay();
   Geometry::cleanGeometry();
-#ifdef __APPLE__
+#ifndef _WIN32
   Audio::cleanUp();
-#endif // __APPLE__
+#endif // _WIN32
 }
 
 void Game::init() {
   Parser::parse();
   DisplayManager::createDisplay();
   Geometry::initGeometry();
-#ifdef __APPLE__
+#ifndef _WIN32
   Audio::init();
-#endif // __APPLE__
+#endif // _WIN32
   Light::theOne().setPosition(LIGHT::X, LIGHT::Y, LIGHT::Z);
 }
 

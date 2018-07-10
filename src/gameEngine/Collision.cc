@@ -6,9 +6,9 @@
 #include <models/Geometry.h>
 #include <entities/DynamicEntity.h>
 #include <entities/gameObjects/Airplane.h>
-#ifdef __APPLE__
+#ifndef _WIN32
 #include <utils/Audio.h>
-#endif // __APPLE__
+#endif // _WIN32
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -35,14 +35,14 @@ void Collision::checkCollisionAgainstPlane() {
         if (entity->getType() == OBSTACLE) {
           Airplane::theOne().knockBack(entity->getPosition());
           GAME::HEALTH = std::max(0.0f, GAME::HEALTH - 10.0f);
-#ifdef __APPLE__
+#ifndef _WIN32
           Audio::playAudio("ouch");
-#endif // __APPLE__
+#endif // _WIN32
         } else {
           GAME::HEALTH = std::min(100.0f, GAME::HEALTH + 1.0f);
-#ifdef __APPLE__
+#ifndef _WIN32
           Audio::playAudio("tink");
-#endif // __APPLE__
+#endif // _WIN32
         }
         entity->setLifespan(0);
       }
