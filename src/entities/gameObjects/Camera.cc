@@ -17,8 +17,11 @@ Camera::Camera() {
 }
 
 void Camera::changePosition(float degree) {
-  glm::mat4 r;
+  glm::mat4 r, t, t_1;
+  t = glm::translate(t, glm::vec3(0.0f, -position.y, 0.0f));
+  t_1 = glm::translate(t_1, glm::vec3(0.0f, position.y, 0.0f));
   r = glm::rotate(r, degree, glm::vec3(0.0f, 1.0f, 0.0f));
+  r = t_1 * r * t;
   position = glm::vec3(r * glm::vec4(position, 1.0f));
   front = glm::vec3(r * glm::vec4(front, 1.0f));
 }
