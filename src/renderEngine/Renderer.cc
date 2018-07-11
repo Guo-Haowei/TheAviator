@@ -35,6 +35,7 @@ void Renderer::render() {
   backgroundShader.render();
   entityShader.render();
   seaShader.render();
+  flareShader.render();
   sunShader.render();
   uiShader.render();
 }

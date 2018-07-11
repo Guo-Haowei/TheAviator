@@ -37,6 +37,7 @@ void SunShader::getAllUniformLocations() {
 void SunShader::render() {
   start();
   loadInt(location_sunTexture, 0);
+  glEnable(GL_BLEND);
   glm::mat4 PVM, S;
   S = glm::scale(S, glm::vec3(SCALE));
   PVM = glm::translate(PVM, Light::theOne().getPosition());
@@ -47,6 +48,7 @@ void SunShader::render() {
   glDisable(GL_DEPTH_TEST);
   glDrawArrays(GL_TRIANGLES, 0, quad->getVertexCount());
   glEnable(GL_DEPTH_TEST);
+  glDisable(GL_BLEND);
   RawModel::unbind(1);
   stop();
 }
