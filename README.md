@@ -3,14 +3,8 @@
 This is an OpenGL project inspired by: https://tympanus.net/codrops/2016/04/26/the-aviator-animating-basic-3d-scene-threejs/
 The main purpose of this project is to practice OpenGL rendering techniques and applying 3D maths.
 
-## Screenshots
+## Video
 [![alt text](https://github.com/Guo-Haowei/TheAviator/blob/master/screenshots/Screenshot.png)](https://www.youtube.com/watch?v=3o_Xw1SkKuE)
-#### Front face culling
-![alt text](https://github.com/Guo-Haowei/TheAviator/blob/master/screenshots/Front_face_culling.png)
-#### Use tetrahedron for models
-![alt text](https://github.com/Guo-Haowei/TheAviator/blob/master/screenshots/Tetrahedron.png)
-#### Use low-poly sphere for models
-![alt text](https://github.com/Guo-Haowei/TheAviator/blob/master/screenshots/Sphere.png)
 
 ## Installation
 
