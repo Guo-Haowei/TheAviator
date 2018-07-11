@@ -1,38 +1,20 @@
 // SunShader.cc
 #include "SunShader.h"
 #include <utils/File.h>
-#include <models/RawModel.h>
-#include <models/Loader.h>
+#include <models/Geometry.h>
 #include <textures/TextureBuilder.h>
 #include <entities/gameObjects/Light.h>
 #include <entities/gameObjects/Camera.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL/glew.h>
-#include <vector>
 #include <iostream>
 using std::cout;
-using std::vector;
 
 #define SCALE 50.0
 
 SunShader::SunShader() {
-  vector<float> vertices;
-  vertices.push_back(-0.5f);
-  vertices.push_back(0.5f);
-  vertices.push_back(0.5f);
-  vertices.push_back(0.5f);
-  vertices.push_back(0.5f);
-  vertices.push_back(-0.5f);
-
-  vertices.push_back(0.5f);
-  vertices.push_back(-0.5f);
-  vertices.push_back(-0.5f);
-  vertices.push_back(-0.5f);
-  vertices.push_back(-0.5f);
-  vertices.push_back(0.5f);
-  quad = Loader::loadToVAO(vertices, 2);
-
+  quad = Geometry::quad;
   File textureFile("sun", png);
   TextureBuilder builder(textureFile);
   m_sunTexture = builder.anisotropic()->create();
@@ -45,14 +27,11 @@ void SunShader::bindAttributes() {
   bindAttribute(0, "position");
 }
 
-SunShader::~SunShader() {
-  if (quad)
-    delete quad;
-}
+SunShader::~SunShader() {}
 
 void SunShader::getAllUniformLocations() {
-  int location_sunTexture = getUniformLocation("sunTexture");
-  int location_PVM = getUniformLocation("PVM");
+  location_sunTexture = getUniformLocation("sunTexture");
+  location_PVM = getUniformLocation("PVM");
 }
 
 void SunShader::render() {

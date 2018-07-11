@@ -12,6 +12,7 @@ namespace Geometry {
   extern RawModel* sea;
   extern RawModel* cockpit;
   extern RawModel* propeller;
+  extern RawModel* quad;
 
   void initGeometry();
   void cleanGeometry();

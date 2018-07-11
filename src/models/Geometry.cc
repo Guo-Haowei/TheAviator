@@ -17,12 +17,14 @@ RawModel* Geometry::sphere;
 RawModel* Geometry::cockpit;
 RawModel* Geometry::propeller;
 RawModel* Geometry::tetrahedron;
+RawModel* Geometry::quad;
 
 RawModel* createTetrahedron(int segments = 1);
 RawModel* createCube();
 RawModel* createSea(float radius, float height, int radialSegments, int heightSegments);
 RawModel* createCockpit();
 RawModel* createPropeller();
+RawModel* createQuad();
 
 void Geometry::initGeometry() {
   tetrahedron = createTetrahedron();
@@ -31,6 +33,7 @@ void Geometry::initGeometry() {
   sea = createSea(SEA::RADIUS, SEA::HEIGHT, SEA::RADIAL_SEGMENTS, SEA::HEIGHT_SEGMENTS);
   cockpit = createCockpit();
   propeller = createPropeller();
+  quad = createQuad();
 }
 
 void Geometry::cleanGeometry() {
@@ -40,6 +43,7 @@ void Geometry::cleanGeometry() {
   delete sea;
   delete cockpit;
   delete propeller;
+  delete quad;
 }
 
 /* helper functions for createTetrahedron */
@@ -128,6 +132,24 @@ RawModel* createTetrahedron(int segments) {
   }
 
   return Loader::loadToVAO(vertexArray, 3, normals, 3);
+}
+
+RawModel* createQuad() {
+  vector<float> vertices;
+  vertices.push_back(-0.5f);
+  vertices.push_back(0.5f);
+  vertices.push_back(0.5f);
+  vertices.push_back(0.5f);
+  vertices.push_back(0.5f);
+  vertices.push_back(-0.5f);
+
+  vertices.push_back(0.5f);
+  vertices.push_back(-0.5f);
+  vertices.push_back(-0.5f);
+  vertices.push_back(-0.5f);
+  vertices.push_back(-0.5f);
+  vertices.push_back(0.5f);
+  return Loader::loadToVAO(vertices, 2);
 }
 
 RawModel* createCube() {
