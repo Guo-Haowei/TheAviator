@@ -12,7 +12,7 @@ private:
 
 protected:
   int location_sunTexture;
-  int location_PVM;
+  int location_transform;
 
   void bindAttributes();
   void getAllUniformLocations();

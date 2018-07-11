@@ -67,12 +67,12 @@ void Camera::setPosition(glm::vec3 position) {
 }
 
 void Camera::chasePoint(glm::vec3 position) {
-  // float delta = (position.y - this->position.y) * 0.1f;
-  // this->position.y += delta;
-  // const float LOWEST = 3.0f;
-  // if (this->position.y <= LOWEST) {
-  //   this->position.y = LOWEST;
-  // }
+  float delta = (position.y - this->position.y) * 0.1f;
+  this->position.y += delta;
+  const float LOWEST = 3.0f;
+  if (this->position.y <= LOWEST) {
+    this->position.y = LOWEST;
+  }
 }
 
 glm::vec2 Camera::screenPos(glm::vec4 worldPos) {

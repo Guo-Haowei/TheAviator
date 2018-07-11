@@ -1,5 +1,6 @@
 // SunShader.cc
 #include "SunShader.h"
+#include <common.h>
 #include <utils/File.h>
 #include <models/Geometry.h>
 #include <textures/TextureBuilder.h>
@@ -10,8 +11,6 @@
 #include <GL/glew.h>
 #include <iostream>
 using std::cout;
-
-#define SCALE 50.0
 
 SunShader::SunShader() {
   quad = Geometry::quad;
@@ -31,18 +30,21 @@ SunShader::~SunShader() {}
 
 void SunShader::getAllUniformLocations() {
   location_sunTexture = getUniformLocation("sunTexture");
-  location_PVM = getUniformLocation("PVM");
+  location_transform = getUniformLocation("transform");
 }
 
 void SunShader::render() {
   start();
   loadInt(location_sunTexture, 0);
   glEnable(GL_BLEND);
-  glm::mat4 PVM, S;
-  S = glm::scale(S, glm::vec3(SCALE));
-  PVM = glm::translate(PVM, Light::theOne().getPosition());
-  PVM = Camera::primary().getProjectionMatrix() * Camera::primary().getViewMatrix() * PVM * S;
-  loadMatrix4f(location_PVM, PVM);
+  glm::vec4 sunScreenPos = Camera::primary().getProjectionMatrix() * Camera::primary().getViewMatrix() * glm::vec4(Light::theOne().getPosition(), 1.0f);
+  glm::vec2 sunScreenPos2d;
+  sunScreenPos2d.x = sunScreenPos.x / sunScreenPos.w;
+  sunScreenPos2d.y = sunScreenPos.y / sunScreenPos.w;
+  float scaleX = 0.3f;
+  float scaleY = scaleX * (float)ACTUAL_WIDTH / (float)ACTUAL_HEIGHT;
+  glm::vec4 transform(sunScreenPos2d, scaleX, scaleY);
+  loadVector4f(location_transform, transform);
   m_sunTexture.bindToUint(0);
   quad->bind();
   glDisable(GL_DEPTH_TEST);
