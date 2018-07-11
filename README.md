@@ -4,7 +4,7 @@ This is an OpenGL project inspired by: https://tympanus.net/codrops/2016/04/26/t
 The main purpose of this project is to practice OpenGL rendering techniques and applying 3D maths.
 
 ## Video
-[![alt text](https://github.com/Guo-Haowei/TheAviator/blob/master/screenshots/Screenshot.png)](https://www.youtube.com/watch?v=3o_Xw1SkKuE)
+[![alt text](https://github.com/Guo-Haowei/TheAviator/blob/master/screenshots/Screenshot.png)](https://www.youtube.com/watch?v=Nv-wizLF6zk)
 
 ## Installation
 
