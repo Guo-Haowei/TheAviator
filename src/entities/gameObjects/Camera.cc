@@ -65,10 +65,6 @@ glm::vec3 Camera::getPosition() const {
   return position;
 }
 
-void Camera::setPosition(glm::vec3 position) {
-  this->position = position;
-}
-
 void Camera::chasePoint(glm::vec3 position) {
   float delta = (position.y - this->position.y) * 0.1f;
   this->position.y += delta;

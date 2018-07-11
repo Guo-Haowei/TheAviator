@@ -25,7 +25,6 @@ public:
   float getFov() const;
   void setFov(float fov);
   glm::vec3 getPosition() const;
-  void setPosition(glm::vec3 position);
   void chasePoint(glm::vec3 position);
 
   glm::vec2 screenPos(glm::vec4 worldPos);

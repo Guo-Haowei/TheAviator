@@ -67,8 +67,8 @@ void main() {
 
   // fog
   float dist = abs(ViewSpace.z);
-  float near = 200.0;
-  float far = 350.0;
+  float near = 100.0;
+  float far = 500.0;
   float fogFactor = (far - dist)/(far - near);
   fogFactor = clamp(fogFactor, 0.0, 1.0);
 
