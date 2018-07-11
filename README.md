@@ -55,15 +55,12 @@ make
 ./TheAviator
 ```
 ## FEATURES
+* Lens flare
 * Primitives including tetrahedron, box, sphere, cylinder
 * Shadow mapping
 * Fog
 * Transparent water
 * Collision detection
+* Physics engine(gravity and collision response)
 * Particle effect
 * Animation (hair and propeller)
-* Realtime normal vector calculation using geometry shader
-
-## TODO
-* Implement cel shading
-* Add outline
