@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "Light.h"
 #include <common.h>
+#include <io/KeyboardManager.h>
 #include <maths/Maths.h>
 #include <io/MouseManager.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -15,10 +16,23 @@ Camera::Camera() {
   fov = CAMERA::FOV;
 }
 
+void Camera::changePosition(float degree) {
+  glm::mat4 r;
+  r = glm::rotate(r, degree, glm::vec3(0.0f, 1.0f, 0.0f));
+  position = glm::vec3(r * glm::vec4(position, 1.0f));
+  front = glm::vec3(r * glm::vec4(front, 1.0f));
+}
+
 void Camera::update() {
   float delta = (1.0f - 2 * MouseManager::getRawX() / (float) WIDTH);
   float z = Maths::clamp(delta, -1.0f, 1.0f, CAMERA::Z - 10.0f, CAMERA::Z + 80.0f);
   position.z = z;
+  if (KeyboardManager::isKeyDown(KEY_LEFT)) {
+    changePosition(-0.01f);
+  }
+  if (KeyboardManager::isKeyDown(KEY_RIGHT)) {
+    changePosition(0.01f);
+  }
 }
 
 glm::mat4 Camera::getProjectionMatrix() {
@@ -53,12 +67,12 @@ void Camera::setPosition(glm::vec3 position) {
 }
 
 void Camera::chasePoint(glm::vec3 position) {
-  float delta = (position.y - this->position.y) * 0.1f;
-  this->position.y += delta;
-  const float LOWEST = 3.0f;
-  if (this->position.y <= LOWEST) {
-    this->position.y = LOWEST;
-  }
+  // float delta = (position.y - this->position.y) * 0.1f;
+  // this->position.y += delta;
+  // const float LOWEST = 3.0f;
+  // if (this->position.y <= LOWEST) {
+  //   this->position.y = LOWEST;
+  // }
 }
 
 glm::vec2 Camera::screenPos(glm::vec4 worldPos) {
