@@ -8,18 +8,18 @@ out vec4 out_Color;
 
 void main() {
   vec2 texelSize = 1.0 / vec2(textureSize(colorTexture, 0));
-  vec2 screenTexCoords = gl_FragCoord.xy * texelSize;
 
-  vec2 velocity = texture(velocityTexture, screenTexCoords).rg;
-  velocity *= 1.0;
+  vec2 velocity = texture(velocityTexture, pass_textureCoords).rg;
+  velocity.x = pow(velocity.x, 1.0 / 3.0);
+  velocity.y = pow(velocity.y, 1.0 / 3.0);
 
   float speed = length(velocity / texelSize);
-  int nSamples = clamp(int(speed), 1, 5);
+  int nSamples = clamp(int(speed), 1, 10);
 
-  out_Color = texture(colorTexture, screenTexCoords);
+  out_Color = texture(colorTexture, pass_textureCoords);
   for (int i = 1; i < nSamples; ++i) {
     vec2 offset = velocity * (float(i) / float(nSamples - 1) - 0.5);
-    out_Color += texture(colorTexture, screenTexCoords + offset);
+    out_Color += texture(colorTexture, pass_textureCoords + offset);
   }
   out_Color /= float(nSamples);
 }

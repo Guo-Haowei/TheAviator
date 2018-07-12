@@ -81,6 +81,8 @@ void main() {
   // velocity
   vec2 a = (CurPos.xy / CurPos.w) * 0.5 + 0.5;
   vec2 b = (PrevPos.xy / PrevPos.w) * 0.5 + 0.5;
-  vec2 difference = a - b;;
+  vec2 difference = (a - b);
+  difference.x = pow(difference.x, 3.0);
+  difference.y = pow(difference.y, 3.0);
   velocityTexture = vec4(difference, 0.0, 1.0);
 }

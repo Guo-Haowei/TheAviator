@@ -31,10 +31,10 @@ void Camera::update() {
   float z = Maths::clamp(delta, -1.0f, 1.0f, CAMERA::Z - 10.0f, CAMERA::Z + 80.0f);
   position.z = z;
   if (KeyboardManager::isKeyDown(KEY_LEFT)) {
-    changePosition(-0.01f);
+    changePosition(-0.03f);
   }
   if (KeyboardManager::isKeyDown(KEY_RIGHT)) {
-    changePosition(0.01f);
+    changePosition(0.03f);
   }
 }
 
