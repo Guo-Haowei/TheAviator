@@ -37,7 +37,7 @@ void SunShader::render() {
   start();
   loadInt(location_sunTexture, 0);
   glEnable(GL_BLEND);
-  glm::vec4 sunScreenPos = Camera::primary().getProjectionMatrix() * Camera::primary().getViewMatrix() * glm::vec4(Light::theOne().getPosition(), 1.0f);
+  glm::vec4 sunScreenPos = Camera::primary().getPVMatrix() * glm::vec4(Light::theOne().getPosition(), 1.0f);
   glm::vec2 sunScreenPos2d;
   sunScreenPos2d.x = sunScreenPos.x / sunScreenPos.w;
   sunScreenPos2d.y = sunScreenPos.y / sunScreenPos.w;

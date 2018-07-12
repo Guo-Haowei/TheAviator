@@ -24,6 +24,7 @@ Entity::Entity():
   transformation[3].x = position.x;
   transformation[3].y = position.y;
   transformation[3].z = position.z;
+  prevTransformation = transformation;
 }
 
 Entity::Entity(const Entity& other):
@@ -41,6 +42,7 @@ Entity::Entity(const Entity& other):
   transformation[3].x = position.x;
   transformation[3].y = position.y;
   transformation[3].z = position.z;
+  prevTransformation = transformation;
 }
 
 Entity::Entity(
@@ -66,6 +68,7 @@ Entity::Entity(
   transformation[3].x = position.x;
   transformation[3].y = position.y;
   transformation[3].z = position.z;
+  prevTransformation = transformation;
 }
 
 Entity::~Entity() {
@@ -80,14 +83,24 @@ void Entity::updateTransformation(glm::mat4 transformationMatrix) {
   position.z = transformation[3].z;
 }
 
-glm::mat4 Entity::getTransformationMatrix() {
+glm::mat4 Entity::getTransformationMatrix() const {
   glm::mat4 scaleMatrix(1);
   scaleMatrix = glm::scale(scaleMatrix, scale);
   return transformation * scaleMatrix;
 }
 
-glm::vec4 Entity::getWorldPos() {
+glm::mat4 Entity::getPrevTransformationMatrix() const {
+  glm::mat4 scaleMatrix(1);
+  scaleMatrix = glm::scale(scaleMatrix, scale);
+  return prevTransformation * scaleMatrix;
+}
+
+glm::vec4 Entity::getWorldPos() const {
   return glm::vec4(position, 1.0f);
+}
+
+void Entity::updatePrevTransformation() {
+  prevTransformation = transformation;
 }
 
 void Entity::changePosition(glm::mat4 translationMatrix) {

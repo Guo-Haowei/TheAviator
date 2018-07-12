@@ -68,7 +68,7 @@ void FlareShader::getAllUniformLocations() {
 }
 
 void FlareShader::render() {
-  glm::vec4 sunScreenPos = Camera::primary().getProjectionMatrix() * Camera::primary().getViewMatrix() * glm::vec4(Light::theOne().getPosition(), 1.0f);
+  glm::vec4 sunScreenPos = Camera::primary().getPVMatrix() * glm::vec4(Light::theOne().getPosition(), 1.0f);
   if (sunScreenPos.w < 0.0f)
     return;
   glm::vec2 sunScreenPos2d;

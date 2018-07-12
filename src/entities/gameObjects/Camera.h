@@ -19,6 +19,7 @@ public:
   void changePosition(float degree);
   glm::mat4 getProjectionMatrix();
   glm::mat4 getViewMatrix();
+  glm::mat4 getPVMatrix();
 
   glm::mat4 getLightSpaceMatrix();
 

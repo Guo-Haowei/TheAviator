@@ -46,6 +46,10 @@ glm::mat4 Camera::getViewMatrix() {
   return glm::lookAt(position, position + front, up);
 }
 
+glm::mat4 Camera::getPVMatrix() {
+  return getProjectionMatrix() * getViewMatrix();
+}
+
 glm::mat4 Camera::getLightSpaceMatrix() {
   glm::vec3 lightPos(Light::theOne().getPosition());
   glm::mat4 viewMatrix = glm::lookAt(lightPos, glm::vec3(AIRPLANE::X, AIRPLANE::Y, AIRPLANE::Z), glm::vec3(0.0f, 1.0f, 0.0f));

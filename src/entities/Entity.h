@@ -15,7 +15,7 @@ protected:
   bool receiveShadow;
   bool castShadow;
   glm::vec3 position, color, scale;
-  glm::mat4 transformation;
+  glm::mat4 transformation, prevTransformation;
   Object3D* rigidBody;
 
   void updateTransformation(glm::mat4 transformationMatrix);
@@ -38,8 +38,10 @@ public:
   glm::vec3 getScale() const;
   void setScale(float dx, float dy, float dz);
 
-  glm::mat4 getTransformationMatrix();
-  glm::vec4 getWorldPos();
+  glm::mat4 getTransformationMatrix() const;
+  glm::mat4 getPrevTransformationMatrix() const;
+  glm::vec4 getWorldPos() const;
+  void updatePrevTransformation();
 
   float getOpacity() const;
   RawModel* getModel() const;

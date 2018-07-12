@@ -7,6 +7,7 @@
 #include <shaders/EntityShader.h>
 #include <shaders/SeaShader.h>
 #include <shaders/ShadowShader.h>
+#include <shaders/VelocityShader.h>
 #include <vector>
 using std::vector;
 
@@ -20,6 +21,7 @@ private:
   ShadowShader entityShadowShader;
   SunShader sunShader;
   FlareShader flareShader;
+  VelocityShader velocityShader;
 public:
   Renderer();
   ~Renderer();
