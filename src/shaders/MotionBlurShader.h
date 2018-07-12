@@ -9,7 +9,7 @@ private:
   RawModel* quad;
 protected:
   int location_colorTexture;
-  // int location_velocityTexture;
+  int location_velocityTexture;
 
   void bindAttributes();
   void getAllUniformLocations();

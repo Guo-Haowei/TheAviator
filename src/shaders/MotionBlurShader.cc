@@ -18,6 +18,7 @@ void MotionBlurShader::bindAttributes() {
 
 void MotionBlurShader::getAllUniformLocations() {
   location_colorTexture = getUniformLocation("colorTexture");
+  location_velocityTexture = getUniformLocation("velocityTexture");
 }
 
 void MotionBlurShader::render() {
@@ -26,6 +27,7 @@ void MotionBlurShader::render() {
   glDisable(GL_BLEND);
   glEnable(GL_CULL_FACE);
   loadInt(location_colorTexture, 0);
+  loadInt(location_velocityTexture, 1);
   quad->bind();
   glDrawArrays(GL_TRIANGLES, 0, quad->getVertexCount());
   RawModel::unbind();

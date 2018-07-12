@@ -5,8 +5,11 @@ in vec3 Normal;
 in vec3 ToCameraVector;
 in vec4 LightSpaceFragPos;
 in vec4 ViewSpace;
+smooth in vec4 CurPos;
+smooth in vec4 PrevPos;
 
-out vec4 out_Color;
+layout (location = 0) out vec4 colorTexture;
+layout (location = 1) out vec4 velocityTexture;
 
 uniform vec3 color;
 uniform vec3 lightPos;
@@ -73,5 +76,11 @@ void main() {
   fogFactor = clamp(fogFactor, 0.0, 1.0);
 
   vec3 finalColor = (1.0 - fogFactor) * fogColor + fogFactor * fragColor;
-  out_Color = vec4(finalColor, opacity);
+  colorTexture = vec4(finalColor, opacity);
+
+  // velocity
+  vec2 a = (CurPos.xy / CurPos.w) * 0.5 + 0.5;
+  vec2 b = (PrevPos.xy / PrevPos.w) * 0.5 + 0.5;
+  vec2 difference = a - b;;
+  velocityTexture = vec4(difference, 0.0, 1.0);
 }

@@ -7,10 +7,7 @@
 #include <shaders/EntityShader.h>
 #include <shaders/SeaShader.h>
 #include <shaders/ShadowShader.h>
-#include <shaders/VelocityShader.h>
 #include <shaders/MotionBlurShader.h>
-#include <vector>
-using std::vector;
 
 class Renderer {
 private:
@@ -22,12 +19,11 @@ private:
   ShadowShader entityShadowShader;
   SunShader sunShader;
   FlareShader flareShader;
-  VelocityShader velocityShader;
   MotionBlurShader motionBlurShader;
 
-  unsigned int gBuffer;
-  unsigned int gVelocity, gColor;
-  unsigned int gDepth;
+  unsigned int frameBuffer;
+  unsigned int colorTexture, velocityTexture;
+  unsigned int depthBuffer;
 public:
   Renderer();
   ~Renderer();

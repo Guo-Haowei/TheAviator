@@ -11,10 +11,12 @@ protected:
   int location_shadowMap;
   int location_opacity;
   int location_receiveShadow;
+  int location_prevPVM;
   void bindAttributes();
   void getAllUniformLocations();
 public:
   EntityShader();
 
   void render();
+  void updateEntityVelocity();
 };

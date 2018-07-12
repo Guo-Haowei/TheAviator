@@ -5,7 +5,8 @@ in vec3 Normal;
 in vec4 LightSpaceFragPos;
 in vec3 FragPos;
 
-out vec4 out_Color;
+layout (location = 0) out vec4 colorTexture;
+// layout (location = 1) out vec4 velocityTexture;
 
 uniform vec3 lightPos;
 uniform sampler2D shadowMap;
@@ -60,5 +61,8 @@ void main() {
   fogFactor = clamp(fogFactor, 0.0, 1.0);
 
   vec3 finalColor = (1.0 - fogFactor) * fogColor + fogFactor * fragColor;
-  out_Color = vec4(finalColor, min(0.8, fogFactor));
+  colorTexture = vec4(finalColor, min(0.8, fogFactor));
+
+  // velocity
+  // velocityTexture = vec4(1, 1, 1, 1);
 }
