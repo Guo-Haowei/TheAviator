@@ -6,6 +6,11 @@ The main purpose of this project is to practice OpenGL rendering techniques and 
 ## Video
 [![alt text](https://github.com/Guo-Haowei/TheAviator/blob/master/screenshots/Screenshot.png)](https://www.youtube.com/watch?v=Nv-wizLF6zk)
 
+## Screenshots
+Motion blur
+![alt text](https://github.com/Guo-Haowei/TheAviator/blob/master/screenshots/Motion%20blur.png)
+
+
 ## Installation
 
 ### Windows
@@ -55,12 +60,13 @@ make
 ./TheAviator
 ```
 ## FEATURES
+* Motion blur using velocity map
+* Shadow using shadow mapping
 * Lens flare
-* Primitives including tetrahedron, box, sphere, cylinder
-* Shadow mapping
-* Fog
-* Transparent water
 * Collision detection
-* Physics engine(gravity and collision response)
+* Physics engine (gravity and collision response)
 * Particle effect
-* Animation (hair and propeller)
+* Transparency using alpha blending
+* Linear animation
+* Linear Fog
+* Primitives including tetrahedron, box, sphere, cylinder
