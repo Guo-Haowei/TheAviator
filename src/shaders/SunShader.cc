@@ -22,11 +22,11 @@ SunShader::SunShader() {
   ShaderProgram::init(VERTEX_FILE, FRAGMENT_FILE);
 }
 
+SunShader::~SunShader() {}
+
 void SunShader::bindAttributes() {
   bindAttribute(0, "position");
 }
-
-SunShader::~SunShader() {}
 
 void SunShader::getAllUniformLocations() {
   location_sunTexture = getUniformLocation("sunTexture");
@@ -37,6 +37,8 @@ void SunShader::render() {
   start();
   loadInt(location_sunTexture, 0);
   glEnable(GL_BLEND);
+  glEnable(GL_CULL_FACE);
+  glDisable(GL_DEPTH_TEST);
   glm::vec4 sunScreenPos = Camera::primary().getPVMatrix() * glm::vec4(Light::theOne().getPosition(), 1.0f);
   glm::vec2 sunScreenPos2d;
   sunScreenPos2d.x = sunScreenPos.x / sunScreenPos.w;
@@ -47,10 +49,7 @@ void SunShader::render() {
   loadVector4f(location_transform, transform);
   m_sunTexture.bindToUint(0);
   quad->bind();
-  glDisable(GL_DEPTH_TEST);
   glDrawArrays(GL_TRIANGLES, 0, quad->getVertexCount());
-  glEnable(GL_DEPTH_TEST);
-  glDisable(GL_BLEND);
   RawModel::unbind(1);
   stop();
 }

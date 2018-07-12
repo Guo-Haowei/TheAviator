@@ -42,6 +42,9 @@ void SeaShader::getAllUniformLocations() {
 
 void SeaShader::render() {
   start();
+  glDisable(GL_CULL_FACE);
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
   glm::vec3 lightPos(Light::theOne().getPosition());
   loadFloat(location_ambientLightIntensity, AMBIENT_LIGHT_INTENSITY);
   loadInt(location_shadowMap, 0);
@@ -54,9 +57,7 @@ void SeaShader::render() {
   loadMatrix4f(location_transformationMatrix, SEA_MODEL->getTransformationMatrix());
   model->bind();
 
-  glEnable(GL_BLEND);
   glDrawElements(GL_TRIANGLES, model->getVertexCount(), GL_UNSIGNED_INT, (void*) 0);
-  glDisable(GL_BLEND);
 
   RawModel::unbind();
   stop();

@@ -35,8 +35,10 @@ void EntityShader::getAllUniformLocations() {
 
 void EntityShader::render() {
   start();
-  glm::vec3 lightPos(Light::theOne().getPosition());
+  glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
+  glEnable(GL_CULL_FACE);
+  glm::vec3 lightPos(Light::theOne().getPosition());
   loadInt(location_shadowMap, 0);
   loadFloat(location_ambientLightIntensity, AMBIENT_LIGHT_INTENSITY);
   loadVector3f(location_light, lightPos);
@@ -88,6 +90,5 @@ void EntityShader::render() {
     glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
   }
   RawModel::unbind();
-  glDisable(GL_BLEND);
   stop();
 }

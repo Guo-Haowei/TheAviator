@@ -65,6 +65,8 @@ void ShadowShader::getAllUniformLocations() {
 
 void ShadowShader::render() {
   start();
+  glEnable(GL_DEPTH_TEST);
+  glDisable(GL_CULL_FACE);
   loadMatrix4f(location_lightSpaceMatrix, Camera::primary().getLightSpaceMatrix());
   if (isSeaShadow) {
     loadFloat(location_time, TIMER);

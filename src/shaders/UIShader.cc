@@ -48,13 +48,14 @@ void UIShader::getAllUniformLocations() {
 
 void UIShader::render() {
   start();
+  glEnable(GL_CULL_FACE);
+  glEnable(GL_BLEND);
+  glDisable(GL_DEPTH_TEST);
   loadFloat(location_health, GAME::HEALTH);
   loadFloat(location_width, (float)ACTUAL_WIDTH);
   loadFloat(location_height, (float)ACTUAL_HEIGHT);
   quad->bind();
-  glDisable(GL_DEPTH_TEST);
   glDrawArrays(GL_TRIANGLES, 0, quad->getVertexCount());
-  glEnable(GL_DEPTH_TEST);
   RawModel::unbind(1);
   stop();
 }

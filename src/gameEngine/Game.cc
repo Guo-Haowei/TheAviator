@@ -82,8 +82,8 @@ void Game::run() {
 
       ObstacleHolder::theOne().update();
       BatteryHolder::theOne().update();
-      Airplane::theOne().update();
       Sky::theOne().update();
+      Airplane::theOne().update();
       DisplayManager::updateDisplay();
 
       // update health

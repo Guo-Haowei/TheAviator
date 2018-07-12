@@ -8,6 +8,7 @@
 #include <shaders/SeaShader.h>
 #include <shaders/ShadowShader.h>
 #include <shaders/VelocityShader.h>
+#include <shaders/MotionBlurShader.h>
 #include <vector>
 using std::vector;
 
@@ -22,6 +23,11 @@ private:
   SunShader sunShader;
   FlareShader flareShader;
   VelocityShader velocityShader;
+  MotionBlurShader motionBlurShader;
+
+  unsigned int gBuffer;
+  unsigned int gVelocity, gColor;
+  unsigned int gDepth;
 public:
   Renderer();
   ~Renderer();

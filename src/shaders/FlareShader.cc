@@ -80,8 +80,8 @@ void FlareShader::render() {
   if (brightness > 0.0f) {
     static float spacing = 0.13f;
     glEnable(GL_BLEND);
-    glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
+    glDisable(GL_DEPTH_TEST);
     start();
     loadFloat(location_brightness, brightness);
     quad->bind();
@@ -96,9 +96,6 @@ void FlareShader::render() {
       glDrawArrays(GL_TRIANGLES, 0, quad->getVertexCount());
     }
     RawModel::unbind(1);
-    glDisable(GL_BLEND);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
     stop();
   }
 }

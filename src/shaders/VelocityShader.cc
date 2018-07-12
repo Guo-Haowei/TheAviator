@@ -77,7 +77,6 @@ void VelocityShader::render() {
     glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
   }
   RawModel::unbind();
-  glEnable(GL_CULL_FACE);
   stop();
 }
 

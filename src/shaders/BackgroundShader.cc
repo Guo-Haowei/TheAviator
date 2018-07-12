@@ -66,10 +66,10 @@ void BackgroundShader::getAllUniformLocations() { }
 
 void BackgroundShader::render() {
   start();
-  background->bind();
+  glEnable(GL_CULL_FACE);
   glDisable(GL_DEPTH_TEST);
+  background->bind();
   glDrawArrays(GL_TRIANGLES, 0, background->getVertexCount());
-  glEnable(GL_DEPTH_TEST);
   RawModel::unbind();
   stop();
 }
