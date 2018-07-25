@@ -51,6 +51,31 @@ I implement lens flare by calculating the screen position of the light source, l
 * Linear Fog calculation in shader
 * Alpha blending
 
+## Implementation
+
+* **Algorithms, data structures, and complexities**
+<p>
+I used structure `unordered_map<GLuint, vector<Entity*>>` to keep all the entities to render, where GLuint is the index of their corresponding Vertex Array Object(VAO) of the entities listed in the vector.
+<p>
+In this way, I can bind the same VAO only once each frame, and the number of VAO binding are greatly reduced.
+
+* **Modularity, data abstraction and encapsulation**
+<p>
+Modulaized a few utility class to manage window, create shaders, load images and so on.
+<p>
+The base class of all scene object has a transformation matrix.
+ 
+* **Platform and system dependence or independence**
+<p>
+This program runs on all Windows, MacOS and Linux system
+* **Global constants and configurability**
+<p>
+In order to change global variables such as camera position, light position, etc easily without recompiling the code. Icreated a function to read all variables from a configuration file.
+
+* **Debugging approach and utilities, testing and verifying practices**
+<p> I used [RenderDoc](https://renderdoc.org/) for debugging. It can screenshot on frame and list all the draw calls and textures. However it doesn't support GLSL to well, so I can't debug the value been passed to shader with it.
+
+
 ## Installation
 
 ### Windows
