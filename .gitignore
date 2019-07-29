@@ -1,10 +1,6 @@
-Debug/*
-!Debug/TheAviator.exe
-!Debug/glew32.dll
 build/*
-Release/
+bin/
 .vs/
-*.sln
-*.vcxproj*
 *.dll
 *.swp
+.DS_Store

@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.1)
+project(TheAviator)
+
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_BUILD_TYPE Debug)
-
-project(TheAviator)
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/dependencies/glm/)
