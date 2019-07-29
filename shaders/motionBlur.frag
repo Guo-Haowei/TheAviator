@@ -15,6 +15,7 @@ void main() {
 
   float speed = length(velocity / texelSize);
   int nSamples = clamp(int(speed), 1, 10);
+  nSamples = 1;
 
   out_Color = texture(colorTexture, screenTexCoords);
   for (int i = 1; i < nSamples; ++i) {
