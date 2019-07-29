@@ -4,7 +4,6 @@ Debug/*
 build/*
 Release/
 .vs/
-glm/
 *.sln
 *.vcxproj*
 *.dll
