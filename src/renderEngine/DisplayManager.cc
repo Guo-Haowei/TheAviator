@@ -22,8 +22,8 @@ void DisplayManager::createDisplay() {
   glfwWindowHint(GLFW_SAMPLES, 4);
 
   const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-  WIDTH = (mode->width) / 2;
-  HEIGHT = (mode->height) / 2;
+  WIDTH = (mode->width) * 0.7;
+  HEIGHT = (mode->height) * 0.7;
 
   // window = glfwCreateWindow(WIDTH, HEIGHT, "The Aviator", glfwGetPrimaryMonitor(), NULL);
   window = glfwCreateWindow(WIDTH, HEIGHT, "The Aviator", NULL, NULL);
