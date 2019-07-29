@@ -77,10 +77,6 @@ void Renderer::render() {
   glBindTexture(GL_TEXTURE_2D, velocityTexture);
   motionBlurShader.render();
 
-  // render sun and lens flare
-  flareShader.render();
-  sunShader.render();
-
   // render ui
   uiShader.render();
 

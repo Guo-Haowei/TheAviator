@@ -1,6 +1,4 @@
 #include "Texture.h"
-#include "TextureUtils.h"
-#include <utils/File.h>
 #include <iostream>
 using std::cout;
 
@@ -15,16 +13,6 @@ Texture::Texture(unsigned int textureID, int size, int type):
 void Texture::bindToUint(unsigned int unit) {
   glActiveTexture(GL_TEXTURE0 + unit);
   glBindTexture(m_type, m_textureID);
-}
-
-Texture Texture::newCubeMap(std::vector<File*>& files) {
-  int cubeMapId = TextureUtils::loadCubeMap(files);
-  return Texture(cubeMapId, 0, GL_TEXTURE_CUBE_MAP);
-}
-
-Texture Texture::newEmptyCubeMap(int size) {
-  int cubeMapID = TextureUtils::createEmptyCubeMap(size);
-  return Texture(cubeMapID, size, GL_TEXTURE_CUBE_MAP);
 }
 
 unsigned int Texture::getID() const {

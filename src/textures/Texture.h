@@ -11,8 +11,6 @@ public:
   Texture(unsigned int textureID, int size, int type = GL_TEXTURE_2D);
 
   void bindToUint(unsigned int unit);
-  static Texture newCubeMap(std::vector<File*>& files);
-  static Texture newEmptyCubeMap(int size);
 
   unsigned int getID() const;
   int getSize() const;

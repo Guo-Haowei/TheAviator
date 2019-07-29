@@ -1,9 +1,7 @@
 // Renderer.h
 #pragma once
 #include <shaders/BackgroundShader.h>
-#include <shaders/FlareShader.h>
 #include <shaders/UIShader.h>
-#include <shaders/SunShader.h>
 #include <shaders/EntityShader.h>
 #include <shaders/SeaShader.h>
 #include <shaders/ShadowShader.h>
@@ -17,8 +15,6 @@ private:
   SeaShader seaShader;
   ShadowShader seaShadowShader;
   ShadowShader entityShadowShader;
-  SunShader sunShader;
-  FlareShader flareShader;
   MotionBlurShader motionBlurShader;
 
   unsigned int frameBuffer;

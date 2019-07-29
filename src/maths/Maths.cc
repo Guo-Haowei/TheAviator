@@ -53,7 +53,7 @@ glm::mat4 Maths::rotateAroundAxis(glm::vec3 axis, float angle, glm::vec3 center)
   T = glm::translate(T, -center);
   T_1 = glm::translate(T_1, center);
 
-  rotationMatrix = glm::rotate(rotationMatrix, angle, glm::normalize(axis));
+  rotationMatrix = glm::rotate(rotationMatrix, angle, axis);
 
   return T_1 * rotationMatrix * T;
 }
