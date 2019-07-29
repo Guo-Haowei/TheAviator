@@ -1,6 +1,6 @@
 build/*
-bin/
 .vs/
+.vscode/
 *.dll
 *.swp
 .DS_Store
