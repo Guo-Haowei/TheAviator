@@ -15,9 +15,6 @@
 #include <renderEngine/DisplayManager.h>
 #include <io/MouseManager.h>
 #include <io/Parser.h>
-#ifndef _WIN32
-#include <utils/Audio.h>
-#endif // _WIN32
 #include <glm/glm.hpp>
 #include <algorithm>
 #include <iostream>
@@ -42,18 +39,12 @@ Game::Game() {
 Game::~Game() {
   DisplayManager::cleanDisplay();
   Geometry::cleanGeometry();
-#ifndef _WIN32
-  Audio::cleanUp();
-#endif // _WIN32
 }
 
 void Game::init() {
   Parser::parse();
   DisplayManager::createDisplay();
   Geometry::initGeometry();
-#ifndef _WIN32
-  Audio::init();
-#endif // _WIN32
   Light::theOne().setPosition(LIGHT::X, LIGHT::Y, LIGHT::Z);
 }
 
