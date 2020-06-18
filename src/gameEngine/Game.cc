@@ -64,7 +64,7 @@ void Game::run() {
       DisplayManager::prepareDisplay();
 
       // update light intensity
-      AMBIENT_LIGHT_INTENSITY = std::max(1.0f, AMBIENT_LIGHT_INTENSITY - 0.05f);
+      AMBIENT_LIGHT_INTENSITY = glm::max(1.0f, AMBIENT_LIGHT_INTENSITY - 0.05f);
       // check collision
       Collision::checkCollisionAgainstPlane();
       ParticleHolder::theOne().update();

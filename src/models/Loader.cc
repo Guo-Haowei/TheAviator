@@ -1,7 +1,6 @@
 // Loader.cc
-#define GLEW_STATIC
 #include "Loader.h"
-#include <GL/glew.h>
+#include "glPrerequisites.h"
 #include <iostream>
 using std::vector;
 

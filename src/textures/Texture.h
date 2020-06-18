@@ -1,5 +1,5 @@
 #pragma once
-#include <GL/glew.h>
+#include "glPrerequisites.h"
 #include <vector>
 
 class File;

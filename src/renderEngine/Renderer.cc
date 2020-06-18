@@ -1,14 +1,9 @@
 // Renderer.cc
-#define GLEW_STATIC
 #include "Renderer.h"
+#include "glPrerequisites.h"
 #include <common.h>
 #include <entities/Entity.h>
-#include <GL/glew.h>
-#ifdef __linux__
-#include <GLFW/glfw3.hpp>
-#else
 #include <GLFW/glfw3.h>
-#endif
 #include <iostream>
 using std::cout;
 

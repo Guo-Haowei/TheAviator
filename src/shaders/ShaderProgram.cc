@@ -1,8 +1,7 @@
 // ShaderProgram.cc
-#define GLEW_STATIC
 #include "ShaderProgram.h"
+#include "glPrerequisites.h"
 #include <glm/gtc/type_ptr.hpp>
-#include <GL/glew.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -120,11 +119,11 @@ unsigned int ShaderProgram::loadShader(const char* file, unsigned int type) {
     }
 
     return shaderID;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     std::cout << "==================================================\n";
     std::cout << "ERROR::SHADER: Failed to read file\n";
+    std::cout << e.what();
     std::cout << "\n==================================================\n";
-
     return 0;
   }
 }

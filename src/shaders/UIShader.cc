@@ -1,9 +1,9 @@
 // UIShader.cc
 #include "UIShader.h"
+#include "glPrerequisites.h"
 #include <common.h>
 #include <models/RawModel.h>
 #include <models/Loader.h>
-#include <GL/glew.h>
 #include <vector>
 #include <iostream>
 using std::vector;

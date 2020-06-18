@@ -1,13 +1,12 @@
 // ShadowShader.cc
-#define GLEW_STATIC
 #include "ShadowShader.h"
+#include "glPrerequisites.h"
 #include <common.h>
 #include <entities/Entity.h>
 #include <entities/DynamicEntity.h>
 #include <entities/gameObjects/Camera.h>
 #include <entities/gameObjects/ParticleHolder.h>
 #include <glm/glm.hpp>
-#include <GL/glew.h>
 #include <cassert>
 #include <iostream>
 using std::vector;

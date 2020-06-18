@@ -4,7 +4,7 @@
 #include <common.h>
 #include <models/RawModel.h>
 #include <models/Loader.h>
-#include <GL/glew.h>
+#include "glPrerequisites.h"
 #include <vector>
 using std::vector;
 

@@ -1,5 +1,6 @@
 // DisplayManager.cc
 #include "DisplayManager.h"
+#include <GLFW/glfw3.h>
 #include <io/KeyboardManager.h>
 #include <common.h>
 #include <iostream>
@@ -40,10 +41,9 @@ void DisplayManager::createDisplay() {
   glfwSetKeyCallback(window, keyCallback);
   //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-  glewExperimental = GL_TRUE;
-  if (glewInit() != GLEW_OK) {
+  if (gladLoadGL() == 0) {
     cout << "======================================\n";
-    cout << "ERROR::GLEW: Failed to initialize GLEW\n";
+    cout << "ERROR::GLAD: Failed to initialize glad\n";
     cout << "======================================\n";
   }
 

@@ -1,12 +1,12 @@
 // EntityShader.cc
 #include "EntityShader.h"
+#include "glPrerequisites.h"
 #include <common.h>
 #include <entities/Entity.h>
 #include <entities/DynamicEntity.h>
 #include <entities/gameObjects/Light.h>
 #include <entities/gameObjects/Camera.h>
 #include <entities/gameObjects/ParticleHolder.h>
-#include <GL/glew.h>
 #include <iostream>
 using std::cout;
 using std::vector;

@@ -1,7 +1,7 @@
 // MotionBlurShader.cc
 #include "MotionBlurShader.h"
 #include <models/Geometry.h>
-#include <GL/glew.h>
+#include "glPrerequisites.h"
 
 MotionBlurShader::MotionBlurShader() {
   quad = Geometry::quad;
