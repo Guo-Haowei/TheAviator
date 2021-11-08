@@ -20,6 +20,14 @@
 #include <iostream>
 using std::cout;
 
+#ifdef min
+#undef min
+#endif
+
+#ifdef max
+#undef max
+#endif
+
 float GAME::AIRPLANE_DISTANCE = 0.0f;
 float GAME::MILES = 0.0f;
 float GAME::HEALTH = 100.0f;
