@@ -9,25 +9,21 @@ message("Configuring glfw...")
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-include_directories(external/glfw/include)
 add_subdirectory(external/glfw)
 
 # glad
 message("Configuring glad...")
-include_directories(external/glad/include)
 add_subdirectory(external/glad)
 
 # glm
 message("Configuring glm...")
-include_directories(external/glm/)
 add_subdirectory(external/glm)
 
-include_directories(${PROJECT_SOURCE_DIR}/src)
+include_directories(external/glad/include)
+include_directories(external/glfw/include)
+include_directories(external/glm/)
+include_directories(${PROJECT_SOURCE_DIR}/source)
 
-find_package(OpenGL REQUIRED)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-file(GLOB_RECURSE SOURCE src/*.cc)
-file(GLOB_RECURSE HEADER src/*.h)
-
-add_executable(TheAviator ${HEADER} ${SOURCE})
-target_link_libraries(TheAviator glad glfw)
+add_subdirectory(source)
