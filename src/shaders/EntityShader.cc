@@ -47,6 +47,7 @@ void EntityShader::render() {
   loadMatrix4f(location_viewMatrix, Camera::primary().getViewMatrix());
   loadMatrix4f(location_projectionMatrix, Camera::primary().getProjectionMatrix());
   glm::mat4 PV = Camera::primary().getPVMatrix();
+
   for (auto& entry: staticEntities) {
     vector<Entity*>& entities = entry.second;
     entry.first->bind();

@@ -2,7 +2,6 @@
 #include "Camera.h"
 #include "Light.h"
 #include <common.h>
-#include <io/KeyboardManager.h>
 #include <maths/Maths.h>
 #include <io/MouseManager.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -30,12 +29,6 @@ void Camera::update() {
   float delta = (1.0f - 2 * MouseManager::getRawX() / (float) WIDTH);
   float z = Maths::clamp(delta, -1.0f, 1.0f, CAMERA::Z - 10.0f, CAMERA::Z + 80.0f);
   position.z = z;
-  if (KeyboardManager::isKeyDown(KEY_LEFT)) {
-    changePosition(-0.03f);
-  }
-  if (KeyboardManager::isKeyDown(KEY_RIGHT)) {
-    changePosition(0.03f);
-  }
 }
 
 glm::mat4 Camera::getProjectionMatrix() {
