@@ -22,6 +22,7 @@ add_subdirectory(external/glm)
 include_directories(external/glad/include)
 include_directories(external/glfw/include)
 include_directories(external/glm/)
+include_directories(external/)
 include_directories(${PROJECT_SOURCE_DIR}/source)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
