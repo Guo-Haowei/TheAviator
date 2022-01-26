@@ -1,32 +1,19 @@
 // entity.vert
 #version 330 core
-in vec3 position;
-in vec3 normal;
+in vec3 in_position;
+in vec3 in_normal;
 
-out vec3 FragPos;
-out vec3 Normal;
-out vec3 ToCameraVector;
-out vec4 LightSpaceFragPos;
-out vec4 ViewSpace;
-smooth out vec4 CurPos;
-smooth out vec4 PrevPos;
+out vec3 pass_position;
+out vec3 pass_normal;
 
-uniform mat4 transformationMatrix;
-uniform mat4 projectionMatrix;
-uniform mat4 viewMatrix;
-uniform mat4 lightSpaceMatrix;
-uniform mat4 prevPVM;
+uniform mat4 M;
+uniform mat4 V;
+uniform mat4 P;
 
 void main() {
-  vec4 position4 = vec4(position, 1.0);
-  vec4 worldPosition = transformationMatrix * position4;
-  ViewSpace = viewMatrix * worldPosition;
-  PrevPos = prevPVM * position4;
-  CurPos = projectionMatrix * ViewSpace;
-  gl_Position = CurPos;
+  vec4 position4 = vec4(in_position, 1.0);
+  vec4 worldPosition = M * position4;
+  gl_Position = P * V * worldPosition;
 
-  FragPos = vec3(worldPosition);
-  Normal = normalize(mat3(transpose(inverse(transformationMatrix))) * normal);
-  ToCameraVector = (inverse(viewMatrix) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;
-  LightSpaceFragPos = lightSpaceMatrix * worldPosition;
+  pass_normal = in_normal;
 }

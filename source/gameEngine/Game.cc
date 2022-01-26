@@ -73,7 +73,7 @@ void Game::run()
         GAME::AIRPLANE_DISTANCE += GAME::SPEED;
 
         MouseManager::update();
-        Camera::primary().update();
+        // Camera::primary().update();
         Light::theOne().update();
         DisplayManager::prepareDisplay();
 

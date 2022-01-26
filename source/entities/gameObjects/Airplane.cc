@@ -94,7 +94,7 @@ Airplane::Airplane()
 
     for(int i = 0; i < components.size(); ++i)
     {
-        Entity::addEntity(components[i]);
+        // Entity::addEntity(components[i]);
     }
 
     suspension.changeRotation(glm::vec3(0.0f, 0.0f, 1.0f), -0.3f);
@@ -190,7 +190,7 @@ void Airplane::update()
     // blade2.changeRotation(glm::vec3(axisX), glm::radians(10.0f));
     // propeller.changeRotation(glm::vec3(axisX), glm::radians(10.0f));
     // move camera
-    Camera::primary().chasePoint(position);
+    // Camera::primary().chasePoint(position);
 }
 
 void Airplane::knockBack(glm::vec3 otherPosition)

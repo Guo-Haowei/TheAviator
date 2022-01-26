@@ -9,6 +9,8 @@
 #include <entities/gameObjects/ParticleHolder.h>
 #include <iostream>
 
+#include <glm/gtc/matrix_transform.hpp>
+
 using std::cout;
 using std::vector;
 
@@ -28,14 +30,11 @@ void EntityShader::bindAttributes()
 void EntityShader::getAllUniformLocations()
 {
     ShaderProgram::getAllUniformLocations();
-    location_projectionMatrix = getUniformLocation("projectionMatrix");
-    location_viewMatrix = getUniformLocation("viewMatrix");
+    location_M = getUniformLocation("M");
+    location_V = getUniformLocation("V");
+    location_P = getUniformLocation("P");
     location_color = getUniformLocation("color");
     location_light = getUniformLocation("lightPos");
-    location_shadowMap = getUniformLocation("shadowMap");
-    location_opacity = getUniformLocation("opacity");
-    location_receiveShadow = getUniformLocation("receiveShadow");
-    location_prevPVM = getUniformLocation("prevPVM");
 }
 
 void EntityShader::render()
@@ -45,13 +44,17 @@ void EntityShader::render()
     glEnable(GL_BLEND);
     glEnable(GL_CULL_FACE);
     glm::vec3 lightPos(Light::theOne().getPosition());
-    loadInt(location_shadowMap, 0);
-    loadFloat(location_ambientLightIntensity, AMBIENT_LIGHT_INTENSITY);
     loadVector3f(location_light, lightPos);
-    loadMatrix4f(location_lightSpaceMatrix, Camera::primary().getLightSpaceMatrix());
-    loadMatrix4f(location_viewMatrix, Camera::primary().getViewMatrix());
-    loadMatrix4f(location_projectionMatrix, Camera::primary().getProjectionMatrix());
-    glm::mat4 PV = Camera::primary().getPVMatrix();
+
+    // constexpr glm::vec3 eye(0, 200, 100);
+    constexpr glm::vec3 eye(0, 0, 100);
+    const glm::mat4 V = glm::lookAt(eye, eye + glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
+    const float fovy = glm::radians(60.0f);
+    const float aspect = (float)WIDTH / HEIGHT;
+    const glm::mat4 P = glm::perspective(fovy, aspect, 1.0f, 10000.0f);
+
+    loadMatrix4f(location_V, V);
+    loadMatrix4f(location_P, P);
 
     for(auto& entry : staticEntities)
     {
@@ -61,76 +64,52 @@ void EntityShader::render()
         {
             Entity* entity = entities.at(i);
             RawModel* model = entity->getModel();
-            loadBool(location_receiveShadow, entity->getReceiveShadow());
-            loadFloat(location_opacity, entity->getOpacity());
             loadVector3f(location_color, entity->getColor());
-            loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
-            loadMatrix4f(location_prevPVM, PV * entity->getPrevTransformationMatrix());
+
+            const auto M = entity->getTransformationMatrix();
+
+            // printf("%f %f %f %f\n", M[0].x, M[1].x, M[2].x, M[3].x);
+            // printf("%f %f %f %f\n", M[0].y, M[1].y, M[2].y, M[3].y);
+            // printf("%f %f %f %f\n", M[0].z, M[1].z, M[2].z, M[3].z);
+            // printf("%f %f %f %f\n", M[0].w, M[1].w, M[2].w, M[3].w);
+
+            loadMatrix4f(location_M, entity->getTransformationMatrix());
 
             glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
         }
         RawModel::unbind();
     }
-    for(auto& entry : dynamicEntities)
-    {
-        vector<DynamicEntity*>& entities = entry.second;
-        entry.first->bind();
-        for(int i = 0; i < entities.size(); ++i)
-        {
-            DynamicEntity* entity = entities.at(i);
-            RawModel* model = entity->getModel();
-            loadBool(location_receiveShadow, entity->getReceiveShadow());
-            loadFloat(location_opacity, entity->getOpacity());
-            loadVector3f(location_color, entity->getColor());
-            loadMatrix4f(location_transformationMatrix, entity->getTransformationMatrix());
-            loadMatrix4f(location_prevPVM, PV * entity->getPrevTransformationMatrix());
+    // for(auto& entry : dynamicEntities)
+    // {
+    //     vector<DynamicEntity*>& entities = entry.second;
+    //     entry.first->bind();
+    //     for(int i = 0; i < entities.size(); ++i)
+    //     {
+    //         DynamicEntity* entity = entities.at(i);
+    //         RawModel* model = entity->getModel();
+    //         loadVector3f(location_color, entity->getColor());
+    //         loadMatrix4f(location_M, entity->getTransformationMatrix());
 
-            glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
-        }
-        RawModel::unbind();
-    }
+    //         glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
+    //     }
+    //     RawModel::unbind();
+    // }
 
-    vector<DynamicEntity*>& particles = ParticleHolder::getParticles();
-    if(particles.size())
-        particles[0]->getModel()->bind();
-    for(int i = 0; i < particles.size(); ++i)
-    {
-        DynamicEntity* particle = particles.at(i);
-        RawModel* model = particle->getModel();
-        loadBool(location_receiveShadow, particle->getReceiveShadow());
-        loadFloat(location_opacity, particle->getOpacity());
-        loadVector3f(location_color, particle->getColor());
-        loadMatrix4f(location_transformationMatrix, particle->getTransformationMatrix());
-        loadMatrix4f(location_prevPVM, PV * particle->getPrevTransformationMatrix());
+    // vector<DynamicEntity*>& particles = ParticleHolder::getParticles();
+    // if(particles.size())
+    //     particles[0]->getModel()->bind();
+    // for(int i = 0; i < particles.size(); ++i)
+    // {
+    //     DynamicEntity* particle = particles.at(i);
+    //     RawModel* model = particle->getModel();
+    //     loadBool(location_receiveShadow, particle->getReceiveShadow());
+    //     loadFloat(location_opacity, particle->getOpacity());
+    //     loadVector3f(location_color, particle->getColor());
+    //     loadMatrix4f(location_transformationMatrix, particle->getTransformationMatrix());
+    //     loadMatrix4f(location_prevPVM, PV * particle->getPrevTransformationMatrix());
 
-        glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
-    }
+    //     glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
+    // }
     RawModel::unbind();
     stop();
-}
-
-void EntityShader::updateEntityVelocity()
-{
-    for(auto& entry : staticEntities)
-    {
-        vector<Entity*>& entities = entry.second;
-        for(int i = 0; i < entities.size(); ++i)
-        {
-            entities.at(i)->updatePrevTransformation();
-        }
-    }
-    for(auto& entry : dynamicEntities)
-    {
-        vector<DynamicEntity*>& entities = entry.second;
-        for(int i = 0; i < entities.size(); ++i)
-        {
-            entities.at(i)->updatePrevTransformation();
-        }
-    }
-
-    vector<DynamicEntity*>& particles = ParticleHolder::getParticles();
-    for(int i = 0; i < particles.size(); ++i)
-    {
-        particles.at(i)->updatePrevTransformation();
-    }
 }

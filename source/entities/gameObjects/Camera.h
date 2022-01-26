@@ -1,6 +1,7 @@
 // Camera.h
-#pragma once
-#include <glm/glm.hpp>
+#if 0
+#    pragma once
+#    include <glm/glm.hpp>
 
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
@@ -34,3 +35,4 @@ public:
 
     static Camera& primary();
 };
+#endif

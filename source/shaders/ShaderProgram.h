@@ -13,10 +13,6 @@ protected:
     unsigned int fragmentShaderID;
     unsigned int geometryShaderID;
 
-    int location_transformationMatrix;
-    int location_lightSpaceMatrix;
-    int location_ambientLightIntensity;
-
     virtual void getAllUniformLocations();
     virtual void bindAttributes() = 0;
     void bindAttribute(unsigned int attribute, const char* variable);

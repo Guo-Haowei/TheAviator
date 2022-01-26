@@ -60,12 +60,9 @@ void Renderer::render()
     glViewport(0, 0, ACTUAL_WIDTH, ACTUAL_HEIGHT);
     // render the actual scene to image
     // glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-    glActiveTexture(GL_TEXTURE0);
     // glBindTexture(GL_TEXTURE_2D, ShadowShader::getDepthMap().getID());
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    backgroundShader.render();
     entityShader.render();
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-    entityShader.updateEntityVelocity();
 }

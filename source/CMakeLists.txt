@@ -39,6 +39,11 @@ file(GLOB_RECURSE SOURCE ./*.cc)
 
 add_executable(TheAviator
     ${SOURCE}
+    script_manager.cpp
+)
+
+target_compile_definitions(TheAviator PRIVATE
+    -D_CRT_SECURE_NO_WARNINGS
 )
 
 target_link_libraries(TheAviator glad glfw lua)

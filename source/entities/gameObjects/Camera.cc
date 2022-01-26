@@ -1,11 +1,12 @@
 // Camera.cc
-#include "Camera.h"
-#include "Light.h"
-#include <common.h>
-#include <glm/gtc/matrix_transform.hpp>
-#include <io/MouseManager.h>
-#include <iostream>
-#include <maths/Maths.h>
+#if 0
+#    include "Camera.h"
+#    include "Light.h"
+#    include <common.h>
+#    include <glm/gtc/matrix_transform.hpp>
+#    include <io/MouseManager.h>
+#    include <iostream>
+#    include <maths/Maths.h>
 
 using std::cout;
 
@@ -102,3 +103,4 @@ Camera& Camera::primary()
     static Camera primary;
     return primary;
 }
+#endif

@@ -40,12 +40,7 @@ void ShaderProgram::init(const char* vertexFileName,
     getAllUniformLocations();
 }
 
-void ShaderProgram::getAllUniformLocations()
-{
-    location_transformationMatrix = getUniformLocation("transformationMatrix");
-    location_lightSpaceMatrix = getUniformLocation("lightSpaceMatrix");
-    location_ambientLightIntensity = getUniformLocation("ambientLightIntensity");
-}
+void ShaderProgram::getAllUniformLocations() { }
 
 void ShaderProgram::start()
 {
