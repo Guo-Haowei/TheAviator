@@ -1,8 +1,17 @@
 require 'linalg';
 
 SEA = {
-    RADIUS = 240,
-}
+    RADIUS = 200,
+};
+
+COLOR = {
+	RED = 0xf25346,
+	WHITE = 0xd8d0d1,
+	BROWN = 0x59332e,
+	PINK = 0xF5986E,
+	BROWNDARK = 0x23190f,
+	BLUE = 0x68c3c0,
+};
 
 Geometry = {};
 Geometry.__index = Geometry;
@@ -23,76 +32,71 @@ function Geometry:makeCube()
    return cube;
 end
 
-function Geometry:scale(x, y, z)
-    local t = mat4:scale(x, y, z);
+function Geometry:applyMat(mat)
     for n = 1, #self.points do
-        self.points[n] = t * self.points[n];
+        self.points[n] = mat * self.points[n];
     end
+end
+
+function Geometry:scale(x, y, z)
+    self:applyMat(mat4:scale(x, y, z));
 end
 
 function Geometry:translate(x, y, z)
-    local t = mat4:translate(x, y, z);
-    for n = 1, #self.points do
-        self.points[n] = t * self.points[n];
-    end
+    self:applyMat(mat4:translate(x, y, z));
+end
+
+function Geometry:rotateX(rad)
+    self:applyMat(mat4:rotateX(rad));
+end
+
+function Geometry:rotateY(rad)
+    self:applyMat(mat4:rotateY(rad));
+end
+
+function Geometry:rotateZ(rad)
+    self:applyMat(mat4:rotateZ(rad));
 end
 
 local function createCloud(angle)
-    local height = math.random(60, 140) + SEA.RADIUS;
-    local numBlocks = 3 + math.random(0, 3);
+    local numPieces = 3 + 3 * math.random();
+    local offset = 0;
+    local scaleFactor = 0.3;
 
-    for i = 1, numBlocks do
-        local geometry = {};
-        geometry.shape = 'cube';
+    for i = 1, numPieces do
+        local cube = Geometry.makeCube();
+        local scale = 20 * (scaleFactor + (1 - scaleFactor) * math.random());
+
+        -- local
+        cube:scale(scale, scale, scale);
+        cube:rotateY(0.5 * math.pi * math.random());
+        cube:rotateZ(0.5 * math.pi * math.random());
+        cube:translate((i - 1) * 10, 3 * math.random(), 3 * math.random());
+
+        -- global
+        local height = SEA.RADIUS * (1.4 + 0.3 * math.random());
+        cube:translate(0, height, -1.3 * height);
+        cube:rotateZ(angle);
+        
+        local points = {};
+        for n = 1, #cube.points do
+            -- print(cube.points[n]);
+            local len = #points;
+            points[len + 1] = cube.points[n].x;
+            points[len + 2] = cube.points[n].y;
+            points[len + 3] = cube.points[n].z;
+        end
+        Model.AddCubeMesh("sky", COLOR.WHITE, points);
+
+        offset = offset + 0.8 * scale;
     end
 end
 
--- void Sky::createCloud(float angle) {
---   float height = Maths::rand(60.0f, 140.0f) + SEA::RADIUS;
---   Cloud* cloud = new Cloud();
---   clouds.push_back(cloud);
-
---   int index = clouds.size();
---   int nBlocks = 3 + Maths::rand(0, 3);
---   float cloudScale = Maths::rand(1.5f, 2.5f);
---   for (int i = 0; i < nBlocks; ++i) {
---     glm::vec3 position((float)i * 5.0f * cloudScale, Maths::rand(0.0f, 4.0f), Maths::rand(0.0f, 4.0f));
---     float scale = 8.0f * Maths::rand(0.5f, 0.9f) * cloudScale;
---     Entity* entity = new Entity(Geometry::cube, position, cloudColor, glm::vec3(scale), 1.0f, false, false);
---     entity->changeRotation(0.0f, Maths::rand(0.0f, 2 * PI), Maths::rand(0.0f, 2.0f * PI));
-
---     cloud->add(entity);
---     Entity::addEntity(entity);
---   }
-
---   glm::vec3 cloudPos(glm::cos(angle) * height, glm::sin(angle) * height - SEA::RADIUS, Maths::rand(-320.0f, -120.0f));
---   cloud->translate(cloudPos.x, cloudPos.y, cloudPos.z);
---   cloud->rotate(0.0f, 0.0f, angle + PI / 2.0f, cloudPos);
--- }
-
 local function createSky(numClouds)
-    local height = math.random(60, 140) + SEA.RADIUS;
-    local cube = Geometry:makeCube();
-    local s = math.random(6, 10);
-    cube:scale(s, s, s);
-    -- cube:translate(0, height, -200);
-
-    local points = {};
-
-    for n = 1, #cube.points do
-        print(cube.points[n]);
-        local len = #points;
-        points[len + 1] = cube.points[n].x;
-        points[len + 2] = cube.points[n].y;
-        points[len + 3] = cube.points[n].z;
+    local stepAngle = 2.0 * math.pi / numClouds;
+    for i = 1, numClouds do
+        createCloud(stepAngle * i);
     end
-
-    Model.AddCubeMesh("clouds", points);
-    -- local stepAngle = 2.0 * math.pi / numClouds;
-    -- for i = 0, numClouds - 1 do
-    --     CreateCloud(stepAngle * i);
-    --     break;
-    -- end
 end
 
 createSky(20);

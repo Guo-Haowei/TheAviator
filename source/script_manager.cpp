@@ -104,18 +104,29 @@ static RawModel* createCube(const std::vector<float>& points)
 // usage: Model.Add(name, color, points)
 static int Lua_ModelAddCubeMesh(lua_State* L)
 {
-    if(!lua_isstring(L, -2))
+    if(!lua_isstring(L, -3))
     {
-        printf("expected string, got %s", lua_typename(L, lua_type(L, -2)));
+        printf("expected string, got %s\n", lua_typename(L, lua_type(L, -3)));
         return false;
     }
 
-    const char* name = luaL_checkstring(L, -2);
-    printf("name is %s\n", name);
+    const char* name = luaL_checkstring(L, -3);
+
+    if(!lua_isinteger(L, -2))
+    {
+        printf("expected string, got %s\n", lua_typename(L, lua_type(L, -2)));
+        return false;
+    }
+
+    const lua_Integer rgb = luaL_checkinteger(L, -2);
+    const int r = (0xFF0000 & rgb) >> 16;
+    const int g = (0x00FF00 & rgb) >> 8;
+    const int b = (0x0000FF & rgb) >> 0;
+    const glm::vec3 color(r / 255.f, g / 255.f, b / 255.f);
 
     if(!lua_istable(L, -1))
     {
-        printf("expected table, got %s", lua_typename(L, lua_type(L, -1)));
+        printf("expected table, got %s\n", lua_typename(L, lua_type(L, -1)));
         return false;
     }
 
@@ -144,8 +155,7 @@ static int Lua_ModelAddCubeMesh(lua_State* L)
 
     RawModel* model = createCube(points);
 
-    Entity* entity =
-        new Entity(model, glm::vec3(0), glm::vec3(1), glm::vec3(1), 1.0f, false, false);
+    Entity* entity = new Entity(model, glm::vec3(0), color, glm::vec3(1), 1.0f, false, false);
     Entity::addEntity(entity);
 
     return 0;

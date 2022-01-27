@@ -9,7 +9,6 @@
 #include <entities/gameObjects/Light.h>
 #include <entities/gameObjects/ObstacleHolder.h>
 #include <entities/gameObjects/ParticleHolder.h>
-#include <entities/gameObjects/Sky.h>
 #include <glm/glm.hpp>
 #include <io/MouseManager.h>
 #include <io/Parser.h>
@@ -86,7 +85,7 @@ void Game::run()
         renderer.render();
 
         ObstacleHolder::theOne().update();
-        Sky::theOne().update();
+        // Sky::theOne().update();
         Airplane::theOne().update();
         DisplayManager::updateDisplay();
 

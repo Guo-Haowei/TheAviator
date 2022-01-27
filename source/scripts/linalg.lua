@@ -59,6 +59,42 @@ function mat4:translate(x, y, z)
     return m;
 end
 
+function mat4:rotateX(rad)
+    local m = {};
+    setmetatable(m, mat4);
+    local c = math.cos(rad);
+    local s = math.sin(rad);
+    m[1] = vec4:new(1, 0, 0, 0);
+    m[2] = vec4:new(0, c, -s, 0, 0);
+    m[3] = vec4:new(0, s, c, 0);
+    m[4] = vec4:new(0, 0, 0, 1);
+    return m;
+end
+
+function mat4:rotateY(rad)
+    local m = {};
+    setmetatable(m, mat4);
+    local c = math.cos(rad);
+    local s = math.sin(rad);
+    m[1] = vec4:new(c, 0, s, 0);
+    m[2] = vec4:new(0, 1, 0, 0);
+    m[3] = vec4:new(-s, 0, c, 0);
+    m[4] = vec4:new(0, 0, 0, 1);
+    return m;
+end
+
+function mat4:rotateZ(rad)
+    local m = {};
+    setmetatable(m, mat4);
+    local c = math.cos(rad);
+    local s = math.sin(rad);
+    m[1] = vec4:new(c, -s, 0, 0);
+    m[2] = vec4:new(s, c, 0, 0);
+    m[3] = vec4:new(0, 0, 1, 0);
+    m[4] = vec4:new(0, 0, 0, 1);
+    return m;
+end
+
 function mat4:__tostring()
     return '{' ..
         tostring(self[1]) .. ',' ..
