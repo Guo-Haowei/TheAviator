@@ -44,6 +44,7 @@ add_executable(TheAviator
 
 target_compile_definitions(TheAviator PRIVATE
     -D_CRT_SECURE_NO_WARNINGS
+    -DPROJECT_SOURCE_DIR="${PROJECT_SOURCE_DIR}"
 )
 
 target_link_libraries(TheAviator glad glfw lua)
