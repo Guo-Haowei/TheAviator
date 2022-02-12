@@ -6,10 +6,8 @@ in vec3 ToCameraVector;
 in vec4 LightSpaceFragPos;
 in vec4 ViewSpace;
 smooth in vec4 CurPos;
-smooth in vec4 PrevPos;
 
-layout (location = 0) out vec4 colorTexture;
-layout (location = 1) out vec4 velocityTexture;
+layout(location = 0) out vec4 colorTexture;
 
 uniform vec3 color;
 uniform vec3 lightPos;
@@ -29,10 +27,11 @@ float shadowCalculation(vec4 lightSpaceFragPos) {
   float bias = max(0.002 * (1.0 - dot(Normal, normalize(lightPos))), 0.0005);
   vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
   int sampleSize = 1;
-  for(int x = -sampleSize; x <= sampleSize; ++x) {
-    for(int y = -sampleSize; y <= sampleSize; ++y) {
-        float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
-        shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
+  for (int x = -sampleSize; x <= sampleSize; ++x) {
+    for (int y = -sampleSize; y <= sampleSize; ++y) {
+      float pcfDepth =
+          texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+      shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
     }
   }
   return shadow / ((sampleSize * 2 + 1) * (sampleSize * 2 + 1));
@@ -58,7 +57,8 @@ void main() {
   // specular
   float specularStrength = 0.5;
   vec3 reflectedLightDir = reflect(-lightDir, unitNormal);
-  float specularFactor = pow(max(dot(reflectedLightDir, unitToCameraVector), 0.0), 64);
+  float specularFactor =
+      pow(max(dot(reflectedLightDir, unitToCameraVector), 0.0), 64);
   vec3 specular = specularStrength * specularFactor * lightColor;
 
   // shadow
@@ -72,17 +72,9 @@ void main() {
   float dist = abs(ViewSpace.z);
   float near = 100.0;
   float far = 500.0;
-  float fogFactor = (far - dist)/(far - near);
+  float fogFactor = (far - dist) / (far - near);
   fogFactor = clamp(fogFactor, 0.0, 1.0);
 
   vec3 finalColor = (1.0 - fogFactor) * fogColor + fogFactor * fragColor;
   colorTexture = vec4(finalColor, opacity);
-
-  // velocity
-  vec2 a = (CurPos.xy / CurPos.w) * 0.5 + 0.5;
-  vec2 b = (PrevPos.xy / PrevPos.w) * 0.5 + 0.5;
-  vec2 difference = (a - b);
-  difference.x = pow(difference.x, 3.0);
-  difference.y = pow(difference.y, 3.0);
-  velocityTexture = vec4(difference, 0.0, 1.0);
 }

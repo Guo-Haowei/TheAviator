@@ -2,7 +2,7 @@
 #pragma once
 #include "ShaderProgram.h"
 
-class EntityShader: public ShaderProgram {
+class EntityShader : public ShaderProgram {
 protected:
   int location_projectionMatrix;
   int location_viewMatrix;
@@ -14,9 +14,9 @@ protected:
   int location_prevPVM;
   void bindAttributes();
   void getAllUniformLocations();
+
 public:
   EntityShader();
 
   void render();
-  void updateEntityVelocity();
 };
