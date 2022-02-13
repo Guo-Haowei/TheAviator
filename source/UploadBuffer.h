@@ -18,7 +18,9 @@ class UploadBuffer {
         // UINT   SizeInBytes;   // multiple of 256
         // } D3D12_CONSTANT_BUFFER_VIEW_DESC;
         if ( isConstantBuffer )
+        {
             mElementByteSize = d3dUtil::CalcConstantBufferByteSize( sizeof( T ) );
+        }
 
         DX_CALL( device->CreateCommittedResource(
             &CD3DX12_HEAP_PROPERTIES( D3D12_HEAP_TYPE_UPLOAD ),

@@ -31,7 +31,7 @@ D3DApp::D3DApp( HINSTANCE hInstance )
 
 D3DApp::~D3DApp()
 {
-    if ( md3dDevice != nullptr )
+    if ( mDevice != nullptr )
         FlushCommandQueue();
 }
 
@@ -91,7 +91,7 @@ void D3DApp::CreateRtvAndDsvDescriptorHeaps()
     rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
     rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
     rtvHeapDesc.NodeMask = 0;
-    DX_CALL( md3dDevice->CreateDescriptorHeap(
+    DX_CALL( mDevice->CreateDescriptorHeap(
         &rtvHeapDesc, IID_PPV_ARGS( mRtvHeap.GetAddressOf() ) ) );
 
     D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc;
@@ -99,13 +99,13 @@ void D3DApp::CreateRtvAndDsvDescriptorHeaps()
     dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
     dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
     dsvHeapDesc.NodeMask = 0;
-    DX_CALL( md3dDevice->CreateDescriptorHeap(
+    DX_CALL( mDevice->CreateDescriptorHeap(
         &dsvHeapDesc, IID_PPV_ARGS( mDsvHeap.GetAddressOf() ) ) );
 }
 
 void D3DApp::OnResize()
 {
-    assert( md3dDevice );
+    assert( mDevice );
     assert( mSwapChain );
     assert( mDirectCmdListAlloc );
 
@@ -132,7 +132,7 @@ void D3DApp::OnResize()
     for ( UINT i = 0; i < SwapChainBufferCount; i++ )
     {
         DX_CALL( mSwapChain->GetBuffer( i, IID_PPV_ARGS( &mSwapChainBuffer[i] ) ) );
-        md3dDevice->CreateRenderTargetView( mSwapChainBuffer[i].Get(), nullptr, rtvHeapHandle );
+        mDevice->CreateRenderTargetView( mSwapChainBuffer[i].Get(), nullptr, rtvHeapHandle );
         rtvHeapHandle.Offset( 1, mRtvDescriptorSize );
     }
 
@@ -161,7 +161,7 @@ void D3DApp::OnResize()
     optClear.Format = mDepthStencilFormat;
     optClear.DepthStencil.Depth = 1.0f;
     optClear.DepthStencil.Stencil = 0;
-    DX_CALL( md3dDevice->CreateCommittedResource(
+    DX_CALL( mDevice->CreateCommittedResource(
         &CD3DX12_HEAP_PROPERTIES( D3D12_HEAP_TYPE_DEFAULT ),
         D3D12_HEAP_FLAG_NONE,
         &depthStencilDesc,
@@ -175,7 +175,7 @@ void D3DApp::OnResize()
     dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
     dsvDesc.Format = mDepthStencilFormat;
     dsvDesc.Texture2D.MipSlice = 0;
-    md3dDevice->CreateDepthStencilView( mDepthStencilBuffer.Get(), &dsvDesc, DepthStencilView() );
+    mDevice->CreateDepthStencilView( mDepthStencilBuffer.Get(), &dsvDesc, DepthStencilView() );
 
     // Transition the resource from its initial state to be used as a depth buffer.
     mCommandList->ResourceBarrier( 1, &CD3DX12_RESOURCE_BARRIER::Transition( mDepthStencilBuffer.Get(),
@@ -223,7 +223,7 @@ LRESULT D3DApp::MsgProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam )
             // Save the new client area dimensions.
             mClientWidth = LOWORD( lParam );
             mClientHeight = HIWORD( lParam );
-            if ( md3dDevice )
+            if ( mDevice )
             {
                 if ( wParam == SIZE_MINIMIZED )
                 {
@@ -387,7 +387,7 @@ bool D3DApp::InitDirect3D()
     HRESULT hardwareResult = D3D12CreateDevice(
         nullptr,  // default adapter
         D3D_FEATURE_LEVEL_11_0,
-        IID_PPV_ARGS( &md3dDevice ) );
+        IID_PPV_ARGS( &mDevice ) );
 
     // Fallback to WARP device.
     if ( FAILED( hardwareResult ) )
@@ -398,15 +398,15 @@ bool D3DApp::InitDirect3D()
         DX_CALL( D3D12CreateDevice(
             pWarpAdapter.Get(),
             D3D_FEATURE_LEVEL_11_0,
-            IID_PPV_ARGS( &md3dDevice ) ) );
+            IID_PPV_ARGS( &mDevice ) ) );
     }
 
-    DX_CALL( md3dDevice->CreateFence( 0, D3D12_FENCE_FLAG_NONE,
-                                      IID_PPV_ARGS( &mFence ) ) );
+    DX_CALL( mDevice->CreateFence( 0, D3D12_FENCE_FLAG_NONE,
+                                   IID_PPV_ARGS( &mFence ) ) );
 
-    mRtvDescriptorSize = md3dDevice->GetDescriptorHandleIncrementSize( D3D12_DESCRIPTOR_HEAP_TYPE_RTV );
-    mDsvDescriptorSize = md3dDevice->GetDescriptorHandleIncrementSize( D3D12_DESCRIPTOR_HEAP_TYPE_DSV );
-    mCbvSrvUavDescriptorSize = md3dDevice->GetDescriptorHandleIncrementSize( D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV );
+    mRtvDescriptorSize = mDevice->GetDescriptorHandleIncrementSize( D3D12_DESCRIPTOR_HEAP_TYPE_RTV );
+    mDsvDescriptorSize = mDevice->GetDescriptorHandleIncrementSize( D3D12_DESCRIPTOR_HEAP_TYPE_DSV );
+    mCbvSrvUavDescriptorSize = mDevice->GetDescriptorHandleIncrementSize( D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV );
 
     // Check 4X MSAA quality support for our back buffer format.
     // All Direct3D 11 capable devices support 4X MSAA for all render
@@ -428,13 +428,13 @@ void D3DApp::CreateCommandObjects()
     D3D12_COMMAND_QUEUE_DESC queueDesc = {};
     queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
     queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
-    DX_CALL( md3dDevice->CreateCommandQueue( &queueDesc, IID_PPV_ARGS( &mCommandQueue ) ) );
+    DX_CALL( mDevice->CreateCommandQueue( &queueDesc, IID_PPV_ARGS( &mCommandQueue ) ) );
 
-    DX_CALL( md3dDevice->CreateCommandAllocator(
+    DX_CALL( mDevice->CreateCommandAllocator(
         D3D12_COMMAND_LIST_TYPE_DIRECT,
         IID_PPV_ARGS( mDirectCmdListAlloc.GetAddressOf() ) ) );
 
-    DX_CALL( md3dDevice->CreateCommandList(
+    DX_CALL( mDevice->CreateCommandList(
         0,
         D3D12_COMMAND_LIST_TYPE_DIRECT,
         mDirectCmdListAlloc.Get(),  // Associated command allocator

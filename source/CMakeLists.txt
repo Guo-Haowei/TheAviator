@@ -5,6 +5,7 @@ add_executable(TheAviator
     d3dApp.cpp
     d3dUtil.cpp
     ExampleMain.cpp
+    FrameResource.cpp
 )
 
 target_link_libraries(TheAviator PRIVATE
