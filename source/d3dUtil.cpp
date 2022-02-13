@@ -3,12 +3,19 @@
 #include <comdef.h>
 #include <fstream>
 
-using Microsoft::WRL::ComPtr;
+#include "base/Log.h"
 
-DxException::DxException( HRESULT hr, const std::wstring& functionName, const std::wstring& filename, int lineNumber )
-    : ErrorCode( hr ), FunctionName( functionName ), Filename( filename ), LineNumber( lineNumber )
+namespace internal {
+void CheckWin32Result( HRESULT hr, const char* expr, const char* file, int line )
 {
+    if ( hr != S_OK )
+    {
+        Log( LogLevel::Fatal, "DX_CALL( %s ) error(0x%08X) %s(%d,1)", expr, hr, file, line );
+    }
 }
+}  // namespace internal
+
+using Microsoft::WRL::ComPtr;
 
 bool d3dUtil::IsKeyDown( int vkeyCode )
 {
@@ -24,7 +31,7 @@ ComPtr<ID3DBlob> d3dUtil::LoadBinary( const std::wstring& filename )
     fin.seekg( 0, std::ios_base::beg );
 
     ComPtr<ID3DBlob> blob;
-    ThrowIfFailed( D3DCreateBlob( size, blob.GetAddressOf() ) );
+    DX_CALL( D3DCreateBlob( size, blob.GetAddressOf() ) );
 
     fin.read( (char*)blob->GetBufferPointer(), size );
     fin.close();
@@ -42,7 +49,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> d3dUtil::CreateDefaultBuffer(
     ComPtr<ID3D12Resource> defaultBuffer;
 
     // Create the actual default buffer resource.
-    ThrowIfFailed( device->CreateCommittedResource(
+    DX_CALL( device->CreateCommittedResource(
         &CD3DX12_HEAP_PROPERTIES( D3D12_HEAP_TYPE_DEFAULT ),
         D3D12_HEAP_FLAG_NONE,
         &CD3DX12_RESOURCE_DESC::Buffer( byteSize ),
@@ -52,7 +59,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> d3dUtil::CreateDefaultBuffer(
 
     // In order to copy CPU memory data into our default buffer, we need to create
     // an intermediate upload heap.
-    ThrowIfFailed( device->CreateCommittedResource(
+    DX_CALL( device->CreateCommittedResource(
         &CD3DX12_HEAP_PROPERTIES( D3D12_HEAP_TYPE_UPLOAD ),
         D3D12_HEAP_FLAG_NONE,
         &CD3DX12_RESOURCE_DESC::Buffer( byteSize ),
@@ -103,16 +110,7 @@ ComPtr<ID3DBlob> d3dUtil::CompileShader(
     if ( errors != nullptr )
         OutputDebugStringA( (char*)errors->GetBufferPointer() );
 
-    ThrowIfFailed( hr );
+    DX_CALL( hr );
 
     return byteCode;
-}
-
-std::wstring DxException::ToString() const
-{
-    // Get the string description of the error code.
-    _com_error err( ErrorCode );
-    std::wstring msg = err.ErrorMessage();
-
-    return FunctionName + L" failed in " + Filename + L"; line " + std::to_wstring( LineNumber ) + L"; error: " + msg;
 }

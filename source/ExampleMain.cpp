@@ -9,20 +9,25 @@
 //***************************************************************************************
 
 #include "d3dApp.h"
-#include "MathHelper.h"
 #include "UploadBuffer.h"
 
+#include "glm/glm.hpp"
+#include "glm/gtc/constants.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
+using glm::mat4;
+using glm::vec3;
+using glm::vec4;
+
 using Microsoft::WRL::ComPtr;
-using namespace DirectX;
-using namespace DirectX::PackedVector;
 
 struct Vertex {
-    XMFLOAT3 Pos;
-    XMFLOAT4 Color;
+    vec3 Pos;
+    vec4 Color;
 };
 
 struct ObjectConstants {
-    XMFLOAT4X4 WorldViewProj = MathHelper::Identity4x4();
+    mat4 WorldViewProj{ 1.0f };
 };
 
 class BoxApp : public D3DApp {
@@ -65,13 +70,9 @@ class BoxApp : public D3DApp {
 
     ComPtr<ID3D12PipelineState> mPSO = nullptr;
 
-    XMFLOAT4X4 mWorld = MathHelper::Identity4x4();
-    XMFLOAT4X4 mView = MathHelper::Identity4x4();
-    XMFLOAT4X4 mProj = MathHelper::Identity4x4();
-
-    float mTheta = 1.5f * XM_PI;
-    float mPhi = XM_PIDIV4;
-    float mRadius = 5.0f;
+    mat4 mWorld{ 1.0f };
+    mat4 mView{ 1.0f };
+    mat4 mProj{ 1.0f };
 
     POINT mLastMousePos;
 };
@@ -83,19 +84,11 @@ int main()
     _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
 
-    try
-    {
-        BoxApp theApp( GetModuleHandle( NULL ) );
-        if ( !theApp.Initialize() )
-            return 0;
-
-        return theApp.Run();
-    }
-    catch ( DxException& e )
-    {
-        MessageBox( nullptr, e.ToString().c_str(), L"HR Failed", MB_OK );
+    BoxApp theApp( GetModuleHandle( NULL ) );
+    if ( !theApp.Initialize() )
         return 0;
-    }
+
+    return theApp.Run();
 }
 
 BoxApp::BoxApp( HINSTANCE hInstance )
@@ -113,7 +106,7 @@ bool BoxApp::Initialize()
         return false;
 
     // Reset the command list to prep for initialization commands.
-    ThrowIfFailed( mCommandList->Reset( mDirectCmdListAlloc.Get(), nullptr ) );
+    DX_CALL( mCommandList->Reset( mDirectCmdListAlloc.Get(), nullptr ) );
 
     BuildDescriptorHeaps();
     BuildConstantBuffers();
@@ -123,7 +116,7 @@ bool BoxApp::Initialize()
     BuildPSO();
 
     // Execute the initialization commands.
-    ThrowIfFailed( mCommandList->Close() );
+    DX_CALL( mCommandList->Close() );
     ID3D12CommandList* cmdsLists[] = { mCommandList.Get() };
     mCommandQueue->ExecuteCommandLists( _countof( cmdsLists ), cmdsLists );
 
@@ -137,33 +130,22 @@ void BoxApp::OnResize()
 {
     D3DApp::OnResize();
 
-    // The window resized, so update the aspect ratio and recompute the projection matrix.
-    XMMATRIX P = XMMatrixPerspectiveFovLH( 0.25f * MathHelper::Pi, AspectRatio(), 1.0f, 1000.0f );
-    XMStoreFloat4x4( &mProj, P );
+    float fov = 0.25f * glm::pi<float>();
+    mProj = mat4( { 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 0.5, 0 }, { 0, 0, 0, 1 } ) *
+            mat4( { 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 1, 0 }, { 0, 0, 1, 1 } ) *
+            glm::perspectiveRH_NO( fov, AspectRatio(), 1.0f, 1000.0f );
 }
 
 void BoxApp::Update()
 {
-    // Convert Spherical to Cartesian coordinates.
-    float x = mRadius * sinf( mPhi ) * cosf( mTheta );
-    float z = mRadius * sinf( mPhi ) * sinf( mTheta );
-    float y = mRadius * cosf( mPhi );
+    float dist = 5.0f;
+    mView = glm::lookAtRH( vec3( 0.0f, dist, dist ), vec3( 0.0f ), vec3( 0.0f, 1.0f, 0.0f ) );
 
-    // Build the view matrix.
-    XMVECTOR pos = XMVectorSet( x, y, z, 1.0f );
-    XMVECTOR target = XMVectorZero();
-    XMVECTOR up = XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
-
-    XMMATRIX view = XMMatrixLookAtLH( pos, target, up );
-    XMStoreFloat4x4( &mView, view );
-
-    XMMATRIX world = XMLoadFloat4x4( &mWorld );
-    XMMATRIX proj = XMLoadFloat4x4( &mProj );
-    XMMATRIX worldViewProj = world * view * proj;
+    mat4 worldViewProj = mProj * mView * mWorld;
 
     // Update the constant buffer with the latest worldViewProj matrix.
     ObjectConstants objConstants;
-    XMStoreFloat4x4( &objConstants.WorldViewProj, XMMatrixTranspose( worldViewProj ) );
+    objConstants.WorldViewProj = worldViewProj;
     mObjectCB->CopyData( 0, objConstants );
 }
 
@@ -171,11 +153,11 @@ void BoxApp::Draw()
 {
     // Reuse the memory associated with command recording.
     // We can only reset when the associated command lists have finished execution on the GPU.
-    ThrowIfFailed( mDirectCmdListAlloc->Reset() );
+    DX_CALL( mDirectCmdListAlloc->Reset() );
 
     // A command list can be reset after it has been added to the command queue via ExecuteCommandList.
     // Reusing the command list reuses memory.
-    ThrowIfFailed( mCommandList->Reset( mDirectCmdListAlloc.Get(), mPSO.Get() ) );
+    DX_CALL( mCommandList->Reset( mDirectCmdListAlloc.Get(), mPSO.Get() ) );
 
     mCommandList->RSSetViewports( 1, &mScreenViewport );
     mCommandList->RSSetScissorRects( 1, &mScissorRect );
@@ -184,7 +166,8 @@ void BoxApp::Draw()
     mCommandList->ResourceBarrier( 1, &CD3DX12_RESOURCE_BARRIER::Transition( CurrentBackBuffer(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET ) );
 
     // Clear the back buffer and depth buffer.
-    mCommandList->ClearRenderTargetView( CurrentBackBufferView(), Colors::LightSteelBlue, 0, nullptr );
+    float clearColor[] = { .3f, .4f, .3f, 1.f };
+    mCommandList->ClearRenderTargetView( CurrentBackBufferView(), clearColor, 0, nullptr );
     mCommandList->ClearDepthStencilView( DepthStencilView(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr );
 
     // Specify the buffers we are going to render to.
@@ -209,14 +192,14 @@ void BoxApp::Draw()
     mCommandList->ResourceBarrier( 1, &CD3DX12_RESOURCE_BARRIER::Transition( CurrentBackBuffer(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT ) );
 
     // Done recording commands.
-    ThrowIfFailed( mCommandList->Close() );
+    DX_CALL( mCommandList->Close() );
 
     // Add the command list to the queue for execution.
     ID3D12CommandList* cmdsLists[] = { mCommandList.Get() };
     mCommandQueue->ExecuteCommandLists( _countof( cmdsLists ), cmdsLists );
 
     // swap the back and front buffers
-    ThrowIfFailed( mSwapChain->Present( 0, 0 ) );
+    DX_CALL( mSwapChain->Present( 0, 0 ) );
     mCurrBackBuffer = ( mCurrBackBuffer + 1 ) % SwapChainBufferCount;
 
     // Wait until frame commands are complete.  This waiting is inefficient and is
@@ -240,6 +223,7 @@ void BoxApp::OnMouseUp( WPARAM btnState, int x, int y )
 
 void BoxApp::OnMouseMove( WPARAM btnState, int x, int y )
 {
+#if 0
     if ( ( btnState & MK_LBUTTON ) != 0 )
     {
         // Make each pixel correspond to a quarter of a degree.
@@ -268,6 +252,7 @@ void BoxApp::OnMouseMove( WPARAM btnState, int x, int y )
 
     mLastMousePos.x = x;
     mLastMousePos.y = y;
+#endif
 }
 
 void BoxApp::BuildDescriptorHeaps()
@@ -277,8 +262,8 @@ void BoxApp::BuildDescriptorHeaps()
     cbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
     cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
     cbvHeapDesc.NodeMask = 0;
-    ThrowIfFailed( md3dDevice->CreateDescriptorHeap( &cbvHeapDesc,
-                                                     IID_PPV_ARGS( &mCbvHeap ) ) );
+    DX_CALL( md3dDevice->CreateDescriptorHeap( &cbvHeapDesc,
+                                               IID_PPV_ARGS( &mCbvHeap ) ) );
 }
 
 void BoxApp::BuildConstantBuffers()
@@ -331,9 +316,9 @@ void BoxApp::BuildRootSignature()
     {
         ::OutputDebugStringA( (char*)errorBlob->GetBufferPointer() );
     }
-    ThrowIfFailed( hr );
+    DX_CALL( hr );
 
-    ThrowIfFailed( md3dDevice->CreateRootSignature(
+    DX_CALL( md3dDevice->CreateRootSignature(
         0,
         serializedRootSig->GetBufferPointer(),
         serializedRootSig->GetBufferSize(),
@@ -349,7 +334,7 @@ void BoxApp::BuildShadersAndInputLayout()
     assert( p );
     p[1] = '\0';
     std::string shaderPath( folder );
-    shaderPath.append( "color.hlsl" );
+    shaderPath.append( "shaders/color.hlsl" );
     std::wstring wShaderPath( shaderPath.begin(), shaderPath.end() );
 
     mvsByteCode = d3dUtil::CompileShader( wShaderPath.c_str(), nullptr, "VS", "vs_5_0" );
@@ -364,14 +349,14 @@ void BoxApp::BuildShadersAndInputLayout()
 void BoxApp::BuildBoxGeometry()
 {
     std::array<Vertex, 8> vertices = {
-        Vertex( { XMFLOAT3( -1.0f, -1.0f, -1.0f ), XMFLOAT4( Colors::White ) } ),
-        Vertex( { XMFLOAT3( -1.0f, +1.0f, -1.0f ), XMFLOAT4( Colors::White ) } ),
-        Vertex( { XMFLOAT3( +1.0f, +1.0f, -1.0f ), XMFLOAT4( Colors::White ) } ),
-        Vertex( { XMFLOAT3( +1.0f, -1.0f, -1.0f ), XMFLOAT4( Colors::White ) } ),
-        Vertex( { XMFLOAT3( -1.0f, -1.0f, +1.0f ), XMFLOAT4( Colors::White ) } ),
-        Vertex( { XMFLOAT3( -1.0f, +1.0f, +1.0f ), XMFLOAT4( Colors::White ) } ),
-        Vertex( { XMFLOAT3( +1.0f, +1.0f, +1.0f ), XMFLOAT4( Colors::White ) } ),
-        Vertex( { XMFLOAT3( +1.0f, -1.0f, +1.0f ), XMFLOAT4( Colors::White ) } )
+        Vertex{ vec3{ -1.0f, -1.0f, -1.0f }, vec4( 1.0f ) },
+        Vertex{ vec3{ -1.0f, +1.0f, -1.0f }, vec4( 1.0f ) },
+        Vertex{ vec3{ +1.0f, +1.0f, -1.0f }, vec4( 1.0f ) },
+        Vertex{ vec3{ +1.0f, -1.0f, -1.0f }, vec4( 1.0f ) },
+        Vertex{ vec3{ -1.0f, -1.0f, +1.0f }, vec4( 1.0f ) },
+        Vertex{ vec3{ -1.0f, +1.0f, +1.0f }, vec4( 1.0f ) },
+        Vertex{ vec3{ +1.0f, +1.0f, +1.0f }, vec4( 1.0f ) },
+        Vertex{ vec3{ +1.0f, -1.0f, +1.0f }, vec4( 1.0f ) }
     };
 
     std::array<std::uint16_t, 36> indices = {
@@ -406,10 +391,10 @@ void BoxApp::BuildBoxGeometry()
     mBoxGeo = std::make_unique<MeshGeometry>();
     mBoxGeo->Name = "boxGeo";
 
-    ThrowIfFailed( D3DCreateBlob( vbByteSize, &mBoxGeo->VertexBufferCPU ) );
+    DX_CALL( D3DCreateBlob( vbByteSize, &mBoxGeo->VertexBufferCPU ) );
     CopyMemory( mBoxGeo->VertexBufferCPU->GetBufferPointer(), vertices.data(), vbByteSize );
 
-    ThrowIfFailed( D3DCreateBlob( ibByteSize, &mBoxGeo->IndexBufferCPU ) );
+    DX_CALL( D3DCreateBlob( ibByteSize, &mBoxGeo->IndexBufferCPU ) );
     CopyMemory( mBoxGeo->IndexBufferCPU->GetBufferPointer(), indices.data(), ibByteSize );
 
     mBoxGeo->VertexBufferGPU = d3dUtil::CreateDefaultBuffer( md3dDevice.Get(),
@@ -455,5 +440,5 @@ void BoxApp::BuildPSO()
     psoDesc.SampleDesc.Count = m4xMsaaState ? 4 : 1;
     psoDesc.SampleDesc.Quality = m4xMsaaState ? ( m4xMsaaQuality - 1 ) : 0;
     psoDesc.DSVFormat = mDepthStencilFormat;
-    ThrowIfFailed( md3dDevice->CreateGraphicsPipelineState( &psoDesc, IID_PPV_ARGS( &mPSO ) ) );
+    DX_CALL( md3dDevice->CreateGraphicsPipelineState( &psoDesc, IID_PPV_ARGS( &mPSO ) ) );
 }

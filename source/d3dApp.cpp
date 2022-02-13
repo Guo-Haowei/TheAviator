@@ -7,7 +7,6 @@
 
 using Microsoft::WRL::ComPtr;
 using namespace std;
-using namespace DirectX;
 
 LRESULT CALLBACK
 MainWndProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam )
@@ -120,7 +119,7 @@ void D3DApp::CreateRtvAndDsvDescriptorHeaps()
     rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
     rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
     rtvHeapDesc.NodeMask = 0;
-    ThrowIfFailed( md3dDevice->CreateDescriptorHeap(
+    DX_CALL( md3dDevice->CreateDescriptorHeap(
         &rtvHeapDesc, IID_PPV_ARGS( mRtvHeap.GetAddressOf() ) ) );
 
     D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc;
@@ -128,7 +127,7 @@ void D3DApp::CreateRtvAndDsvDescriptorHeaps()
     dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
     dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
     dsvHeapDesc.NodeMask = 0;
-    ThrowIfFailed( md3dDevice->CreateDescriptorHeap(
+    DX_CALL( md3dDevice->CreateDescriptorHeap(
         &dsvHeapDesc, IID_PPV_ARGS( mDsvHeap.GetAddressOf() ) ) );
 }
 
@@ -141,7 +140,7 @@ void D3DApp::OnResize()
     // Flush before changing any resources.
     FlushCommandQueue();
 
-    ThrowIfFailed( mCommandList->Reset( mDirectCmdListAlloc.Get(), nullptr ) );
+    DX_CALL( mCommandList->Reset( mDirectCmdListAlloc.Get(), nullptr ) );
 
     // Release the previous resources we will be recreating.
     for ( int i = 0; i < SwapChainBufferCount; ++i )
@@ -149,7 +148,7 @@ void D3DApp::OnResize()
     mDepthStencilBuffer.Reset();
 
     // Resize the swap chain.
-    ThrowIfFailed( mSwapChain->ResizeBuffers(
+    DX_CALL( mSwapChain->ResizeBuffers(
         SwapChainBufferCount,
         mClientWidth, mClientHeight,
         mBackBufferFormat,
@@ -160,7 +159,7 @@ void D3DApp::OnResize()
     CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHeapHandle( mRtvHeap->GetCPUDescriptorHandleForHeapStart() );
     for ( UINT i = 0; i < SwapChainBufferCount; i++ )
     {
-        ThrowIfFailed( mSwapChain->GetBuffer( i, IID_PPV_ARGS( &mSwapChainBuffer[i] ) ) );
+        DX_CALL( mSwapChain->GetBuffer( i, IID_PPV_ARGS( &mSwapChainBuffer[i] ) ) );
         md3dDevice->CreateRenderTargetView( mSwapChainBuffer[i].Get(), nullptr, rtvHeapHandle );
         rtvHeapHandle.Offset( 1, mRtvDescriptorSize );
     }
@@ -190,7 +189,7 @@ void D3DApp::OnResize()
     optClear.Format = mDepthStencilFormat;
     optClear.DepthStencil.Depth = 1.0f;
     optClear.DepthStencil.Stencil = 0;
-    ThrowIfFailed( md3dDevice->CreateCommittedResource(
+    DX_CALL( md3dDevice->CreateCommittedResource(
         &CD3DX12_HEAP_PROPERTIES( D3D12_HEAP_TYPE_DEFAULT ),
         D3D12_HEAP_FLAG_NONE,
         &depthStencilDesc,
@@ -211,7 +210,7 @@ void D3DApp::OnResize()
                                                                              D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE ) );
 
     // Execute the resize commands.
-    ThrowIfFailed( mCommandList->Close() );
+    DX_CALL( mCommandList->Close() );
     ID3D12CommandList* cmdsLists[] = { mCommandList.Get() };
     mCommandQueue->ExecuteCommandLists( _countof( cmdsLists ), cmdsLists );
 
@@ -407,12 +406,12 @@ bool D3DApp::InitDirect3D()
     // Enable the D3D12 debug layer.
     {
         ComPtr<ID3D12Debug> debugController;
-        ThrowIfFailed( D3D12GetDebugInterface( IID_PPV_ARGS( &debugController ) ) );
+        DX_CALL( D3D12GetDebugInterface( IID_PPV_ARGS( &debugController ) ) );
         debugController->EnableDebugLayer();
     }
 #endif
 
-    ThrowIfFailed( CreateDXGIFactory1( IID_PPV_ARGS( &mdxgiFactory ) ) );
+    DX_CALL( CreateDXGIFactory1( IID_PPV_ARGS( &mdxgiFactory ) ) );
 
     // Try to create hardware device.
     HRESULT hardwareResult = D3D12CreateDevice(
@@ -424,16 +423,16 @@ bool D3DApp::InitDirect3D()
     if ( FAILED( hardwareResult ) )
     {
         ComPtr<IDXGIAdapter> pWarpAdapter;
-        ThrowIfFailed( mdxgiFactory->EnumWarpAdapter( IID_PPV_ARGS( &pWarpAdapter ) ) );
+        DX_CALL( mdxgiFactory->EnumWarpAdapter( IID_PPV_ARGS( &pWarpAdapter ) ) );
 
-        ThrowIfFailed( D3D12CreateDevice(
+        DX_CALL( D3D12CreateDevice(
             pWarpAdapter.Get(),
             D3D_FEATURE_LEVEL_11_0,
             IID_PPV_ARGS( &md3dDevice ) ) );
     }
 
-    ThrowIfFailed( md3dDevice->CreateFence( 0, D3D12_FENCE_FLAG_NONE,
-                                            IID_PPV_ARGS( &mFence ) ) );
+    DX_CALL( md3dDevice->CreateFence( 0, D3D12_FENCE_FLAG_NONE,
+                                      IID_PPV_ARGS( &mFence ) ) );
 
     mRtvDescriptorSize = md3dDevice->GetDescriptorHandleIncrementSize( D3D12_DESCRIPTOR_HEAP_TYPE_RTV );
     mDsvDescriptorSize = md3dDevice->GetDescriptorHandleIncrementSize( D3D12_DESCRIPTOR_HEAP_TYPE_DSV );
@@ -448,7 +447,7 @@ bool D3DApp::InitDirect3D()
     msQualityLevels.SampleCount = 4;
     msQualityLevels.Flags = D3D12_MULTISAMPLE_QUALITY_LEVELS_FLAG_NONE;
     msQualityLevels.NumQualityLevels = 0;
-    ThrowIfFailed( md3dDevice->CheckFeatureSupport(
+    DX_CALL( md3dDevice->CheckFeatureSupport(
         D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS,
         &msQualityLevels,
         sizeof( msQualityLevels ) ) );
@@ -472,13 +471,13 @@ void D3DApp::CreateCommandObjects()
     D3D12_COMMAND_QUEUE_DESC queueDesc = {};
     queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
     queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
-    ThrowIfFailed( md3dDevice->CreateCommandQueue( &queueDesc, IID_PPV_ARGS( &mCommandQueue ) ) );
+    DX_CALL( md3dDevice->CreateCommandQueue( &queueDesc, IID_PPV_ARGS( &mCommandQueue ) ) );
 
-    ThrowIfFailed( md3dDevice->CreateCommandAllocator(
+    DX_CALL( md3dDevice->CreateCommandAllocator(
         D3D12_COMMAND_LIST_TYPE_DIRECT,
         IID_PPV_ARGS( mDirectCmdListAlloc.GetAddressOf() ) ) );
 
-    ThrowIfFailed( md3dDevice->CreateCommandList(
+    DX_CALL( md3dDevice->CreateCommandList(
         0,
         D3D12_COMMAND_LIST_TYPE_DIRECT,
         mDirectCmdListAlloc.Get(),  // Associated command allocator
@@ -514,7 +513,7 @@ void D3DApp::CreateSwapChain()
     sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
     // Note: Swap chain uses queue to perform flush.
-    ThrowIfFailed( mdxgiFactory->CreateSwapChain(
+    DX_CALL( mdxgiFactory->CreateSwapChain(
         mCommandQueue.Get(),
         &sd,
         mSwapChain.GetAddressOf() ) );
@@ -528,7 +527,7 @@ void D3DApp::FlushCommandQueue()
     // Add an instruction to the command queue to set a new fence point.  Because we
     // are on the GPU timeline, the new fence point won't be set until the GPU finishes
     // processing all the commands prior to this Signal().
-    ThrowIfFailed( mCommandQueue->Signal( mFence.Get(), mCurrentFence ) );
+    DX_CALL( mCommandQueue->Signal( mFence.Get(), mCurrentFence ) );
 
     // Wait until the GPU has completed commands up to this fence point.
     if ( mFence->GetCompletedValue() < mCurrentFence )
@@ -536,7 +535,7 @@ void D3DApp::FlushCommandQueue()
         HANDLE eventHandle = CreateEventEx( nullptr, false, false, EVENT_ALL_ACCESS );
 
         // Fire event when GPU hits current fence.
-        ThrowIfFailed( mFence->SetEventOnCompletion( mCurrentFence, eventHandle ) );
+        DX_CALL( mFence->SetEventOnCompletion( mCurrentFence, eventHandle ) );
 
         // Wait until the GPU hits current fence event is fired.
         WaitForSingleObject( eventHandle, INFINITE );
