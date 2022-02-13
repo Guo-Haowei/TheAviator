@@ -1,20 +1,6 @@
-//***************************************************************************************
-// d3dApp.h by Frank Luna (C) 2015 All Rights Reserved.
-//***************************************************************************************
-
 #pragma once
 
-#if defined( DEBUG ) || defined( _DEBUG )
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-#endif
-
 #include "d3dUtil.h"
-
-// Link necessary d3d12 libraries.
-#pragma comment( lib, "d3dcompiler.lib" )
-#pragma comment( lib, "D3D12.lib" )
-#pragma comment( lib, "dxgi.lib" )
 
 class D3DApp {
    protected:
@@ -26,12 +12,7 @@ class D3DApp {
    public:
     static D3DApp* GetApp();
 
-    HINSTANCE AppInst() const;
-    HWND MainWnd() const;
     float AspectRatio() const;
-
-    bool Get4xMsaaState() const;
-    void Set4xMsaaState( bool value );
 
     int Run();
 
@@ -75,10 +56,6 @@ class D3DApp {
     bool mMaximized = false;        // is the application maximized?
     bool mResizing = false;         // are the resize bars being dragged?
     bool mFullscreenState = false;  // fullscreen enabled
-
-    // Set true to use 4X MSAA (�4.1.8).  The default is false.
-    bool m4xMsaaState = false;  // 4X MSAA enabled
-    UINT m4xMsaaQuality = 0;    // quality level of 4X MSAA
 
     Microsoft::WRL::ComPtr<IDXGIFactory4> mdxgiFactory;
     Microsoft::WRL::ComPtr<IDXGISwapChain> mSwapChain;

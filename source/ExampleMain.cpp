@@ -15,20 +15,21 @@
 #include "glm/gtc/constants.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include "core/Scene.h"
+
 using glm::mat4;
+using glm::uvec3;
 using glm::vec3;
 using glm::vec4;
+using std::vector;
 
 using Microsoft::WRL::ComPtr;
-
-struct Vertex {
-    vec3 Pos;
-    vec4 Color;
-};
 
 struct ObjectConstants {
     mat4 WorldViewProj{ 1.0f };
 };
+
+static float s_rotation = 0.0f;
 
 class BoxApp : public D3DApp {
    public:
@@ -61,7 +62,7 @@ class BoxApp : public D3DApp {
 
     std::unique_ptr<UploadBuffer<ObjectConstants>> mObjectCB = nullptr;
 
-    std::unique_ptr<MeshGeometry> mBoxGeo = nullptr;
+    std::shared_ptr<MeshGeometry> mBoxGeo = nullptr;
 
     ComPtr<ID3DBlob> mvsByteCode = nullptr;
     ComPtr<ID3DBlob> mpsByteCode = nullptr;
@@ -102,8 +103,12 @@ BoxApp::~BoxApp()
 
 bool BoxApp::Initialize()
 {
+    InitMeshes();
+
     if ( !D3DApp::Initialize() )
+    {
         return false;
+    }
 
     // Reset the command list to prep for initialization commands.
     DX_CALL( mCommandList->Reset( mDirectCmdListAlloc.Get(), nullptr ) );
@@ -131,16 +136,14 @@ void BoxApp::OnResize()
     D3DApp::OnResize();
 
     float fov = 0.25f * glm::pi<float>();
-    mProj = mat4( { 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 0.5, 0 }, { 0, 0, 0, 1 } ) *
-            mat4( { 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 1, 0 }, { 0, 0, 1, 1 } ) *
-            glm::perspectiveRH_NO( fov, AspectRatio(), 1.0f, 1000.0f );
+    mProj = glm::perspectiveLH_ZO( fov, AspectRatio(), 1.0f, 1000.0f );
 }
 
 void BoxApp::Update()
 {
-    float dist = 5.0f;
-    mView = glm::lookAtRH( vec3( 0.0f, dist, dist ), vec3( 0.0f ), vec3( 0.0f, 1.0f, 0.0f ) );
+    mView = glm::lookAtLH( vec3( 0.0f, 0.0f, -30.0f ), vec3( 0.0f ), vec3( 0.0f, 1.0f, 0.0f ) );
 
+    mWorld = glm::rotate( mat4( 1 ), s_rotation, vec3( 0, 1, 0 ) );
     mat4 worldViewProj = mProj * mView * mWorld;
 
     // Update the constant buffer with the latest worldViewProj matrix.
@@ -184,9 +187,7 @@ void BoxApp::Draw()
 
     mCommandList->SetGraphicsRootDescriptorTable( 0, mCbvHeap->GetGPUDescriptorHandleForHeapStart() );
 
-    mCommandList->DrawIndexedInstanced(
-        mBoxGeo->DrawArgs["box"].IndexCount,
-        1, 0, 0, 0 );
+    mCommandList->DrawIndexedInstanced( mBoxGeo->IndexCount, 1, 0, 0, 0 );
 
     // Indicate a state transition on the resource usage.
     mCommandList->ResourceBarrier( 1, &CD3DX12_RESOURCE_BARRIER::Transition( CurrentBackBuffer(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT ) );
@@ -223,20 +224,14 @@ void BoxApp::OnMouseUp( WPARAM btnState, int x, int y )
 
 void BoxApp::OnMouseMove( WPARAM btnState, int x, int y )
 {
-#if 0
     if ( ( btnState & MK_LBUTTON ) != 0 )
     {
         // Make each pixel correspond to a quarter of a degree.
-        float dx = XMConvertToRadians( 0.25f * static_cast<float>( x - mLastMousePos.x ) );
-        float dy = XMConvertToRadians( 0.25f * static_cast<float>( y - mLastMousePos.y ) );
-
-        // Update angles based on input to orbit camera around box.
-        mTheta += dx;
-        mPhi += dy;
-
-        // Restrict the angle mPhi.
-        mPhi = MathHelper::Clamp( mPhi, 0.1f, MathHelper::Pi - 0.1f );
+        float dx = glm::radians( 0.05f * static_cast<float>( x - mLastMousePos.x ) );
+        // float dy = glm::radians( 0.25f * static_cast<float>( y - mLastMousePos.y ) );
+        s_rotation += dx;
     }
+#if 0
     else if ( ( btnState & MK_RBUTTON ) != 0 )
     {
         // Make each pixel correspond to 0.005 unit in the scene.
@@ -334,7 +329,7 @@ void BoxApp::BuildShadersAndInputLayout()
     assert( p );
     p[1] = '\0';
     std::string shaderPath( folder );
-    shaderPath.append( "shaders/color.hlsl" );
+    shaderPath.append( "shaders/main.hlsl" );
     std::wstring wShaderPath( shaderPath.begin(), shaderPath.end() );
 
     mvsByteCode = d3dUtil::CompileShader( wShaderPath.c_str(), nullptr, "VS", "vs_5_0" );
@@ -342,78 +337,43 @@ void BoxApp::BuildShadersAndInputLayout()
 
     mInputLayout = {
         { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-        { "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+        { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+        { "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 24, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
     };
+}
+
+static std::shared_ptr<MeshGeometry> BuildGeometry( ID3D12Device* device, ID3D12GraphicsCommandList* commandList, const char* key )
+{
+    const MeshGroup* meshGroup = FindMesh( key );
+    vector<Vertex> vertices;
+    vector<uvec3> faces;
+    meshGroup->BuildBuffers( vertices, faces );
+
+    const UINT vbByteSize = (UINT)vertices.size() * sizeof( Vertex );
+    const UINT ibByteSize = (UINT)faces.size() * sizeof( faces.front() );
+
+    std::shared_ptr<MeshGeometry> mesh = std::make_shared<MeshGeometry>();
+    mesh->Name = key;
+
+    DX_CALL( D3DCreateBlob( vbByteSize, &mesh->VertexBufferCPU ) );
+    CopyMemory( mesh->VertexBufferCPU->GetBufferPointer(), vertices.data(), vbByteSize );
+
+    DX_CALL( D3DCreateBlob( ibByteSize, &mesh->IndexBufferCPU ) );
+    CopyMemory( mesh->IndexBufferCPU->GetBufferPointer(), faces.data(), ibByteSize );
+    mesh->VertexBufferGPU = d3dUtil::CreateDefaultBuffer( device, commandList, vertices.data(), vbByteSize, mesh->VertexBufferUploader );
+    mesh->IndexBufferGPU = d3dUtil::CreateDefaultBuffer( device, commandList, faces.data(), ibByteSize, mesh->IndexBufferUploader );
+
+    mesh->VertexByteStride = sizeof( Vertex );
+    mesh->VertexBufferByteSize = vbByteSize;
+    mesh->IndexFormat = DXGI_FORMAT_R32_UINT;
+    mesh->IndexBufferByteSize = ibByteSize;
+    mesh->IndexCount = static_cast<uint32_t>( faces.size() ) * 3;
+    return mesh;
 }
 
 void BoxApp::BuildBoxGeometry()
 {
-    std::array<Vertex, 8> vertices = {
-        Vertex{ vec3{ -1.0f, -1.0f, -1.0f }, vec4( 1.0f ) },
-        Vertex{ vec3{ -1.0f, +1.0f, -1.0f }, vec4( 1.0f ) },
-        Vertex{ vec3{ +1.0f, +1.0f, -1.0f }, vec4( 1.0f ) },
-        Vertex{ vec3{ +1.0f, -1.0f, -1.0f }, vec4( 1.0f ) },
-        Vertex{ vec3{ -1.0f, -1.0f, +1.0f }, vec4( 1.0f ) },
-        Vertex{ vec3{ -1.0f, +1.0f, +1.0f }, vec4( 1.0f ) },
-        Vertex{ vec3{ +1.0f, +1.0f, +1.0f }, vec4( 1.0f ) },
-        Vertex{ vec3{ +1.0f, -1.0f, +1.0f }, vec4( 1.0f ) }
-    };
-
-    std::array<std::uint16_t, 36> indices = {
-        // front face
-        0, 1, 2,
-        0, 2, 3,
-
-        // back face
-        4, 6, 5,
-        4, 7, 6,
-
-        // left face
-        4, 5, 1,
-        4, 1, 0,
-
-        // right face
-        3, 2, 6,
-        3, 6, 7,
-
-        // top face
-        1, 5, 6,
-        1, 6, 2,
-
-        // bottom face
-        4, 0, 3,
-        4, 3, 7
-    };
-
-    const UINT vbByteSize = (UINT)vertices.size() * sizeof( Vertex );
-    const UINT ibByteSize = (UINT)indices.size() * sizeof( std::uint16_t );
-
-    mBoxGeo = std::make_unique<MeshGeometry>();
-    mBoxGeo->Name = "boxGeo";
-
-    DX_CALL( D3DCreateBlob( vbByteSize, &mBoxGeo->VertexBufferCPU ) );
-    CopyMemory( mBoxGeo->VertexBufferCPU->GetBufferPointer(), vertices.data(), vbByteSize );
-
-    DX_CALL( D3DCreateBlob( ibByteSize, &mBoxGeo->IndexBufferCPU ) );
-    CopyMemory( mBoxGeo->IndexBufferCPU->GetBufferPointer(), indices.data(), ibByteSize );
-
-    mBoxGeo->VertexBufferGPU = d3dUtil::CreateDefaultBuffer( md3dDevice.Get(),
-                                                             mCommandList.Get(), vertices.data(), vbByteSize, mBoxGeo->VertexBufferUploader );
-
-    mBoxGeo->IndexBufferGPU = d3dUtil::CreateDefaultBuffer( md3dDevice.Get(),
-                                                            mCommandList.Get(), indices.data(), ibByteSize, mBoxGeo->IndexBufferUploader );
-
-    mBoxGeo->VertexByteStride = sizeof( Vertex );
-    mBoxGeo->VertexBufferByteSize = vbByteSize;
-    mBoxGeo->IndexFormat = DXGI_FORMAT_R16_UINT;
-    mBoxGeo->IndexBufferByteSize = ibByteSize;
-
-    SubmeshGeometry submesh;
-    submesh.IndexCount = (UINT)indices.size();
-    submesh.StartIndexLocation = 0;
-    submesh.BaseVertexLocation = 0;
-
-    mBoxGeo->DrawArgs["box"] = submesh;
+    mBoxGeo = BuildGeometry( md3dDevice.Get(), mCommandList.Get(), MESH_KEY_AIRPLANE_BODY );
 }
 
 void BoxApp::BuildPSO()
@@ -437,8 +397,8 @@ void BoxApp::BuildPSO()
     psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
     psoDesc.NumRenderTargets = 1;
     psoDesc.RTVFormats[0] = mBackBufferFormat;
-    psoDesc.SampleDesc.Count = m4xMsaaState ? 4 : 1;
-    psoDesc.SampleDesc.Quality = m4xMsaaState ? ( m4xMsaaQuality - 1 ) : 0;
+    psoDesc.SampleDesc.Count = 1;
+    psoDesc.SampleDesc.Quality = 0;
     psoDesc.DSVFormat = mDepthStencilFormat;
     DX_CALL( md3dDevice->CreateGraphicsPipelineState( &psoDesc, IID_PPV_ARGS( &mPSO ) ) );
 }

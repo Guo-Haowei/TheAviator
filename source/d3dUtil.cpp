@@ -108,7 +108,9 @@ ComPtr<ID3DBlob> d3dUtil::CompileShader(
                              entrypoint.c_str(), target.c_str(), compileFlags, 0, &byteCode, &errors );
 
     if ( errors != nullptr )
-        OutputDebugStringA( (char*)errors->GetBufferPointer() );
+    {
+        LOGW( "%s", (char*)errors->GetBufferPointer() );
+    }
 
     DX_CALL( hr );
 

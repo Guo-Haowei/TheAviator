@@ -1,4 +1,5 @@
 add_subdirectory(base)
+add_subdirectory(core)
 
 add_executable(TheAviator
     d3dApp.cpp
@@ -8,6 +9,7 @@ add_executable(TheAviator
 
 target_link_libraries(TheAviator PRIVATE
     base
+    core
     dxgi.lib
     d3d12.lib
     d3dcompiler.lib

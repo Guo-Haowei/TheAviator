@@ -8,8 +8,7 @@
 using Microsoft::WRL::ComPtr;
 using namespace std;
 
-LRESULT CALLBACK
-MainWndProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam )
+LRESULT CALLBACK MainWndProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
     // Forward hwnd on because we can get messages (e.g., WM_CREATE)
     // before CreateWindow returns, and thus before mhMainWnd is valid.
@@ -36,36 +35,9 @@ D3DApp::~D3DApp()
         FlushCommandQueue();
 }
 
-HINSTANCE D3DApp::AppInst() const
-{
-    return mhAppInst;
-}
-
-HWND D3DApp::MainWnd() const
-{
-    return mhMainWnd;
-}
-
 float D3DApp::AspectRatio() const
 {
     return static_cast<float>( mClientWidth ) / mClientHeight;
-}
-
-bool D3DApp::Get4xMsaaState() const
-{
-    return m4xMsaaState;
-}
-
-void D3DApp::Set4xMsaaState( bool value )
-{
-    if ( m4xMsaaState != value )
-    {
-        m4xMsaaState = value;
-
-        // Recreate the swapchain and buffers with new multisample settings.
-        CreateSwapChain();
-        OnResize();
-    }
 }
 
 int D3DApp::Run()
@@ -180,8 +152,8 @@ void D3DApp::OnResize()
     // we need to create the depth buffer resource with a typeless format.
     depthStencilDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
 
-    depthStencilDesc.SampleDesc.Count = m4xMsaaState ? 4 : 1;
-    depthStencilDesc.SampleDesc.Quality = m4xMsaaState ? ( m4xMsaaQuality - 1 ) : 0;
+    depthStencilDesc.SampleDesc.Count = 1;
+    depthStencilDesc.SampleDesc.Quality = 0;
     depthStencilDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
     depthStencilDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
 
@@ -351,8 +323,6 @@ LRESULT D3DApp::MsgProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam )
             {
                 PostQuitMessage( 0 );
             }
-            else if ( (int)wParam == VK_F2 )
-                Set4xMsaaState( !m4xMsaaState );
 
             return 0;
     }
@@ -442,19 +412,6 @@ bool D3DApp::InitDirect3D()
     // All Direct3D 11 capable devices support 4X MSAA for all render
     // target formats, so we only need to check quality support.
 
-    D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS msQualityLevels;
-    msQualityLevels.Format = mBackBufferFormat;
-    msQualityLevels.SampleCount = 4;
-    msQualityLevels.Flags = D3D12_MULTISAMPLE_QUALITY_LEVELS_FLAG_NONE;
-    msQualityLevels.NumQualityLevels = 0;
-    DX_CALL( md3dDevice->CheckFeatureSupport(
-        D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS,
-        &msQualityLevels,
-        sizeof( msQualityLevels ) ) );
-
-    m4xMsaaQuality = msQualityLevels.NumQualityLevels;
-    assert( m4xMsaaQuality > 0 && "Unexpected MSAA quality level." );
-
 #ifdef _DEBUG
     LogAdapters();
 #endif
@@ -503,8 +460,8 @@ void D3DApp::CreateSwapChain()
     sd.BufferDesc.Format = mBackBufferFormat;
     sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
     sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-    sd.SampleDesc.Count = m4xMsaaState ? 4 : 1;
-    sd.SampleDesc.Quality = m4xMsaaState ? ( m4xMsaaQuality - 1 ) : 0;
+    sd.SampleDesc.Count = 1;
+    sd.SampleDesc.Quality = 0;
     sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     sd.BufferCount = SwapChainBufferCount;
     sd.OutputWindow = mhMainWnd;
