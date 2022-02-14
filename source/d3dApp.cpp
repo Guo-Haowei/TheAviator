@@ -372,14 +372,12 @@ bool D3DApp::InitMainWindow()
 
 bool D3DApp::InitDirect3D()
 {
-#if defined( DEBUG ) || defined( _DEBUG )
     // Enable the D3D12 debug layer.
     {
         ComPtr<ID3D12Debug> debugController;
         DX_CALL( D3D12GetDebugInterface( IID_PPV_ARGS( &debugController ) ) );
         debugController->EnableDebugLayer();
     }
-#endif
 
     DX_CALL( CreateDXGIFactory1( IID_PPV_ARGS( &mdxgiFactory ) ) );
 
@@ -407,14 +405,6 @@ bool D3DApp::InitDirect3D()
     mRtvDescriptorSize = mDevice->GetDescriptorHandleIncrementSize( D3D12_DESCRIPTOR_HEAP_TYPE_RTV );
     mDsvDescriptorSize = mDevice->GetDescriptorHandleIncrementSize( D3D12_DESCRIPTOR_HEAP_TYPE_DSV );
     mCbvSrvUavDescriptorSize = mDevice->GetDescriptorHandleIncrementSize( D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV );
-
-    // Check 4X MSAA quality support for our back buffer format.
-    // All Direct3D 11 capable devices support 4X MSAA for all render
-    // target formats, so we only need to check quality support.
-
-#ifdef _DEBUG
-    LogAdapters();
-#endif
 
     CreateCommandObjects();
     CreateSwapChain();
@@ -516,79 +506,4 @@ D3D12_CPU_DESCRIPTOR_HANDLE D3DApp::CurrentBackBufferView() const
 D3D12_CPU_DESCRIPTOR_HANDLE D3DApp::DepthStencilView() const
 {
     return mDsvHeap->GetCPUDescriptorHandleForHeapStart();
-}
-
-void D3DApp::LogAdapters()
-{
-    UINT i = 0;
-    IDXGIAdapter* adapter = nullptr;
-    std::vector<IDXGIAdapter*> adapterList;
-    while ( mdxgiFactory->EnumAdapters( i, &adapter ) != DXGI_ERROR_NOT_FOUND )
-    {
-        DXGI_ADAPTER_DESC desc;
-        adapter->GetDesc( &desc );
-
-        std::wstring text = L"***Adapter: ";
-        text += desc.Description;
-        text += L"\n";
-
-        OutputDebugString( text.c_str() );
-
-        adapterList.push_back( adapter );
-
-        ++i;
-    }
-
-    for ( size_t i = 0; i < adapterList.size(); ++i )
-    {
-        LogAdapterOutputs( adapterList[i] );
-        ReleaseCom( adapterList[i] );
-    }
-}
-
-void D3DApp::LogAdapterOutputs( IDXGIAdapter* adapter )
-{
-    UINT i = 0;
-    IDXGIOutput* output = nullptr;
-    while ( adapter->EnumOutputs( i, &output ) != DXGI_ERROR_NOT_FOUND )
-    {
-        DXGI_OUTPUT_DESC desc;
-        output->GetDesc( &desc );
-
-        std::wstring text = L"***Output: ";
-        text += desc.DeviceName;
-        text += L"\n";
-        OutputDebugString( text.c_str() );
-
-        LogOutputDisplayModes( output, mBackBufferFormat );
-
-        ReleaseCom( output );
-
-        ++i;
-    }
-}
-
-void D3DApp::LogOutputDisplayModes( IDXGIOutput* output, DXGI_FORMAT format )
-{
-    UINT count = 0;
-    UINT flags = 0;
-
-    // Call with nullptr to get list count.
-    output->GetDisplayModeList( format, flags, &count, nullptr );
-
-    std::vector<DXGI_MODE_DESC> modeList( count );
-    output->GetDisplayModeList( format, flags, &count, &modeList[0] );
-
-    for ( auto& x : modeList )
-    {
-        UINT n = x.RefreshRate.Numerator;
-        UINT d = x.RefreshRate.Denominator;
-        std::wstring text =
-            L"Width = " + std::to_wstring( x.Width ) + L" " +
-            L"Height = " + std::to_wstring( x.Height ) + L" " +
-            L"Refresh = " + std::to_wstring( n ) + L"/" + std::to_wstring( d ) +
-            L"\n";
-
-        ::OutputDebugString( text.c_str() );
-    }
 }

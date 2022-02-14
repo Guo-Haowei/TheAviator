@@ -1,8 +1,9 @@
 #pragma once
-#include <glm/glm.hpp>
 #include <memory>
 #include <string>
 #include <vector>
+
+#include "MathHelper.h"
 
 class Node {
    public:
@@ -13,7 +14,7 @@ class Node {
         : mName( name )
         , mParent( nullptr )
     {
-        mTrans = glm::mat4( 1.0f );
+        mTrans = mat4( 1.0f );
     }
 
     void SetMeshKey( const char* meshKey )
@@ -27,9 +28,9 @@ class Node {
         child->mParent = this;
     }
 
-    glm::mat4 WorldTrans() const;
+    mat4 WorldTrans() const;
 
-    inline const glm::mat4& Trans() const
+    inline const mat4& Trans() const
     {
         return mTrans;
     }
@@ -37,7 +38,7 @@ class Node {
    protected:
     std::string mName;
     std::string mMeshKey;
-    glm::mat4 mTrans;
+    mat4 mTrans;
     NodeList mChildren;
     Node* mParent;
 };

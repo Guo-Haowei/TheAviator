@@ -4,36 +4,34 @@
 #include "d3dUtil.h"
 #include "UploadBuffer.h"
 
-struct ObjectConstants
-{
-    mat4 Model = mat4(1.0f);
+struct ObjectConstants {
+    mat4 Model = mat4( 1.0f );
 };
 
-struct PassConstants
-{
-    mat4 View = mat4(1.0f);
-    mat4 InvView = mat4(1.0f);
-    mat4 Proj = mat4(1.0f);
-    mat4 InvProj = mat4(1.0f);
-    mat4 ViewProj = mat4(1.0f);
-    mat4 InvViewProj = mat4(1.0f);
+struct PassConstants {
+    mat4 View = mat4( 1.0f );
+    mat4 InvView = mat4( 1.0f );
+    mat4 Proj = mat4( 1.0f );
+    mat4 InvProj = mat4( 1.0f );
+    mat4 ViewProj = mat4( 1.0f );
+    mat4 InvViewProj = mat4( 1.0f );
     vec3 EyePosW = { 0.0f, 0.0f, 0.0f };
     float cbPerObjectPad1 = 0.0f;
     vec2 RenderTargetSize = { 0.0f, 0.0f };
     vec2 InvRenderTargetSize = { 0.0f, 0.0f };
     float NearZ = 0.0f;
     float FarZ = 0.0f;
+    float TotalTime;
+    float DeltaTime;
 };
 
 // Stores the resources needed for the CPU to build the command lists
-// for a frame.  
-struct FrameResource
-{
-public:
-    
-    FrameResource(ID3D12Device* device, UINT passCount, UINT objectCount);
-    FrameResource(const FrameResource& rhs) = delete;
-    FrameResource& operator=(const FrameResource& rhs) = delete;
+// for a frame.
+struct FrameResource {
+   public:
+    FrameResource( ID3D12Device* device, UINT passCount, UINT objectCount );
+    FrameResource( const FrameResource& rhs ) = delete;
+    FrameResource& operator=( const FrameResource& rhs ) = delete;
     ~FrameResource();
 
     // We cannot reset the allocator until the GPU is done processing the commands.

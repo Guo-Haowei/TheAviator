@@ -42,10 +42,6 @@ class D3DApp {
     D3D12_CPU_DESCRIPTOR_HANDLE CurrentBackBufferView() const;
     D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView() const;
 
-    void LogAdapters();
-    void LogAdapterOutputs( IDXGIAdapter* adapter );
-    void LogOutputDisplayModes( IDXGIOutput* output, DXGI_FORMAT format );
-
    protected:
     static D3DApp* mApp;
 

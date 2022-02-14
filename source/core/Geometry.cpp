@@ -1,13 +1,6 @@
 #include "Geometry.h"
 
-#include <glm/gtc/matrix_transform.hpp>
 #include <cassert>
-using glm::mat4;
-using glm::uvec3;
-using glm::vec3;
-using glm::vec4;
-using std::array;
-using std::vector;
 
 Mesh& Mesh::MakeBox( const vec3& color, float size, float alpha )
 {
@@ -24,7 +17,7 @@ Mesh& Mesh::MakeBox( const vec3& color, float size, float alpha )
     return MakeBox( points, color, alpha );
 }
 
-Mesh& Mesh::MakeBox( const array<vec3, 8>& points, const vec3& color, float alpha )
+Mesh& Mesh::MakeBox( const std::array<glm::vec3, 8>& points, const vec3& color, float alpha )
 {
     mColor = vec4( color, alpha );
 
@@ -63,7 +56,7 @@ Mesh& Mesh::MakeBox( const array<vec3, 8>& points, const vec3& color, float alph
     return *this;
 }
 
-void Mesh::ApplyMatrix( const glm::mat4& trans )
+void Mesh::ApplyMatrix( const mat4& trans )
 {
     mTrans = trans * mTrans;
 }
@@ -98,7 +91,7 @@ Mesh& Mesh::RotateZ( float degree )
     return *this;
 }
 
-void MeshGroup::BuildBuffers( std::vector<Vertex>& outVertices, std::vector<glm::uvec3>& outFaces ) const
+void MeshGroup::BuildBuffers( std::vector<Vertex>& outVertices, std::vector<uvec3>& outFaces ) const
 {
     for ( const Mesh& mesh : mMeshes )
     {
