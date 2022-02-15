@@ -6,4 +6,5 @@ add_library(core
 
 target_include_directories(core PRIVATE
     ${PROJECT_SOURCE_DIR}/external/glm
+    ${PROJECT_SOURCE_DIR}/source
 )
