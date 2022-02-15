@@ -1,5 +1,6 @@
 add_library(core
     Geometry.cpp
+    MainWindow.cpp
     Node.cpp
     Scene.cpp
 )
