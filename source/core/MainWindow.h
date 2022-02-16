@@ -5,3 +5,4 @@
 
 bool Com_Window_Create( const char* title, int width, int height );
 void Com_Window_Shutdown();
+void Com_Window_Display();

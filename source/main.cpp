@@ -4,6 +4,7 @@
 
 #include "core/MainWindow.h"
 #include "gfx/GfxContext.h"
+#include "gfx/PipelineStateObjects.h"
 
 #include "UploadBuffer.h"
 #include "FrameResource.h"
@@ -66,6 +67,7 @@ extern ID3D12GraphicsCommandList* s_commandList;
 extern ID3D12CommandAllocator* s_directCmdListAlloc;
 extern ID3D12CommandQueue* s_commandQueue;
 extern IDXGISwapChain* s_swapChain;
+extern ID3D12RootSignature* s_rootSignature;
 
 extern ID3D12DescriptorHeap* s_rtvHeap;
 extern ID3D12DescriptorHeap* s_dsvHeap;
@@ -73,6 +75,10 @@ extern ID3D12DescriptorHeap* s_dsvHeap;
 extern uint32_t s_rtvDescriptorSize;
 extern uint32_t s_dsvDescriptorSize;
 extern uint32_t s_cbvSrvUavDescriptorSize;
+
+extern ID3DBlob* s_vsByteCode;
+extern ID3DBlob* s_psByteCode;
+extern std::vector<D3D12_INPUT_ELEMENT_DESC> s_inputLayout;
 
 const int gNumFrameResources = 3;
 
@@ -98,16 +104,12 @@ std::vector<std::unique_ptr<FrameResource>> mFrameResources;
 FrameResource* mCurrFrameResource = nullptr;
 int mCurrFrameResourceIndex = 0;
 
-ComPtr<ID3D12RootSignature> mRootSignature = nullptr;
 ComPtr<ID3D12DescriptorHeap> mCbvHeap = nullptr;
 
 ComPtr<ID3D12DescriptorHeap> mSrvDescriptorHeap = nullptr;
 
 // std::unordered_map<std::string, std::unique_ptr<MeshGeometry>> mGeometries;
 std::unordered_map<std::string, ComPtr<ID3DBlob>> mShaders;
-// std::unordered_map<std::string, ComPtr<ID3D12PipelineState>> mPSOs;
-
-std::vector<D3D12_INPUT_ELEMENT_DESC> mInputLayout;
 
 // List of all the render items.
 std::vector<std::unique_ptr<RenderItem>> mRenderItems;
@@ -115,11 +117,6 @@ std::vector<std::unique_ptr<RenderItem>> mRenderItems;
 PassConstants mMainPassCB;
 
 uint32_t mPassCbvOffset = 0;
-
-ComPtr<ID3DBlob> mvsByteCode = nullptr;
-ComPtr<ID3DBlob> mpsByteCode = nullptr;
-
-ComPtr<ID3D12PipelineState> mPSO = nullptr;
 
 mat4 mView{ 1.0f };
 mat4 mProj{ 1.0f };
@@ -169,10 +166,7 @@ class Application {
 
     void BuildDescriptorHeaps();
     void BuildConstantBufferViews();
-    void BuildRootSignature();
-    void BuildShadersAndInputLayout();
     void BuildShapeGeometry();
-    void BuildPSOs();
     void BuildFrameResources();
     void BuildRenderItems();
     void DrawRenderItems( ID3D12GraphicsCommandList* cmdList, const std::vector<std::unique_ptr<RenderItem>>& items );
@@ -246,19 +240,19 @@ bool Application::Initialize()
         return false;
     }
 
+    Com_Window_Display();
     OnResize();
 
     // Reset the command list to prep for initialization commands.
     DX_CALL( s_commandList->Reset( s_directCmdListAlloc, nullptr ) );
 
-    BuildRootSignature();
-    BuildShadersAndInputLayout();
+    Gfx_CreateAssets();
+
     BuildShapeGeometry();
     BuildRenderItems();
     BuildFrameResources();
     BuildDescriptorHeaps();
     BuildConstantBufferViews();
-    BuildPSOs();
 
     // Execute the initialization commands.
     DX_CALL( s_commandList->Close() );
@@ -403,7 +397,9 @@ void Application::Draw()
 
     // A command list can be reset after it has been added to the command queue via ExecuteCommandList.
     // Reusing the command list reuses memory.
-    DX_CALL( s_commandList->Reset( s_directCmdListAlloc, mPSO.Get() ) );
+
+    const PipelineStateObject& pso = GetPipelineStateObject( PipelineStateObjectID::Default );
+    DX_CALL( s_commandList->Reset( s_directCmdListAlloc, pso.pso ) );
 
     s_commandList->RSSetViewports( 1, &mScreenViewport );
     s_commandList->RSSetScissorRects( 1, &mScissorRect );
@@ -422,7 +418,7 @@ void Application::Draw()
     ID3D12DescriptorHeap* descriptorHeaps[] = { mCbvHeap.Get() };
     s_commandList->SetDescriptorHeaps( _countof( descriptorHeaps ), descriptorHeaps );
 
-    s_commandList->SetGraphicsRootSignature( mRootSignature.Get() );
+    s_commandList->SetGraphicsRootSignature( s_rootSignature );
 
     int passCbvIndex = mPassCbvOffset + mCurrFrameResourceIndex;
     auto passCbvHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE( mCbvHeap->GetGPUDescriptorHandleForHeapStart() );
@@ -496,58 +492,6 @@ void Application::BuildDescriptorHeaps()
     DX_CALL( s_device->CreateDescriptorHeap( &cbvHeapDesc, IID_PPV_ARGS( &mCbvHeap ) ) );
 }
 
-void Application::BuildRootSignature()
-{
-    CD3DX12_DESCRIPTOR_RANGE cbvTable0;
-    cbvTable0.Init( D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0 );
-
-    CD3DX12_DESCRIPTOR_RANGE cbvTable1;
-    cbvTable1.Init( D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 1 );
-
-    // Root parameter can be a table, root descriptor or root constants.
-    CD3DX12_ROOT_PARAMETER slotRootParameter[2];
-
-    // Create root CBVs.
-    slotRootParameter[0].InitAsDescriptorTable( 1, &cbvTable0 );
-    slotRootParameter[1].InitAsDescriptorTable( 1, &cbvTable1 );
-
-    // A root signature is an array of root parameters.
-    CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc( 2, slotRootParameter, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT );
-    // create a root signature with a single slot which points to a descriptor range consisting of a single constant buffer
-    ComPtr<ID3DBlob> serializedRootSig = nullptr;
-    ComPtr<ID3DBlob> errorBlob = nullptr;
-    HRESULT hr = D3D12SerializeRootSignature( &rootSigDesc, D3D_ROOT_SIGNATURE_VERSION_1, serializedRootSig.GetAddressOf(), errorBlob.GetAddressOf() );
-    if ( errorBlob != nullptr )
-    {
-        ::OutputDebugStringA( (char*)errorBlob->GetBufferPointer() );
-    }
-    DX_CALL( hr );
-
-    DX_CALL( s_device->CreateRootSignature( 0, serializedRootSig->GetBufferPointer(), serializedRootSig->GetBufferSize(), IID_PPV_ARGS( mRootSignature.GetAddressOf() ) ) );
-}
-
-void Application::BuildShadersAndInputLayout()
-{
-    HRESULT hr = S_OK;
-
-    char folder[] = __FILE__;
-    char* p = strrchr( folder, '\\' );
-    assert( p );
-    p[1] = '\0';
-    std::string shaderPath( folder );
-    shaderPath.append( "shaders/main.hlsl" );
-    std::wstring wShaderPath( shaderPath.begin(), shaderPath.end() );
-
-    mvsByteCode = d3dUtil::CompileShader( wShaderPath.c_str(), nullptr, "VS", "vs_5_0" );
-    mpsByteCode = d3dUtil::CompileShader( wShaderPath.c_str(), nullptr, "PS", "ps_5_0" );
-
-    mInputLayout = {
-        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-        { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-        { "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 24, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
-    };
-}
-
 static std::shared_ptr<MeshGeometry> BuildGeometry( ID3D12Device* device, ID3D12GraphicsCommandList* commandList, const char* key )
 {
     const MeshGroup* meshGroup = FindMesh( key );
@@ -588,49 +532,6 @@ void Application::BuildShapeGeometry()
     {
         s_gpuMeshes[key] = BuildGeometry( s_device, s_commandList, key.c_str() );
     }
-}
-
-void Application::BuildPSOs()
-{
-    D3D12_GRAPHICS_PIPELINE_STATE_DESC desc;
-    ZeroMemory( &desc, sizeof( D3D12_GRAPHICS_PIPELINE_STATE_DESC ) );
-
-    // psoDesc.InputLayout = { mInputLayout.data(), (UINT)mInputLayout.size() };
-    // psoDesc.pRootSignature = mRootSignature.Get();
-    // psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC( D3D12_DEFAULT );
-    // psoDesc.BlendState = CD3DX12_BLEND_DESC( D3D12_DEFAULT );
-    // psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC( D3D12_DEFAULT );
-    // psoDesc.SampleMask = UINT_MAX;
-    // psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-    // psoDesc.NumRenderTargets = 1;
-    // psoDesc.RTVFormats[0] = DEFAULT_BACKBUFFER_FMT;
-    // psoDesc.SampleDesc.Count = 1;
-    // psoDesc.SampleDesc.Quality = 0;
-    // psoDesc.DSVFormat = DEFAULT_DEPTH_STENCIL_FMT;
-    // DX_CALL( mDevice->CreateGraphicsPipelineState( &psoDesc, IID_PPV_ARGS( &mPSO ) ) );
-
-    desc.InputLayout = { mInputLayout.data(), (UINT)mInputLayout.size() };
-    desc.pRootSignature = mRootSignature.Get();
-    desc.VS = {
-        reinterpret_cast<BYTE*>( mvsByteCode->GetBufferPointer() ),
-        mvsByteCode->GetBufferSize()
-    };
-    desc.PS = {
-        reinterpret_cast<BYTE*>( mpsByteCode->GetBufferPointer() ),
-        mpsByteCode->GetBufferSize()
-    };
-    desc.RasterizerState = CD3DX12_RASTERIZER_DESC( D3D12_DEFAULT );
-    desc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
-    desc.BlendState = CD3DX12_BLEND_DESC( D3D12_DEFAULT );
-    desc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC( D3D12_DEFAULT );
-    desc.SampleMask = UINT_MAX;
-    desc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-    desc.NumRenderTargets = 1;
-    desc.RTVFormats[0] = DEFAULT_BACK_BUFFER_FORMATT;
-    desc.SampleDesc.Count = 1;
-    desc.SampleDesc.Quality = 0;
-    desc.DSVFormat = DEFAULT_DEPTH_STENCIL_FORMAT;
-    DX_CALL( s_device->CreateGraphicsPipelineState( &desc, IID_PPV_ARGS( &mPSO ) ) );
 }
 
 void Application::BuildFrameResources()

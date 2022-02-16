@@ -49,9 +49,6 @@ bool Com_Window_Create( const char* title, int width, int height )
         return false;
     }
 
-    ShowWindow( s_hWnd, SW_SHOW );
-    UpdateWindow( s_hWnd );
-
     LOG( "window \"%s\" (w:%d h:%d) created", title, s_clientWidth, s_clientHeight );
     return true;
 }
@@ -62,4 +59,11 @@ void Com_Window_Shutdown()
     {
         DestroyWindow( s_hWnd );
     }
+}
+
+void Com_Window_Display()
+{
+    ShowWindow( s_hWnd, SW_SHOW );
+    UpdateWindow( s_hWnd );
+    LOG( "display window" );
 }

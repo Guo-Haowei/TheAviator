@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceRoot}/source"
+            ],
+            "defines": [
+                "PROJECT_SOURCE_DIR=\"\""
+            ]
+        }
+    ],
+    "version": 4
+}

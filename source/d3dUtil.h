@@ -20,15 +20,11 @@
 #include <fstream>
 #include <sstream>
 #include <cassert>
-#include "d3dx12.h"
+
+#include "gfx/d3dx12.h"
+#include "gfx/Prerequisites.h"
 
 extern const int gNumFrameResources;
-
-namespace internal {
-void CheckWin32Result( HRESULT hr, const char* expr, const char* file, int line );
-}  // namespace internal
-
-#define DX_CALL( expr ) ::internal::CheckWin32Result( ( expr ), #expr, __FILE__, __LINE__ )
 
 inline void d3dSetDebugName( IDXGIObject* obj, const char* name )
 {
@@ -90,11 +86,7 @@ class d3dUtil {
         UINT64 byteSize,
         Microsoft::WRL::ComPtr<ID3D12Resource>& uploadBuffer );
 
-    static Microsoft::WRL::ComPtr<ID3DBlob> CompileShader(
-        const std::wstring& filename,
-        const D3D_SHADER_MACRO* defines,
-        const std::string& entrypoint,
-        const std::string& target );
+    static ID3DBlob* CompileShader( const std::wstring& filename, const D3D_SHADER_MACRO* defines, const std::string& entrypoint, const std::string& target );
 };
 
 // Defines a subrange of geometry in a MeshGeometry.  This is for when multiple
