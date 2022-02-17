@@ -2,15 +2,15 @@
 #undef UNICODE
 #endif
 
-#include "core/MainWindow.h"
-#include "gfx/GfxContext.h"
-#include "gfx/PipelineStateObjects.h"
-
 #include "UploadBuffer.h"
 #include "FrameResource.h"
 
+#include "base/Utilities.h"
+#include "core/MainWindow.h"
 #include "core/MathHelper.h"
 #include "core/Scene.h"
+#include "gfx/GfxContext.h"
+#include "gfx/PipelineStateObjects.h"
 
 #include <unordered_map>
 #include <WindowsX.h>
@@ -544,9 +544,8 @@ void Application::BuildFrameResources()
 
 void Application::BuildConstantBufferViews()
 {
-    uint32_t objCBByteSize = d3dUtil::CalcConstantBufferByteSize( sizeof( ObjectConstants ) );
-
-    uint32_t objCount = (uint32_t)mRenderItems.size();
+    const uint32_t objCBByteSize = (uint32_t)AlignUp( sizeof( ObjectConstants ), 256 );
+    const uint32_t objCount = (uint32_t)mRenderItems.size();
 
     // Need a CBV descriptor for each object for each frame resource.
     for ( int frameIndex = 0; frameIndex < gNumFrameResources; ++frameIndex )
@@ -572,7 +571,7 @@ void Application::BuildConstantBufferViews()
         }
     }
 
-    UINT passCBByteSize = d3dUtil::CalcConstantBufferByteSize( sizeof( PassConstants ) );
+    const UINT passCBByteSize = (uint32_t)AlignUp( sizeof( PassConstants ), 256 );
 
     // Last three descriptors are the pass CBVs for each frame resource.
     for ( int frameIndex = 0; frameIndex < gNumFrameResources; ++frameIndex )
@@ -595,7 +594,7 @@ void Application::BuildConstantBufferViews()
 
 void Application::DrawRenderItems( ID3D12GraphicsCommandList* cmdList, const std::vector<std::unique_ptr<RenderItem>>& items )
 {
-    UINT objCBByteSize = d3dUtil::CalcConstantBufferByteSize( sizeof( ObjectConstants ) );
+    const UINT objCBByteSize = (uint32_t)AlignUp( sizeof( ObjectConstants ), 256 );
 
     auto objectCB = mCurrFrameResource->ObjectCB->Resource();
 

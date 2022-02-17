@@ -1,6 +1,7 @@
 #include "PipelineStateObjects.h"
 
 #include "base/Log.h"
+#include "base/Utilities.h"
 #include "d3dx12.h"
 
 #include <d3dcompiler.h>
@@ -86,7 +87,7 @@ void CreatePipelineStateObjects( ID3D12Device* device )
     };
 
     D3D12_GRAPHICS_PIPELINE_STATE_DESC desc{};
-    desc.InputLayout = { inputLayout, ARRAYSIZE( inputLayout ) };
+    desc.InputLayout = { inputLayout, ArrayLength( inputLayout ) };
     desc.pRootSignature = s_rootSignature;
     desc.VS = {
         reinterpret_cast<BYTE*>( pso.vsByteCode->GetBufferPointer() ),

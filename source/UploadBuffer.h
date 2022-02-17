@@ -1,5 +1,6 @@
 #pragma once
 
+#include "base/Utilities.h"
 #include "d3dUtil.h"
 
 template<typename T>
@@ -19,7 +20,7 @@ class UploadBuffer {
         // } D3D12_CONSTANT_BUFFER_VIEW_DESC;
         if ( isConstantBuffer )
         {
-            mElementByteSize = d3dUtil::CalcConstantBufferByteSize( sizeof( T ) );
+            mElementByteSize = AlignUp( sizeof( T ), 256 );
         }
 
         DX_CALL( device->CreateCommittedResource(
@@ -60,6 +61,6 @@ class UploadBuffer {
     Microsoft::WRL::ComPtr<ID3D12Resource> mUploadBuffer;
     BYTE* mMappedData = nullptr;
 
-    UINT mElementByteSize = 0;
+    uint64_t mElementByteSize = 0;
     bool mIsConstantBuffer = false;
 };
