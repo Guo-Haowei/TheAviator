@@ -3,7 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceRoot}/source"
+                "${workspaceRoot}/source",
+                "${workspaceRoot}/external/glm"
             ],
             "defines": [
                 "PROJECT_SOURCE_DIR=\"\""

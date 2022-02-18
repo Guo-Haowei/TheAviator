@@ -134,7 +134,6 @@ static void Gfx_BuildRenderItems();
 static void Gfx_BuildFrameResources();
 static void Gfx_BuildDescriptorHeaps();
 static void Gfx_BuildConstantBufferViews();
-static void Gfx_BuildPSOs();
 
 void Gfx_CreateAssets()
 {

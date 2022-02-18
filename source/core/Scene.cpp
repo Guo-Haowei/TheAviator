@@ -16,10 +16,12 @@ static unordered_map<string, MeshGroup> s_meshes;
 Node g_scene( SCENE_KEY_ROOT );
 
 static void BuildAirplane();
+static void BuildOcean();
 
 void InitMeshes()
 {
     BuildAirplane();
+    BuildOcean();
 }
 
 MeshGroup* FindMesh( const char* key )
@@ -40,10 +42,28 @@ void SetupScene()
     airplanePropeller->SetMeshKey( MESH_KEY_AIRPLANE_PROPELLER );
     Node::Ptr airplaneBody = std::make_unique<Node>( SCENE_KEY_AIRPLANE_BODY );
     airplaneBody->SetMeshKey( MESH_KEY_AIRPLANE_BODY );
+    Node::Ptr ocean = std::make_unique<Node>( SCENE_KEY_OCEAN );
+    ocean->SetMeshKey( MESH_KEY_OCEAN );
 
     airplane->AppendChild( airplaneBody );
     airplane->AppendChild( airplanePropeller );
     g_scene.AppendChild( airplane );
+    g_scene.AppendChild( ocean );
+}
+
+static void BuildOcean()
+{
+    const int heightSegments = 16;
+    const float heightPerSeg = 20.f;
+    const float radius = 240.0f;
+
+    Mesh mesh;
+    MeshGroup ocean;
+    mesh.MakeCylinder( color::BLUE, radius, heightPerSeg, 60, heightSegments, 1.0f );
+    mesh.RotateX( 90.f );
+    mesh.Translate( 0.0f, -radius, 100.0f );
+    ocean.AddSubMesh( mesh );
+    s_meshes[MESH_KEY_OCEAN] = ocean;
 }
 
 static void BuildAirplane()

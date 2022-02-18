@@ -36,6 +36,8 @@ struct Mesh {
     Mesh& MakeBox( const vec3& color, float size = DEFAULT_MESH_SIZE, float alpha = 1.0f );
     Mesh& MakeBox( const std::array<vec3, 8>& points, const vec3& color, float alpha );
 
+    Mesh& MakeCylinder( const vec3& color, float radius, float height, int radialSegments, int heightSegments, float alpha );
+
     Mesh& Scale( float x, float y, float z );
     Mesh& Translate( float x, float y, float z );
     Mesh& RotateX( float degree );
@@ -68,7 +70,7 @@ struct Mesh {
 
 class MeshGroup {
    public:
-    void BuildBuffers( std::vector<Vertex>& outVertices, std::vector<uvec3>& outFaces ) const;
+    void BuildBuffers( std::vector<Vertex>& outVertices ) const;
     inline void AddSubMesh( const Mesh& mesh ) { mMeshes.push_back( mesh ); }
 
    protected:

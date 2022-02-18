@@ -496,36 +496,29 @@ static std::shared_ptr<MeshGeometry> BuildGeometry( ID3D12Device* device, ID3D12
 {
     const MeshGroup* meshGroup = FindMesh( key );
     vector<Vertex> vertices;
-    vector<uvec3> faces;
-    meshGroup->BuildBuffers( vertices, faces );
+    meshGroup->BuildBuffers( vertices );
 
-    const UINT vbByteSize = (UINT)vertices.size() * sizeof( Vertex );
-    const UINT ibByteSize = (UINT)faces.size() * sizeof( faces.front() );
+    const uint32_t vbByteSize = static_cast<uint32_t>( vertices.size() * sizeof( vertices.front() ) );
 
     std::shared_ptr<MeshGeometry> mesh = std::make_shared<MeshGeometry>();
     mesh->Name = key;
 
     DX_CALL( D3DCreateBlob( vbByteSize, &mesh->VertexBufferCPU ) );
     CopyMemory( mesh->VertexBufferCPU->GetBufferPointer(), vertices.data(), vbByteSize );
-
-    DX_CALL( D3DCreateBlob( ibByteSize, &mesh->IndexBufferCPU ) );
-    CopyMemory( mesh->IndexBufferCPU->GetBufferPointer(), faces.data(), ibByteSize );
     mesh->VertexBufferGPU = d3dUtil::CreateDefaultBuffer( device, commandList, vertices.data(), vbByteSize, mesh->VertexBufferUploader );
-    mesh->IndexBufferGPU = d3dUtil::CreateDefaultBuffer( device, commandList, faces.data(), ibByteSize, mesh->IndexBufferUploader );
 
     mesh->VertexByteStride = sizeof( Vertex );
     mesh->VertexBufferByteSize = vbByteSize;
-    mesh->IndexFormat = DXGI_FORMAT_R32_UINT;
-    mesh->IndexBufferByteSize = ibByteSize;
-    mesh->IndexCount = static_cast<uint32_t>( faces.size() ) * 3;
+    mesh->IndexCount = static_cast<uint32_t>( vertices.size() );
     return mesh;
 }
 
 void Application::BuildShapeGeometry()
 {
-    std::array<std::string, 2> meshKeys = {
+    std::array<std::string, 3> meshKeys = {
         MESH_KEY_AIRPLANE_BODY,
         MESH_KEY_AIRPLANE_PROPELLER,
+        MESH_KEY_OCEAN,
     };
 
     for ( const auto& key : meshKeys )
@@ -599,12 +592,13 @@ void Application::DrawRenderItems( ID3D12GraphicsCommandList* cmdList, const std
     auto objectCB = mCurrFrameResource->ObjectCB->Resource();
 
     // For each render item...
+    // for ( size_t i = 0; i < 2; ++i )
     for ( size_t i = 0; i < items.size(); ++i )
     {
         const auto& item = items[i];
 
+        const D3D12_VERTEX_BUFFER_VIEW view = item->Geo->VertexBufferView();
         cmdList->IASetVertexBuffers( 0, 1, &item->Geo->VertexBufferView() );
-        cmdList->IASetIndexBuffer( &item->Geo->IndexBufferView() );
         cmdList->IASetPrimitiveTopology( item->PrimitiveType );
 
         // Offset to the CBV in the descriptor heap for this object and for this frame resource.
@@ -614,7 +608,8 @@ void Application::DrawRenderItems( ID3D12GraphicsCommandList* cmdList, const std
 
         cmdList->SetGraphicsRootDescriptorTable( 0, cbvHandle );
 
-        cmdList->DrawIndexedInstanced( item->IndexCount, 1, item->StartIndexLocation, item->BaseVertexLocation, 0 );
+        // cmdList->DrawIndexedInstanced( item->IndexCount, 1, 0, 0, 0 );
+        cmdList->DrawInstanced( item->IndexCount, 1, 0, 0 );
     }
 }
 
@@ -631,34 +626,31 @@ void Application::UpdateObjectCBs()
     int i = 0;
     for ( auto& e : mRenderItems )
     {
-        // Only update the cbuffer data if the constants have changed.
-        // This needs to be tracked per frame resource.
-        // if ( e->NumFramesDirty > 0 )
+        ObjectConstants objConstants;
+        // TODO: remove hard code
+        if ( i == 1 )
         {
-            ObjectConstants objConstants;
-            // HACK:
-
-            if ( i == 0 )
-            {
-                objConstants.Model = mat4( 1.0 );
-            }
-            else
-            {
-                objConstants.Model = glm::rotate( mat4( 1 ), glm::radians( g_angle ), vec3( 1, 0, 0 ) );
-            }
-
-            currObjectCB->CopyData( e->ObjCBIndex, objConstants );
-
-            // Next FrameResource need to be updated too.
-            // e->NumFramesDirty--;
+            objConstants.Model = glm::rotate( mat4( 1 ), glm::radians( g_angle ), vec3( 1, 0, 0 ) );
         }
+        else
+        {
+            objConstants.Model = mat4( 1.0 );
+        }
+        if ( i != 2 )
+        {
+            objConstants.Model = glm::translate( mat4( 1 ), vec3( 0, 40, 0 ) ) * objConstants.Model;
+        }
+
+        currObjectCB->CopyData( e->ObjCBIndex, objConstants );
+
         ++i;
     }
 }
 
 void Application::UpdateMainPassCB()
 {
-    mView = glm::lookAtLH( vec3( 0.0f, 0.0f, -30.0f ), vec3( 0.0f ), vec3( 0.0f, 1.0f, 0.0f ) );
+    const vec3 eye( 0, 40, -80 );
+    mView = glm::lookAtLH( eye, eye + vec3( 0, 0, 1 ), vec3( 0, 1, 0 ) );
 
     // Update the constant buffer with the latest worldViewProj matrix.
     PerFrameConstant perFrameCB;
@@ -673,9 +665,10 @@ void Application::UpdateMainPassCB()
 
 void Application::BuildRenderItems()
 {
+    uint32_t objCBIndex = 0;
     {
         auto body = std::make_unique<RenderItem>();
-        body->ObjCBIndex = 0;
+        body->ObjCBIndex = objCBIndex++;
         body->Geo = s_gpuMeshes[MESH_KEY_AIRPLANE_BODY];
         body->IndexCount = body->Geo->IndexCount;
         body->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
@@ -683,11 +676,19 @@ void Application::BuildRenderItems()
     }
     {
         auto propeller = std::make_unique<RenderItem>();
-        propeller->ObjCBIndex = 1;
+        propeller->ObjCBIndex = objCBIndex++;
         propeller->Geo = s_gpuMeshes[MESH_KEY_AIRPLANE_PROPELLER];
         propeller->IndexCount = propeller->Geo->IndexCount;
         propeller->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
         mRenderItems.push_back( std::move( propeller ) );
+    }
+    {
+        auto ocean = std::make_unique<RenderItem>();
+        ocean->ObjCBIndex = objCBIndex++;
+        ocean->Geo = s_gpuMeshes[MESH_KEY_OCEAN];
+        ocean->IndexCount = ocean->Geo->IndexCount;
+        ocean->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+        mRenderItems.push_back( std::move( ocean ) );
     }
 }
 
