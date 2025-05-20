@@ -1,6 +1,6 @@
 # The Aviator
 
-This is an OpenGL project inspired by: https://tympanus.net/codrops/2016/04/26/the-aviator-animating-basic-3d-scene-threejs/
+This is an OpenGL project .
 The main purpose of this project is to practice OpenGL rendering techniques and applying 3D maths.
 
 ## Todo
@@ -64,6 +64,6 @@ I implement lens flare by calculating the screen position of the light source, l
 mkdir build
 cd build
 cmake ..
-make
+mingw32-make
 ./TheAviator
 ```
